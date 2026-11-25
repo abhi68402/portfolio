@@ -77,6 +77,22 @@ export const commands = {
         : ["Nice try. This incident will be reported to Darth Vader."],
   },
   "rm": { hidden: true, run: () => ["rm: nope. This portfolio is load-bearing."] },
+  pet: { hidden: true, run: () => ({ lines: ["You pet Nova. Tail velocity: critical. 🐾", { text: "(close the terminal to see her react)", tone: "muted" }], action: "mascot", mascot: "pet" }) },
+  fetch: { hidden: true, run: () => ({ lines: ["*throws a ball over the console*", { text: "(close the terminal to watch Nova fetch)", tone: "muted" }], action: "mascot", mascot: "fetch" }) },
+  nova: {
+    hidden: true,
+    run: () => ({
+      lines: [
+        { text: "NOVA · astro-pup · co-pilot", tone: "accent" },
+        "  species   street dog (certified good girl)",
+        "  helmet    yes, always",
+        "  skills    fetch 100%, barking 100%, debugging 0%",
+        { text: "Try: pet, fetch", tone: "muted" },
+      ],
+      action: "mascot",
+      mascot: "hello",
+    }),
+  },
   hello: { hidden: true, run: () => ["General Kenobi!"] },
 };
 

@@ -62,6 +62,16 @@ function OffDutyLog() {
     <article className="rounded-lg border border-line bg-panel p-4">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="hud-label text-[0.62rem]">Beyond code · off-duty log</h3>
+        <button
+          type="button"
+          onClick={(e) => {
+            const r = e.currentTarget.getBoundingClientRect();
+            window.dispatchEvent(new CustomEvent("mascot", { detail: { type: "call", x: r.left + r.width / 2 } }));
+          }}
+          className="rounded border border-line-strong px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-widest text-muted transition hover:border-accent hover:text-accent"
+        >
+          🐾 Say hi to Nova
+        </button>
       </div>
 
       <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-line">

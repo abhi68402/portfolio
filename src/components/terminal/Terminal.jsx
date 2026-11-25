@@ -51,6 +51,7 @@ export default function Terminal({ onClose, onGame }) {
     if (res.action === "exit") setTimeout(onClose, 350);
     if (res.action === "game") setTimeout(onGame, 350);
     if (res.action === "resume") window.open(profile.resume, "_blank", "noopener");
+    if (res.action === "mascot") window.dispatchEvent(new CustomEvent("mascot", { detail: { type: res.mascot } }));
     if (res.action === "theme") setGlobalTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
     if (res.action === "goto") setTimeout(() => { onClose(); setTimeout(() => scrollToSection(res.target), 200); }, 300);
   }

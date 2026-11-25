@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { safeGet, safeSet } from "./hooks/storage";
 import { AnimatePresence, LazyMotion, MotionConfig } from "motion/react";
 
 const loadFeatures = () => import("./motion-features.js").then((mod) => mod.default);
@@ -14,12 +15,32 @@ import Contact from "./components/sections/Contact";
 
 // The game and terminal are only downloaded when someone opens them,
 // so they never slow down the first page load.
-const SkillCatcher = lazy(() => import("./components/game/SkillCatcher"));
+const NovaRun = lazy(() => import("./components/game/NovaRun"));
+const Mascot = lazy(() => import("./components/mascot/Mascot"));
 const Terminal = lazy(() => import("./components/terminal/Terminal"));
 
 export default function App() {
   const [gameOpen, setGameOpen] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
+
+  // Nova the mascot: on unless the visitor sent her home. She loads only after
+  // the page is idle, so she never delays the important content.
+  const [novaOn, setNovaOn] = useState(() => safeGet("nova", "on") !== "off");
+  const [novaReady, setNovaReady] = useState(false);
+  useEffect(() => {
+    const ric = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
+    ric(() => setNovaReady(true), { timeout: 2500 });
+  }, []);
+  const toggleNova = useCallback((on) => {
+    setNovaOn(on);
+    safeSet("nova", on ? "on" : "off");
+  }, []);
+  // "Say hi to Nova" (About) or terminal commands bring her back if she was sent home
+  useEffect(() => {
+    const onMascot = () => toggleNova(true);
+    window.addEventListener("mascot", onMascot);
+    return () => window.removeEventListener("mascot", onMascot);
+  }, [toggleNova]);
 
   const openGame = useCallback(() => { setTerminalOpen(false); setGameOpen(true); }, []);
   const closeGame = useCallback(() => setGameOpen(false), []);
@@ -55,10 +76,11 @@ export default function App() {
         <Certifications />
         <Contact />
       </main>
-      <Footer onTerminal={openTerminal} />
+      <Footer onTerminal={openTerminal} novaOn={novaOn} onToggleNova={toggleNova} />
 
       <Suspense fallback={null}>
-        <AnimatePresence>{gameOpen && <SkillCatcher key="game" onClose={closeGame} />}</AnimatePresence>
+        {novaReady && novaOn && <Mascot onSendHome={() => toggleNova(false)} />}
+        <AnimatePresence>{gameOpen && <NovaRun key="game" onClose={closeGame} />}</AnimatePresence>
         <AnimatePresence>
           {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={openGame} />}
         </AnimatePresence>

@@ -67,6 +67,32 @@ export const skillGroups = [
   ] },
 ];
 
+// Nova, the astro-pup mascot. Rename her or change what she says here.
+export const mascot = {
+  name: "Nova",
+  greeting: "Hi! I'm Nova, Harshit's co-pilot. Click me, or click anywhere to throw a ball!",
+  // said once per visit when each section scrolls into view
+  lines: {
+    about: "That's my human. He shares his umbrella with every street dog he meets.",
+    skills: "Python at 90%. My fetch skills are at 100%.",
+    projects: "Sigrun is an operating system he wrote from scratch. Like, the whole thing.",
+    experience: "He led a team at Intel Unnati. I led a squirrel chase. Same energy.",
+    certifications: "Clearances checked. All systems go.",
+    contact: "Hire him and I come free. Mostly.",
+  },
+  // random facts when you click Nova
+  facts: [
+    "Psst: press ` for the secret terminal.",
+    "Vyu lets you see a cinema seat in 3D before you book it. Try it live!",
+    "He predicted jet engine failures with LSTMs. I predict snack time.",
+    "Try typing 'sudo hire harshit' in the terminal.",
+    "Triple-click me. Go on.",
+    "I'm a street dog in a space helmet. Ask me anything (I'll just wag).",
+    "Hit 'Play a Game' and help me dodge bugs!",
+    "His resume is one click away, top of the page.",
+  ],
+};
+
 // Skills that fall in the minigame (short labels fit the capsules best).
 export const gameSkills = ["Python", "React", "Java", "JS", "SQL", "C", "Keras", "PyTorch", "ESP32", "Git", "MongoDB", "Tailwind", "three.js", "Pandas", "Linux"];
 
@@ -80,25 +106,6 @@ export const projectFilters = [
 
 // status: "LIVE" | "SHIPPED" | "R&D"   ·   featured: shown larger at the top
 export const projects = [
-  {
-    id: "sigrun",
-    title: "Sigrun",
-    subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
-    category: ["systems"],
-    status: "R&D",
-    featured: true,
-    year: "2026",
-    problem: "AI agents and programs act first and ask later, because 'ask before acting' lives inside the app.",
-    solution: "A kernel in C for 64-bit RISC-V that traps on first access and freezes the program until you allow it.",
-    tech: ["C", "RISC-V", "QEMU", "OpenSBI"],
-    github: "https://github.com/abhi68402/sigrun",
-    demo: "",
-    details: [
-      "Written from scratch: no libraries, no OS underneath. Boots on QEMU's virt machine through OpenSBI.",
-      "'Consent faults': permission works like memory paging. The first touch of a new resource traps, the kernel freezes the program mid-instruction and resumes the exact same instruction if you allow it.",
-      "Works on unmodified programs, because the hardware forces the question, not the app.",
-    ],
-  },
   {
     id: "vyu",
     title: "Vyu",
@@ -116,6 +123,25 @@ export const projects = [
       "Seat-by-seat 3D views for 50 Hyderabad cinemas, built with ES modules and three.js.",
       "Runs fully offline and targets WCAG 2.1 AA accessibility.",
       "Deliberately not a booking app: no showtimes, payments or tickets, just the view.",
+    ],
+  },
+  {
+    id: "sigrun",
+    title: "Sigrun",
+    subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
+    category: ["systems"],
+    status: "R&D",
+    featured: true,
+    year: "2026",
+    problem: "AI agents and programs act first and ask later, because 'ask before acting' lives inside the app.",
+    solution: "A kernel in C for 64-bit RISC-V that traps on first access and freezes the program until you allow it.",
+    tech: ["C", "RISC-V", "QEMU", "OpenSBI"],
+    github: "https://github.com/abhi68402/sigrun",
+    demo: "",
+    details: [
+      "Written from scratch: no libraries, no OS underneath. Boots on QEMU's virt machine through OpenSBI.",
+      "'Consent faults': permission works like memory paging. The first touch of a new resource traps, the kernel freezes the program mid-instruction and resumes the exact same instruction if you allow it.",
+      "Works on unmodified programs, because the hardware forces the question, not the app.",
     ],
   },
   {
@@ -139,7 +165,7 @@ export const projects = [
   },
   {
     id: "hyd-days",
-    title: "Hyderabad Days",
+    title: "8bitHyd",
     subtitle: "A living pixel-art city on real map data",
     category: ["web"],
     status: "R&D",
@@ -157,7 +183,7 @@ export const projects = [
   },
   {
     id: "clearsight",
-    title: "Team ClearSight",
+    title: "Project ClearSight",
     subtitle: "Real-time image sharpening via knowledge distillation",
     category: ["ai"],
     status: "SHIPPED",
@@ -192,56 +218,6 @@ export const projects = [
     ],
   },
   {
-    id: "genai-dash",
-    title: "GenAI Analytics Dashboard",
-    subtitle: "Ask questions of your data in plain English. Built in 48 hours.",
-    category: ["web", "ai"],
-    status: "SHIPPED",
-    year: "2025",
-    problem: "Non-technical teams wait on analysts for simple questions about their data.", // TODO verify
-    solution: "A React dashboard where an LLM turns natural-language questions into charts and summaries.", // TODO verify
-    tech: ["React", "Tailwind CSS", "LLM API", "Charts"],
-    github: "https://github.com/abhi68402", // TODO: link the repo
-    demo: "",
-    details: [
-      "Built end to end in a 48-hour hackathon sprint.", // TODO: add event name / result
-      "Natural-language prompts generate visualisations and written insights.",
-    ],
-  },
-  {
-    id: "sneakiee",
-    title: "Sneakiee",
-    subtitle: "Sneaker e-commerce storefront",
-    category: ["web"],
-    status: "SHIPPED",
-    year: "2024",
-    problem: "Sneaker drops need a fast, browsable storefront that feels as good as the shoes.", // TODO verify
-    solution: "A React + Tailwind shop with product APIs, filtering, cart and a responsive layout.", // TODO verify
-    tech: ["React", "Tailwind CSS", "REST APIs"],
-    github: "https://github.com/abhi68402", // TODO: link the repo
-    demo: "",
-    details: [
-      "Product catalogue powered by API data, with search and filters.",
-      "Cart flow and responsive design from mobile up.",
-    ],
-  },
-  {
-    id: "eduai",
-    title: "EduAI Chatbot",
-    subtitle: "An AI study companion for students",
-    category: ["ai", "web"],
-    status: "SHIPPED",
-    year: "2024",
-    problem: "Students get stuck outside class hours with no one to ask.", // TODO verify
-    solution: "A chatbot that explains concepts and answers course questions conversationally.", // TODO verify
-    tech: ["Python", "LLM API", "JavaScript"],
-    github: "https://github.com/abhi68402", // TODO: link the repo
-    demo: "",
-    details: [
-      "Conversational answers tuned for learning: explanations, examples and follow-ups.",
-    ],
-  },
-  {
     id: "fer",
     title: "Facial Emotion Recognition",
     subtitle: "CNN that reads 7 emotions from a face",
@@ -272,23 +248,13 @@ export const experience = [
     ],
   },
   {
-    role: "Software Engineering Intern", // TODO: replace
-    org: "Company Name", // TODO
-    period: "Month 2025 – Month 2025", // TODO
-    location: "City / Remote", // TODO
+    role: "Software Engineering Intern", // TODO: fill from resume (SmartKnower internship)
+    org: "SmartKnower",
+    period: "Month 2025 – Month 2025", // TODO: fill from resume
+    location: "City / Remote", // TODO: fill from resume
     bullets: [
-      "What you built, with a number if you can (users, speed-up, accuracy).", // TODO
-      "The tech you used and what you owned end to end.", // TODO
-    ],
-  },
-  {
-    role: "Intern", // TODO: replace (e.g. CodSoft)
-    org: "Company Name", // TODO
-    period: "Month 2024", // TODO
-    location: "Remote", // TODO
-    bullets: [
-      "One line on the work.", // TODO
-      "One line on the result.", // TODO
+      "What you built, with a number if you can (users, speed-up, accuracy).", // TODO: fill from resume
+      "The tech you used and what you owned end to end.", // TODO: fill from resume
     ],
   },
 ];

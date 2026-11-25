@@ -1,6 +1,6 @@
 # Harshit Abhinav · Mission Control Portfolio
 
-A personal portfolio styled as a ground-station console. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. The extras (a minigame and a hidden terminal) only load when someone opens them.
+A personal portfolio styled as a ground-station console. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. The extras (Nova the astro-pup mascot, the Nova Run game and a hidden terminal) load after the page is ready and never block content.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -41,7 +41,8 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
 | Skill groups and levels (0–100) | `skillGroups` |
-| Words that fall in the minigame | `gameSkills` |
+| Skill names on the orbs in Nova Run | `gameSkills` |
+| Nova's name, greeting, per-section lines and random facts | `mascot` |
 | Projects (add, remove, reorder; `featured: true` gets the amber edge) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
@@ -75,7 +76,8 @@ src/
     hero/StarfieldCanvas   the animated stars + orbits behind the hero
     skills/                RadarChart (plain SVG) and GaugeBar
     projects/              cards, filters, details modal, status chip, signal trace
-    game/                  engine.js (the game loop) + SkillCatcher.jsx (its window)
+    mascot/                sprite.js (Nova's pixel art, drawn in code), brain.js (her behaviour), Mascot.jsx
+    game/                  runner.js (Nova Run engine), sound.js (bleeps), NovaRun.jsx (its window)
     terminal/              commands.js (what each command prints) + Terminal.jsx
 ```
 
@@ -84,13 +86,26 @@ src/
 - **`content.js` is the database.** Components just read it and draw it.
 - **`SectionFrame`** gives every section the same console header (`MOD 04 · MISSION LOG`) and fades it in once.
 - **Theme:** `index.html` sets `data-theme="dark"` or `"light"` on `<html>` before anything paints. `index.css` swaps every colour based on that. The toggle saves your choice in localStorage (wrapped in try/catch so private windows don't break).
-- **The game** (`engine.js`) is plain JavaScript: each frame it moves the catcher, spawns falling skills, checks collisions and draws to a `<canvas>`. React only shows the score and the start/end screens.
+- **Nova's art** (`sprite.js`) is drawn pixel by pixel on a tiny 32×28 canvas, then scaled up without smoothing. No image files.
+- **Nova's brain** (`brain.js`) is a small state machine: idle → run → jump → sit → sleep. `Mascot.jsx` feeds it scrolls, clicks and balls every frame and draws her.
+- **Nova Run** (`runner.js`) draws a 320×180 pixel world and scales it up. Each frame it moves Nova, spawns bugs, drones, orbs and power-ups, checks collisions and draws. React only shows the score bar and menus.
 - **The terminal** is a list of commands in `commands.js`. To add one, copy an entry and change its text. Entries with `hidden: true` don't appear in `help`.
 - **Speed:** the game, the terminal and the heavier animation code are split into separate files that only download when needed.
 
+### Nova, the astro-pup
+
+- Scroll and she runs with you. Click her for a fact; triple-click for a backflip.
+- Click any empty space and she fetches a ball.
+- She comments once on each section, sits after 20 s and naps after 45 s.
+- Visitors can send her home (footer button); the choice is remembered. With "reduce motion" on she just sits quietly.
+
+### Nova Run controls
+
+Space / ↑ / tap to jump (hold for higher, tap again mid-air to double jump), ↓ / swipe down to duck, P to pause. Power-ups: ☕ coffee (unstoppable for 3 s), 🛡 unit tests (absorbs one hit), 🧲 git pull (magnet). Sound is off by default.
+
 ### Easter eggs
 
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `pet`, `fetch`, `nova`.
 
 ---
 
