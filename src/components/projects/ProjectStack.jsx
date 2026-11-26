@@ -8,7 +8,8 @@ import Photo from "../ui/Photo";
 const picks = projects.filter((p) => p.photo).slice(0, 4);
 // resting rotation / offset per slot (0 = top of the pile), then the fanned-out version
 const REST = [{ r: -2, x: "0%", y: "2.4rem" }, { r: 5, x: "-9%", y: "1rem" }, { r: -6, x: "9%", y: "0.4rem" }, { r: 3, x: "-3%", y: "0rem" }];
-const FAN = [{ r: -2, x: "0%" }, { r: -9, x: "-40%" }, { r: 8, x: "40%" }, { r: 5, x: "-20%" }];
+// fanned out: four cards side by side, kept inside the column (fc = centre as % of the pile's width)
+const FAN = [{ r: -2, c: "40%", y: "1.6rem" }, { r: -4, c: "20%", y: "2.4rem" }, { r: 3, c: "60%", y: "2rem" }, { r: 4, c: "80%", y: "2.6rem" }];
 
 export default function ProjectStack() {
   const [order, setOrder] = useState(() => picks.map((_, i) => i));
@@ -32,7 +33,7 @@ export default function ProjectStack() {
               onClick={() => (top ? scrollToSection("projects") : front(i))}
               aria-label={top ? `${p.title}: go to projects` : `Bring ${p.title} to the front`}
               className={`card pstack-card ${top ? "tape" : ""} ${i % 2 ? "tape-blue" : ""}`}
-              style={{ "--r": `${REST[slot].r}deg`, "--x": REST[slot].x, "--y": REST[slot].y, "--fr": `${FAN[slot].r}deg`, "--fx": FAN[slot].x, zIndex: 10 - slot }}
+              style={{ "--r": `${REST[slot].r}deg`, "--x": REST[slot].x, "--y": REST[slot].y, "--fr": `${FAN[slot].r}deg`, "--fc": FAN[slot].c, "--fy": FAN[slot].y, zIndex: 10 - slot }}
             >
               <div className="aspect-[4/3] overflow-hidden rounded-sm bg-card-2">
                 <Photo name={p.photo} alt="" width={800} height={600} sizes="(min-width: 1024px) 300px, 60vw" />
