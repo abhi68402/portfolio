@@ -237,6 +237,26 @@ body {
 /* html carries the paper colour; let the fixed starfield show through body */
 [data-theme="dark"] body { background-color: transparent; }
 
+/* ── Polish (v5) ─────────────────────────────────────────────────────────── */
+/* Hover focus: in a list of cards, the one under the cursor stays sharp and
+   the rest fade back a little (filter, so it never fights motion's opacity). */
+.focus-list > li { transition: filter 0.3s ease; }
+@media (hover: hover) {
+  .focus-list:has(> li:hover) > li:not(:hover) { filter: opacity(0.55) saturate(0.6); }
+}
+/* Springy feel: hovers overshoot slightly, like paper on a spring */
+.lift { transition-timing-function: cubic-bezier(.34, 1.56, .64, 1); transition-duration: 0.35s; }
+.btn { transition-timing-function: cubic-bezier(.34, 1.56, .64, 1); }
+.btn:active { transform: translate(2px, 2px) scale(0.97); }
+/* Desk lamp: a soft glow that follows the cursor (see fun/Lamp.jsx) */
+.lamp {
+  position: fixed; inset: 0; z-index: 30; pointer-events: none;
+  background: radial-gradient(520px circle at var(--lx, -999px) var(--ly, -999px), rgb(255 196 80 / 0.10), transparent 70%);
+  transition: opacity 0.4s;
+}
+[data-theme="dark"] .lamp { background: radial-gradient(560px circle at var(--lx, -999px) var(--ly, -999px), rgb(154 184 255 / 0.07), transparent 70%); }
+@media (hover: none), (prefers-reduced-motion: reduce) { .lamp { display: none; } }
+
 /* About: pile of taped project polaroids. Hover or keyboard focus fans them out. */
 @layer components {
   /* --cw: card width at rest. --fs: scale when fanned, so four cards fit side

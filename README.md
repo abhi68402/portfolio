@@ -1,6 +1,6 @@
 # Harshit Abhinav · Space Notebook Portfolio
 
-A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (a dad-joke "model", wave button, pet the dog, a trainable neural net of skills), an optional night-sky dark mode and hidden easter eggs.
+A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (real numbers, wave button, pet the dog, skills with receipts), an optional night-sky dark mode and hidden easter eggs.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -40,10 +40,11 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | --- | --- |
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
-| Skill groups and levels (0–100); these also drive the neural net | `skillGroups` |
+| Skill groups and levels (0–100); listed in the Toolkit section | `skillGroups` |
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
-| Dad jokes for the hero tile (`mild` / `spicy`, each `{ setup, punch }`) | `dadJokes` |
+| Hero "By the numbers" figures | `stats` |
+| Which project proves each skill (receipts) | `src/data/proof.js` |
 | Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble; `photo` is the image name for the About photo stack) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
@@ -75,7 +76,7 @@ src/
     layout/                Navbar, Footer, SectionFrame (the "Log entry 0X" header + highlighter title)
     notebook/              Sketch (hand-drawn space doodles), Highlight, MarginNote, useInViewOnce
     sections/              Hero (+ HeroTiles), About, Skills, Projects, Experience, Certifications, Contact
-    skills/                NeuralNet (animated network), TrainConsole (loss curve), GaugeBar
+    skills/                (skills now live in sections/Skills.jsx + data/proof.js)
     projects/              index-card ProjectCard, filters, details modal
     robot/Robot.jsx        Bolt, the tiny robot co-pilot
     fun/                   Toasts, Konami Rocket, useVisitorReactions
@@ -93,9 +94,10 @@ src/
 
 ### Fun bits
 
-- Hero tiles: **Now building** progress, a **Dad-joke model** (jokes stream in like a chatbot; the temperature slider makes them sillier; haha/groan ratings are counted), and a **wave** button that remembers how many times you've waved.
+- Hero tiles: **Now building** progress, **By the numbers** (real figures that count up), and a **wave** button that remembers how many times you've waved.
 - **Pet the dog** in About (hearts + a pet counter).
-- **Neural net:** signals flow through a small network of your skill groups. Pick a group to see what fires; press **Train** to watch the loss curve drop over 12 epochs.
+- **Toolkit:** click a skill marked ↗ to see the project that proves it.
+- **Polish:** cards you hover come forward while the rest fade back, a soft desk-lamp glow follows the cursor, buttons have a springy feel, the email copy button morphs to "Copied", and the footer links to every earlier version of the site.
 - **Flight record:** a little rocket climbs the dashed flight path as you scroll.
 - **Contact:** sending folds your note into a paper plane.
 - **Badges** spin when you hover them.

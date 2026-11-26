@@ -27,7 +27,7 @@ export default function Projects() {
         <p className="font-hand text-xl text-muted" aria-live="polite">{shown.length} missions on this page</p>
       </div>
 
-      <ul className="grid gap-x-7 gap-y-10 pt-3 md:grid-cols-2 lg:grid-cols-3">
+      <ul className="focus-list grid gap-x-7 gap-y-10 pt-3 md:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {shown.map((p) => (
             <ProjectCard key={p.id} project={p} index={ordered.indexOf(p)} onOpen={setOpen} />

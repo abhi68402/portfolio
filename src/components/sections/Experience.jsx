@@ -22,7 +22,7 @@ export default function Experience() {
 
   return (
     <SectionFrame id="experience" title="Flight record" doodle="satellite">
-      <ol ref={listRef} className="relative ml-3 sm:ml-[9rem]">
+      <ol ref={listRef} className="focus-list relative ml-3 sm:ml-[9rem]">
         {/* the flight path + the rocket riding it */}
         <span aria-hidden="true" className="absolute bottom-0 left-0 top-0 border-l-2 border-dashed border-line-strong" />
         <span aria-hidden="true" className="absolute left-0 top-0 w-0.5 -translate-x-[1px] bg-blue transition-[height] duration-150" style={{ height: `${progress * 100}%` }} />

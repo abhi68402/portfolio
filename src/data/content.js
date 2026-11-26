@@ -81,7 +81,7 @@ export const robot = {
   // said once per visit when each section comes into view
   lines: {
     about: "That's my engineer. He shares his umbrella with street dogs.",
-    skills: "That's my neural net. Hit Train and watch it learn!",
+    skills: "Every skill here comes with receipts. Click one!",
     projects: "Sigrun is a whole operating system. I run on it. (Not really.)",
     experience: "Flight record: where he's been on missions so far.",
     certifications: "Badges earned. Shiny.",
@@ -90,8 +90,7 @@ export const robot = {
   tips: [
     "His resume is one click away, top of the page.",
     "Psst: press ` (backtick) for a secret terminal.",
-    "Press Train in the Skills section. It always converges.",
-    "Crank the temperature on the dad-joke model. You've been warned.",
+    "Click a skill to see the project that proves it.",
     "Try the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
     "Vyu is live. Go pick a cinema seat in 3D!",
     "Pet the dog in the About section. Trust me.",
@@ -102,38 +101,13 @@ export const robot = {
 // The "now building" tile in the hero. Update it whenever you like.
 export const nowBuilding = { title: "Sigrun", what: "a RISC-V kernel that makes AI agents ask before they act", progress: 62 };
 
-// The "Dad-joke model" tile in the hero. Low temperature picks from `mild`,
-// high temperature from `spicy`. Add your own: { setup, punch }.
-export const dadJokes = {
-  mild: [
-    { setup: "Why did the neural network break up?", punch: "It felt overfitted to the relationship." },
-    { setup: "Why do Python programmers wear glasses?", punch: "Because they can't C." },
-    { setup: "Why did the developer go broke?", punch: "He used up all his cache." },
-    { setup: "How do you comfort a JavaScript bug?", punch: "You console it." },
-    { setup: "Why did the gradient go to therapy?", punch: "It kept vanishing." },
-    { setup: "Why don't ML models ever get lost?", punch: "They always follow the gradient." },
-    { setup: "Why did the LSTM never forget her birthday?", punch: "Long short-term memory, baby." },
-    { setup: "Why was the git commit lonely?", punch: "Nobody would pull it." },
-    { setup: "What did the loss function say to the optimizer?", punch: "You complete me. Eventually." },
-    { setup: "Why did the dataset go back to school?", punch: "To work on its class balance." },
-    { setup: "Why was the computer cold?", punch: "It left its Windows open." },
-    { setup: "Why did the CNN become a detective?", punch: "It was great at picking up features." },
-  ],
-  spicy: [
-    { setup: "I asked my model to predict my future.", punch: "It returned NaN. Honestly? Relatable." },
-    { setup: "Why did the transformer skip dessert?", punch: "It was already paying too much attention." },
-    { setup: "My code has no bugs.", punch: "Only spontaneous, undocumented features." },
-    { setup: "Why did the AI cross the road?", punch: "It was 73% confident there was a chicken." },
-    { setup: "I'd tell you a joke about UDP…", punch: "…but I'm not sure you'd get it." },
-    { setup: "Why did the RAM go to the party?", punch: "To make some short-term memories." },
-    { setup: "My dropout rate is 0.5.", punch: "Half of me didn't show up today either." },
-    { setup: "How many ML engineers does it take to change a lightbulb?", punch: "One. Plus 10,000 labelled photos of dark rooms." },
-    { setup: "Why was the batch size nervous at the party?", punch: "It couldn't fit in." },
-    { setup: "Overfitting, explained:", punch: "memorising the textbook the night before and failing the real exam." },
-    { setup: "I trained a model only on dad jokes.", punch: "Now it says: \"Hi hungry, I'm GPU.\"" },
-    { setup: "Why did the robot go on vacation?", punch: "It needed to recharge its batteries… and its personality." },
-  ],
-};
+// "By the numbers" tile in the hero: real figures from the projects.
+export const stats = [
+  { value: 60, suffix: " FPS", label: "real-time sharpening · ClearSight" },
+  { value: 50, suffix: "", label: "cinemas you can sit in, in 3D · Vyu" },
+  { value: 2346, suffix: " km²", label: "of real Hyderabad, in pixel art · 8bitHyd" },
+  { value: 1, suffix: " OS", label: "kernel written from scratch · Sigrun" },
+];
 
 // Short skill names (used in the terminal).
 export const gameSkills = ["Python", "React", "Java", "JS", "SQL", "C", "Keras", "PyTorch", "ESP32", "Git", "MongoDB", "Tailwind", "three.js", "Pandas", "Linux"];
@@ -310,7 +284,7 @@ export const certifications = [
 export const sections = [
   { id: "hero", code: "01", label: "Home", codename: "Mission brief" },
   { id: "about", code: "02", label: "About", codename: "Crew profile" },
-  { id: "skills", code: "03", label: "Skills", codename: "Neural net" },
+  { id: "skills", code: "03", label: "Skills", codename: "Toolkit" },
   { id: "projects", code: "04", label: "Projects", codename: "Missions flown" },
   { id: "experience", code: "05", label: "Experience", codename: "Flight record" },
   { id: "certifications", code: "06", label: "Certs", codename: "Badges" },

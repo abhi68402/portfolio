@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, m } from "motion/react";
 import { profile } from "../../data/content";
 import SectionFrame from "../layout/SectionFrame";
 import MarginNote from "../notebook/MarginNote";
@@ -33,7 +34,7 @@ function ChannelLink({ label, value, href, external, download, copy }) {
     try {
       await navigator.clipboard.writeText(copy);
       setCopied(true);
-      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "📋", text: "Email copied. Go make his day." } }));
+      window.dispatchEvent(new CustomEvent("toast", { detail: { text: "Email copied. Go make his day." } }));
       setTimeout(() => setCopied(false), 1600);
     } catch { /* clipboard blocked: the link still works */ }
   };
@@ -50,9 +51,27 @@ function ChannelLink({ label, value, href, external, download, copy }) {
         <span aria-hidden="true" className="ml-auto text-muted transition group-hover:translate-x-1 group-hover:text-blue">{download ? "↓" : "↗"}</span>
       </a>
       {copy && (
-        <button type="button" onClick={doCopy} className="mr-3 rounded-md border-2 border-line-strong px-2 py-1 text-xs font-semibold text-muted hover:border-ink hover:text-ink">
-          <span aria-live="polite">{copied ? "Copied!" : "Copy"}</span>
-        </button>
+        <m.button
+          type="button"
+          onClick={doCopy}
+          layout
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          className={`relative mr-3 overflow-hidden rounded-md border-2 px-2.5 py-1 text-xs font-semibold transition-colors ${copied ? "border-blue bg-blue/10 text-blue" : "border-line-strong text-muted hover:border-ink hover:text-ink"}`}
+        >
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.span
+              key={copied ? "done" : "copy"}
+              aria-live="polite"
+              initial={{ y: 14, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -14, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 600, damping: 32 }}
+              className="block whitespace-nowrap"
+            >
+              {copied ? "Copied ✓" : "Copy"}
+            </m.span>
+          </AnimatePresence>
+        </m.button>
       )}
     </div>
   );
