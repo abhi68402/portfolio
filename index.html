@@ -31,6 +31,17 @@
     <link rel="preload" as="image" type="image/webp" href="/photos/hero-800.webp"
       imagesrcset="/photos/hero-480.webp 480w, /photos/hero-800.webp 800w, /photos/hero-1200.webp 1200w"
       imagesizes="(min-width: 1024px) 420px, 80vw" fetchpriority="high" />
+    <!-- Apply a saved theme before the page paints (light is the default) -->
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("theme"); } catch (e) {}
+        if (t === "dark") {
+          document.documentElement.dataset.theme = "dark";
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0b1020");
+        }
+      })();
+    </script>
   </head>
   <body>
     <noscript>Harshit Abhinav, software engineer. Email gompaharshit7@gmail.com · github.com/abhi68402</noscript>

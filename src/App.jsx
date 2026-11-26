@@ -10,6 +10,7 @@ import Experience from "./components/sections/Experience";
 import Certifications from "./components/sections/Certifications";
 import Contact from "./components/sections/Contact";
 import Toasts from "./components/fun/Toasts";
+import Starfield from "./components/notebook/Starfield";
 import Rocket from "./components/fun/Rocket";
 import { useVisitorReactions } from "./components/fun/useVisitorReactions";
 import { safeGet, safeSet } from "./hooks/storage";
@@ -55,6 +56,7 @@ export default function App() {
     // reducedMotion="user": every Motion animation calms down when the OS asks for reduced motion
     <MotionConfig reducedMotion="user">
       <LazyMotion features={loadFeatures} strict>
+        <Starfield />
         <Navbar />
         <main id="main">
           <Hero />

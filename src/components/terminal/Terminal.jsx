@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { m } from "motion/react";
 import { profile } from "../../data/content";
 import { scrollToSection } from "../../hooks/scrollTo";
+import { setGlobalTheme } from "../../hooks/useTheme";
 import { complete, runCommand } from "./commands";
 
 const BOOT = [
@@ -50,6 +51,7 @@ export default function Terminal({ onClose, onGame }) {
     if (res.action === "exit") setTimeout(onClose, 350);
     if (res.action === "game") setTimeout(onGame, 350);
     if (res.action === "resume") window.open(profile.resume, "_blank", "noopener");
+    if (res.action === "theme") setGlobalTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
     if (res.action === "launch") setTimeout(() => { onClose(); setTimeout(() => window.dispatchEvent(new Event("launch-rocket")), 250); }, 500);
     if (res.action === "goto") setTimeout(() => { onClose(); setTimeout(() => scrollToSection(res.target), 200); }, 300);
   }

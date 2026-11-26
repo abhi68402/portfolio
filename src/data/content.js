@@ -91,6 +91,7 @@ export const robot = {
     "His resume is one click away, top of the page.",
     "Psst: press ` (backtick) for a secret terminal.",
     "Press Train in the Skills section. It always converges.",
+    "Crank the temperature on the dad-joke model. You've been warned.",
     "Try the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
     "Vyu is live. Go pick a cinema seat in 3D!",
     "Pet the dog in the About section. Trust me.",
@@ -101,12 +102,37 @@ export const robot = {
 // The "now building" tile in the hero. Update it whenever you like.
 export const nowBuilding = { title: "Sigrun", what: "a RISC-V kernel that makes AI agents ask before they act", progress: 62 };
 
-// The little quiz tile: one question, a few answers, one correct.
-export const quiz = {
-  question: "What does my BiLSTM model predict?",
-  options: ["Stock prices", "Jet-engine failure", "Cricket scores", "Your next tab"],
-  answer: 1,
-  reveal: "It reads NASA turbofan sensor data and predicts how many cycles each engine has left.",
+// The "Dad-joke model" tile in the hero. Low temperature picks from `mild`,
+// high temperature from `spicy`. Add your own: { setup, punch }.
+export const dadJokes = {
+  mild: [
+    { setup: "Why did the neural network break up?", punch: "It felt overfitted to the relationship." },
+    { setup: "Why do Python programmers wear glasses?", punch: "Because they can't C." },
+    { setup: "Why did the developer go broke?", punch: "He used up all his cache." },
+    { setup: "How do you comfort a JavaScript bug?", punch: "You console it." },
+    { setup: "Why did the gradient go to therapy?", punch: "It kept vanishing." },
+    { setup: "Why don't ML models ever get lost?", punch: "They always follow the gradient." },
+    { setup: "Why did the LSTM never forget her birthday?", punch: "Long short-term memory, baby." },
+    { setup: "Why was the git commit lonely?", punch: "Nobody would pull it." },
+    { setup: "What did the loss function say to the optimizer?", punch: "You complete me. Eventually." },
+    { setup: "Why did the dataset go back to school?", punch: "To work on its class balance." },
+    { setup: "Why was the computer cold?", punch: "It left its Windows open." },
+    { setup: "Why did the CNN become a detective?", punch: "It was great at picking up features." },
+  ],
+  spicy: [
+    { setup: "I asked my model to predict my future.", punch: "It returned NaN. Honestly? Relatable." },
+    { setup: "Why did the transformer skip dessert?", punch: "It was already paying too much attention." },
+    { setup: "My code has no bugs.", punch: "Only spontaneous, undocumented features." },
+    { setup: "Why did the AI cross the road?", punch: "It was 73% confident there was a chicken." },
+    { setup: "I'd tell you a joke about UDP…", punch: "…but I'm not sure you'd get it." },
+    { setup: "Why did the RAM go to the party?", punch: "To make some short-term memories." },
+    { setup: "My dropout rate is 0.5.", punch: "Half of me didn't show up today either." },
+    { setup: "How many ML engineers does it take to change a lightbulb?", punch: "One. Plus 10,000 labelled photos of dark rooms." },
+    { setup: "Why was the batch size nervous at the party?", punch: "It couldn't fit in." },
+    { setup: "Overfitting, explained:", punch: "memorising the textbook the night before and failing the real exam." },
+    { setup: "I trained a model only on dad jokes.", punch: "Now it says: \"Hi hungry, I'm GPU.\"" },
+    { setup: "Why did the robot go on vacation?", punch: "It needed to recharge its batteries… and its personality." },
+  ],
 };
 
 // Short skill names (used in the terminal).

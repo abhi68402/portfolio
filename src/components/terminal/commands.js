@@ -66,7 +66,7 @@ export const commands = {
     },
   },
   whoami: { hidden: true, run: () => ["a very welcome visitor (probably a recruiter with great taste)"] },
-  theme: { hidden: true, run: () => ({ lines: ["Dark mode was retired. This notebook only comes in daylight. ☀️"] }) },
+  theme: { hidden: true, run: () => ({ lines: ["Switching sky…"], action: "theme" }) },
   date: { hidden: true, run: () => [new Date().toString()] },
   echo: { hidden: true, run: (args) => [args.join(" ")] },
   sudo: {

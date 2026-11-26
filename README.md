@@ -1,6 +1,6 @@
 # Harshit Abhinav · Space Notebook Portfolio
 
-A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (quiz, wave button, pet the dog, a star-chart of skills) and hidden easter eggs.
+A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (a dad-joke "model", wave button, pet the dog, a trainable neural net of skills), an optional night-sky dark mode and hidden easter eggs.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -43,7 +43,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | Skill groups and levels (0–100); these also drive the neural net | `skillGroups` |
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
-| The pop-quiz tile (question, options, answer) | `quiz` |
+| Dad jokes for the hero tile (`mild` / `spicy`, each `{ setup, punch }`) | `dadJokes` |
 | Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
@@ -85,14 +85,14 @@ src/
 **In plain words:**
 
 - **`content.js` is the database.** Components just read it and draw it.
-- **Theme:** one light notebook theme. Every colour is a token at the top of `index.css`.
+- **Theme:** light notebook by default; the moon button switches to a night-sky mode with a starfield (`notebook/Starfield.jsx`). The choice is remembered. Every colour is a token at the top of `index.css`.
 - **Doodles** (`notebook/Sketch.jsx`) are small SVG drawings. Each path has `pathLength="1"`, so CSS can animate the stroke from hidden to drawn when it scrolls into view.
 - **The highlighter** (`Highlight.jsx`) is a yellow background that grows from 0% to 100% width the first time the words are seen.
 - **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It never moves around or covers content; the × or the footer hides it.
 
 ### Fun bits
 
-- Hero tiles: **Now building** progress, a one-question **pop quiz**, and a **wave** button that remembers how many times you've waved.
+- Hero tiles: **Now building** progress, a **Dad-joke model** (jokes stream in like a chatbot; the temperature slider makes them sillier; haha/groan ratings are counted), and a **wave** button that remembers how many times you've waved.
 - **Pet the dog** in About (hearts + a pet counter).
 - **Neural net:** signals flow through a small network of your skill groups. Pick a group to see what fires; press **Train** to watch the loss curve drop over 12 epochs.
 - **Flight record:** a little rocket climbs the dashed flight path as you scroll.
