@@ -5,6 +5,7 @@ import { proof } from "../../data/proof";
 import { scrollToSection } from "../../hooks/scrollTo";
 import SectionFrame from "../layout/SectionFrame";
 import MarginNote from "../notebook/MarginNote";
+import GitHubLatest from "../skills/GitHubLatest";
 
 // LOG ENTRY 03 · Toolkit. Every skill, grouped, as plain text a recruiter can
 // scan. Skills with a receipt are clickable: the card on the right shows the
@@ -101,6 +102,8 @@ export default function Skills() {
               ))}
             </ul>
           </div>
+
+          <GitHubLatest />
         </div>
       </div>
     </SectionFrame>
