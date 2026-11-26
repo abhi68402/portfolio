@@ -2,48 +2,42 @@ import { useEffect, useState } from "react";
 import { m, useReducedMotion } from "motion/react";
 import { profile, projects } from "../../data/content";
 import { scrollToSection } from "../../hooks/scrollTo";
-import StarfieldCanvas from "../hero/StarfieldCanvas";
-import HudCorners from "../ui/HudCorners";
 import Button from "../ui/Button";
 import Photo from "../ui/Photo";
 
-// MOD 01 · the first screen. Everything a recruiter needs is here without scrolling:
-// name, roles, one-liner, resume, projects, and the (optional) game.
+// LEVEL 01 · Street level. Everything a recruiter needs is on this first screen:
+// name, roles, one-liner, resume, projects. The pixel city behind is the WorldCanvas.
 export default function Hero({ onPlay }) {
   return (
-    <section id="hero" aria-labelledby="hero-title" className="bg-grid relative overflow-hidden border-b border-line">
-      <StarfieldCanvas />
-      <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.2fr_1fr] lg:py-10">
+    <section id="hero" aria-labelledby="hero-title" className="relative">
+      <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-14 px-4 py-14 sm:px-6 lg:grid-cols-[1.25fr_1fr] lg:py-10">
         <div>
           <StatusStrip />
 
-          <h1 id="hero-title" className="mt-8 text-[clamp(3.2rem,10vw,6.75rem)] font-semibold leading-[0.92] tracking-[-0.045em]">
-            {profile.firstName}
+          <h1 id="hero-title" className="px-title mt-8 text-[clamp(3.4rem,11vw,7.6rem)]">
+            {profile.firstName.toUpperCase()}
             <br />
-            <span className="text-transparent [-webkit-text-stroke:1.5px_var(--text)]">{profile.lastName}</span>
-            <span className="text-accent">.</span>
+            {profile.lastName.toUpperCase()}
           </h1>
 
-          <RoleReadout />
+          <DialogueBox />
 
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{profile.tagline}</p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href={profile.resume} download icon="↓">Download Resume</Button>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Button href={profile.resume} download icon="↓">Download resume</Button>
             <Button variant="ghost" href="#projects" icon="→" onClick={(e) => { e.preventDefault(); scrollToSection("projects"); }}>
-              View Projects
+              View projects
             </Button>
-            <Button variant="ghost" icon="▶" onClick={onPlay}>Play a Game</Button>
+            <Button variant="ghost" icon="▶" onClick={onPlay} className="bob">Press start</Button>
           </div>
 
-          <dl className="mt-10 grid max-w-xl grid-cols-3 border-y border-line">
-            <Readout label="Edu" value={`B.Tech CSE · ${profile.education.school.split(" ")[0]} '${profile.education.year.slice(2)}`} />
-            <Readout label="Missions" value={`${projects.length} logged`} />
+          <dl className="px-panel mt-10 grid max-w-xl grid-cols-3">
+            <Readout label="Class" value={`B.Tech CSE '${profile.education.year.slice(2)}`} />
+            <Readout label="Quests" value={`${projects.length} shipped`} />
             <Readout label="Status" value="Open to roles" accent />
           </dl>
         </div>
 
-        <HeroPhoto />
+        <Billboard />
       </div>
     </section>
   );
@@ -56,12 +50,12 @@ function StatusStrip() {
     return () => clearInterval(id);
   }, []);
   return (
-    <div className="hud-label flex flex-wrap items-center gap-x-5 gap-y-2">
+    <div className="px-panel inline-flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-2 font-pixel text-sm uppercase">
       <span className="flex items-center gap-2 text-accent">
-        <span className="pulse-dot h-2 w-2 rounded-full bg-accent-fill" /> SYS: Online
+        <span className="pulse-dot h-2.5 w-2.5 bg-accent-fill" /> Player 1 ready
       </span>
-      <span className="tabular" aria-label={`Local time in India ${time}`}>IST {time}</span>
-      <span>LOC ▸ {profile.location}</span>
+      <span className="tabular text-muted" aria-label={`Local time in India ${time}`}>IST {time}</span>
+      <span className="text-muted">{profile.location}</span>
     </div>
   );
 }
@@ -70,9 +64,8 @@ function clock() {
   return new Date().toLocaleTimeString("en-GB", { timeZone: profile.timezone, hour12: false });
 }
 
-// Types out each role, pauses, erases, moves to the next.
-// With reduced motion it simply swaps the words every few seconds.
-function RoleReadout() {
+// RPG-style dialogue box: types out each role, then the tagline sits underneath.
+function DialogueBox() {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
   const [text, setText] = useState(reduce ? profile.roles[0] : "");
@@ -97,69 +90,64 @@ function RoleReadout() {
   }, [text, phase, i, reduce]);
 
   return (
-    <p className="mt-6 font-mono text-base sm:text-lg">
-      <span className="text-muted">ROLE ▸ </span>
-      {/* Screen readers get the full list once instead of a flickering word */}
-      <span className="sr-only">{profile.roles.join(", ")}</span>
-      <span aria-hidden="true" className="text-accent">
-        {text}
-        <span className="caret">▍</span>
-      </span>
-    </p>
+    <div className="px-panel relative mt-10 max-w-xl px-5 pb-5 pt-4">
+      <span className="absolute -top-3.5 left-4 bg-accent-fill px-2 py-0.5 font-pixel text-xs uppercase text-accent-ink">Harshit</span>
+      <p className="font-pixel text-xl sm:text-2xl">
+        <span className="text-muted">&gt; </span>
+        <span className="sr-only">{profile.roles.join(", ")}</span>
+        <span aria-hidden="true" className="text-accent">
+          {text}
+          <span className="caret">▍</span>
+        </span>
+      </p>
+      <p className="mt-3 leading-relaxed text-muted">{profile.tagline}</p>
+      <span aria-hidden="true" className="bob absolute bottom-2 right-3 font-pixel text-accent">▼</span>
+    </div>
   );
 }
 
 function Readout({ label, value, accent }) {
   return (
-    <div className="border-r border-line py-3 pr-3 last:border-r-0 [&:not(:first-child)]:pl-3">
-      <dt className="hud-label text-[0.62rem]">{label}</dt>
-      <dd className={`mt-1 text-sm font-medium ${accent ? "text-accent" : ""}`}>{value}</dd>
+    <div className="border-r-2 border-line px-4 py-3 last:border-r-0">
+      <dt className="font-pixel text-xs uppercase text-muted">{label}</dt>
+      <dd className={`mt-0.5 text-sm font-semibold ${accent ? "text-accent" : ""}`}>{value}</dd>
     </div>
   );
 }
 
-function HeroPhoto() {
+// The photo as a pixel billboard standing on the rooftops (Nova can sit on top of it).
+function Billboard() {
   return (
     <m.figure
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="relative mx-auto w-full max-w-[420px] p-3"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative mx-auto w-full max-w-[400px]"
     >
-      <HudCorners size={22} />
-      <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-line bg-panel">
-        <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 420px, 80vw" />
-        <div className="scan-line pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-[var(--accent-soft)] to-transparent" aria-hidden="true" />
-        {/* crosshair ticks in the centre of each edge */}
-        <span aria-hidden="true" className="absolute left-1/2 top-0 h-3 w-px bg-white/60" />
-        <span aria-hidden="true" className="absolute bottom-0 left-1/2 h-3 w-px bg-white/60" />
-        <span aria-hidden="true" className="absolute left-0 top-1/2 h-px w-3 bg-white/60" />
-        <span aria-hidden="true" className="absolute right-0 top-1/2 h-px w-3 bg-white/60" />
-        <span aria-hidden="true" className="absolute left-3 top-3 rounded bg-black/55 px-1.5 py-0.5 font-mono text-[0.62rem] tracking-widest text-white/85">
-          FIG.01 · REC ●
-        </span>
+      <div data-perch className="px-panel p-3">
+        <div className="mb-2 flex items-center justify-between font-pixel text-xs uppercase">
+          <span className="text-accent">Now showing</span>
+          <span className="text-muted">harshit.exe</span>
+        </div>
+        <div className="relative aspect-[4/5] overflow-hidden bg-panel-2">
+          <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 400px, 85vw" />
+          <Tag className="left-2 top-[30%]" text="optics: required" />
+          <Tag className="bottom-3 right-2" text="status: hire-ready" />
+        </div>
       </div>
-
-      {/* Annotations with leader lines, like a labelled diagram */}
-      <Annotation className="left-[-0.25rem] top-[30%] xl:left-[-3.5rem]" text="optics: required" />
-      <Annotation className="right-[-0.25rem] top-[72%] xl:right-[-3rem]" text="status: hire-ready" right />
-
-      <figcaption className="hud-label mt-3 flex justify-between text-[0.62rem]">
-        <span>Subject · H. Abhinav</span>
-        <span className="tabular">ISO 100 · ƒ1.8</span>
-      </figcaption>
+      {/* billboard legs */}
+      <div aria-hidden="true" className="flex justify-between px-12">
+        <span className="h-10 w-3 bg-[var(--px-edge)]" />
+        <span className="h-10 w-3 bg-[var(--px-edge)]" />
+      </div>
     </m.figure>
   );
 }
 
-function Annotation({ text, className, right }) {
+function Tag({ text, className }) {
   return (
-    <span aria-hidden="true" className={`absolute flex items-center gap-1.5 ${right ? "flex-row-reverse" : ""} ${className}`}>
-      <span className="rounded border border-line-strong bg-bg/85 px-1.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-widest text-text backdrop-blur">
-        {text}
-      </span>
-      <span className="h-px w-8 bg-accent-fill" />
-      <span className="h-1.5 w-1.5 rounded-full bg-accent-fill" />
+    <span aria-hidden="true" className={`absolute border-2 border-[var(--px-edge)] bg-accent-fill px-1.5 py-0.5 font-pixel text-[0.7rem] uppercase text-accent-ink ${className}`}>
+      {text}
     </span>
   );
 }

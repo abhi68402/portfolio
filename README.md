@@ -1,6 +1,6 @@
 # Harshit Abhinav · Mission Control Portfolio
 
-A personal portfolio styled as a ground-station console. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. The extras (Nova the astro-pup mascot, the Nova Run game and a hidden terminal) load after the page is ready and never block content.
+A personal portfolio set in a living pixel-art world: scrolling the page launches you from street level to the Moon, one section ("level") at a time. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. The extras (Nova the astro-pup mascot, the Nova Run game and a hidden terminal) load after the page is ready and never block content.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -76,7 +76,8 @@ src/
     hero/StarfieldCanvas   the animated stars + orbits behind the hero
     skills/                RadarChart (plain SVG) and GaugeBar
     projects/              cards, filters, details modal, status chip, signal trace
-    mascot/                sprite.js (Nova's pixel art, drawn in code), brain.js (her behaviour), Mascot.jsx
+    world/                 scenes.js (the 7 pixel scenes), WorldCanvas.jsx (draws + blends them), AltitudeMeter.jsx
+    mascot/                sprite.js (Nova's pixel art), brain.js (movement + moods), reactions.js (what she reacts to), Mascot.jsx
     game/                  runner.js (Nova Run engine), sound.js (bleeps), NovaRun.jsx (its window)
     terminal/              commands.js (what each command prints) + Terminal.jsx
 ```
@@ -87,16 +88,21 @@ src/
 - **`SectionFrame`** gives every section the same console header (`MOD 04 · MISSION LOG`) and fades it in once.
 - **Theme:** `index.html` sets `data-theme="dark"` or `"light"` on `<html>` before anything paints. `index.css` swaps every colour based on that. The toggle saves your choice in localStorage (wrapped in try/catch so private windows don't break).
 - **Nova's art** (`sprite.js`) is drawn pixel by pixel on a tiny 32×28 canvas, then scaled up without smoothing. No image files.
-- **Nova's brain** (`brain.js`) is a small state machine: idle → run → jump → sit → sleep. `Mascot.jsx` feeds it scrolls, clicks and balls every frame and draws her.
+- **The world** (`scenes.js`) is seven painter functions, one per level, drawn on a canvas a quarter of the screen size and scaled up crisp. `WorldCanvas.jsx` works out which level you're in and crossfades into the next.
+- **Pixel UI:** `.px-panel` (notched pixel border + hard shadow) and `.px-btn` (chunky press-down button) live in `src/index.css`.
+- **Nova's brain** (`brain.js`) gives her gravity and platforms: the top edges of panels marked `data-perch`, plus the floor. She rides them as you scroll and falls when they leave the screen. `reactions.js` connects page events (hovering projects, theme switch, resume download, typing in the form, the laser) to her.
 - **Nova Run** (`runner.js`) draws a 320×180 pixel world and scales it up. Each frame it moves Nova, spawns bugs, drones, orbs and power-ups, checks collisions and draws. React only shows the score bar and menus.
 - **The terminal** is a list of commands in `commands.js`. To add one, copy an entry and change its text. Entries with `hidden: true` don't appear in `help`.
 - **Speed:** the game, the terminal and the heavier animation code are split into separate files that only download when needed.
 
 ### Nova, the astro-pup
 
-- Scroll and she runs with you. Click her for a fact; triple-click for a backflip.
+- She hops onto panels, rides them as you scroll, and drops to the floor when they leave the screen. Hover a project and she sniffs it and comments.
+- Scroll on the floor and she runs with you. Click her for a fact; triple-click for a backflip.
 - Click any empty space and she fetches a ball.
-- She comments once on each section, sits after 20 s and naps after 45 s.
+- She comments once on each section, sits after 20 s and naps after 45 s (nightcap in dark mode).
+- Light mode: sunglasses. Resume download: she grabs the paper. Typing in the contact form: she sits and listens. Copying the email or sending the form: happy spin.
+- Wiggle the mouse fast over empty space for a laser pointer. Reach the space levels in dark mode and she may howl at the Moon. Beat your Nova Run record and she wears a party hat.
 - Visitors can send her home (footer button); the choice is remembered. With "reduce motion" on she just sits quietly.
 
 ### Nova Run controls
@@ -105,7 +111,7 @@ Space / ↑ / tap to jump (hold for higher, tap again mid-air to double jump), �
 
 ### Easter eggs
 
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `pet`, `fetch`, `nova`.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `pet`, `fetch`, `laser`, `nova`.
 
 ---
 

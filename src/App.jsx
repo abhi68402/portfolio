@@ -18,6 +18,9 @@ import Contact from "./components/sections/Contact";
 const NovaRun = lazy(() => import("./components/game/NovaRun"));
 const Mascot = lazy(() => import("./components/mascot/Mascot"));
 const Terminal = lazy(() => import("./components/terminal/Terminal"));
+const WorldCanvas = lazy(() => import("./components/world/WorldCanvas"));
+import AltitudeMeter from "./components/world/AltitudeMeter";
+import { useClickSparkles } from "./hooks/useClickSparkles";
 
 export default function App() {
   const [gameOpen, setGameOpen] = useState(false);
@@ -37,10 +40,12 @@ export default function App() {
   }, []);
   // "Say hi to Nova" (About) or terminal commands bring her back if she was sent home
   useEffect(() => {
-    const onMascot = () => toggleNova(true);
+    const onMascot = (e) => { if (["call", "pet", "fetch", "hello", "laser"].includes(e.detail?.type)) toggleNova(true); };
     window.addEventListener("mascot", onMascot);
     return () => window.removeEventListener("mascot", onMascot);
   }, [toggleNova]);
+
+  useClickSparkles();
 
   const openGame = useCallback(() => { setTerminalOpen(false); setGameOpen(true); }, []);
   const closeGame = useCallback(() => setGameOpen(false), []);
@@ -66,7 +71,9 @@ export default function App() {
     // when the visitor's OS asks for reduced motion.
     <MotionConfig reducedMotion="user">
       <LazyMotion features={loadFeatures} strict>
+      <Suspense fallback={null}>{novaReady && <WorldCanvas />}</Suspense>
       <Navbar onPlay={openGame} />
+      <AltitudeMeter />
       <main id="main">
         <Hero onPlay={openGame} />
         <About />

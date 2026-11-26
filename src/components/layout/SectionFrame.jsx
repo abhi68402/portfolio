@@ -1,20 +1,24 @@
 import { m } from "motion/react";
 import { sections } from "../../data/content";
 
-// The console "module" wrapper every section uses: a mono label
-// (MOD 04 · MISSION LOG), a ruler line with ticks, and the big heading.
-// It fades the section in the first time it scrolls into view.
+// Every section is a "level" in Nova's journey. This wrapper draws the level
+// plaque (LEVEL 03 · THE LAB + an XP bar), the heading, and fades content in.
+// data-perch marks surfaces Nova is allowed to stand on.
 export default function SectionFrame({ id, title, kicker, children, className = "" }) {
-  const meta = sections.find((s) => s.id === id);
+  const idx = sections.findIndex((s) => s.id === id);
+  const meta = sections[idx];
+  const progress = Math.round(((idx + 1) / sections.length) * 100);
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className={`relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 ${className}`}>
-      <header className="mb-10">
-        <div className="flex items-center gap-3">
-          <span className="hud-label text-accent">MOD {meta?.code}</span>
-          <span className="hud-label">· {meta?.codename}</span>
-          <Ruler />
+    <section id={id} aria-labelledby={`${id}-title`} className={`relative mx-auto w-full max-w-6xl px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-32 ${className}`}>
+      <header data-perch className="px-panel mb-14 inline-block max-w-3xl px-5 py-4 sm:px-6 sm:py-5">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="font-pixel text-sm text-accent">LEVEL {meta?.code}</span>
+          <span className="font-pixel text-sm uppercase text-muted">· {meta?.codename}</span>
+          <span aria-hidden="true" className="ml-1 flex h-2.5 w-24 border-2 border-line-strong bg-panel-2">
+            <span className="h-full bg-accent-fill" style={{ width: `${progress}%` }} />
+          </span>
         </div>
-        <h2 id={`${id}-title`} className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
+        <h2 id={`${id}-title`} className="mt-2 font-pixel text-4xl font-bold leading-none sm:text-6xl">
           {title}
         </h2>
         {kicker && <p className="mt-3 max-w-2xl text-muted">{kicker}</p>}
@@ -23,23 +27,10 @@ export default function SectionFrame({ id, title, kicker, children, className = 
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         {children}
       </m.div>
     </section>
-  );
-}
-
-// A thin line with tick marks, like the edge of an instrument dial.
-function Ruler() {
-  return (
-    <span aria-hidden="true" className="relative h-3 flex-1 overflow-hidden">
-      <span className="absolute inset-x-0 top-1/2 h-px bg-line" />
-      <span
-        className="absolute inset-0 opacity-70"
-        style={{ backgroundImage: "linear-gradient(90deg, var(--line-strong) 1px, transparent 1px)", backgroundSize: "12px 6px", backgroundRepeat: "repeat-x", backgroundPosition: "0 3px" }}
-      />
-    </span>
   );
 }

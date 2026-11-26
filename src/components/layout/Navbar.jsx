@@ -25,11 +25,11 @@ export default function Navbar({ onPlay }) {
       </a>
       <nav aria-label="Main" className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <a href="#hero" onClick={(e) => go(e, "hero")} className="flex items-center gap-2.5 font-mono text-sm font-semibold tracking-widest">
-          <span className="relative grid h-8 w-8 place-items-center rounded border border-line-strong text-[0.7rem]">
+          <span className="relative grid h-9 w-9 place-items-center border-2 border-[var(--px-edge)] bg-accent-fill font-pixel text-sm text-accent-ink">
             HA
             <span className="pulse-dot absolute -right-1 -top-1 h-2 w-2 rounded-full bg-accent-fill" />
           </span>
-          <span className="hidden sm:inline">{profile.name.toUpperCase()}</span>
+          <span className="hidden font-pixel text-base sm:inline">{profile.name.toUpperCase()}</span>
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -41,7 +41,7 @@ export default function Navbar({ onPlay }) {
                   href={`#${s.id}`}
                   onClick={(e) => go(e, s.id)}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative flex items-baseline gap-1.5 rounded px-2.5 py-1.5 text-sm transition ${isActive ? "text-text" : "text-muted hover:text-text"}`}
+                  className={`relative flex items-baseline gap-1.5 px-2.5 py-1.5 font-pixel text-base transition ${isActive ? "text-text" : "text-muted hover:text-text"}`}
                 >
                   <span className={`font-mono text-[0.65rem] ${isActive ? "text-accent" : ""}`}>{s.code}</span>
                   {s.label}
@@ -56,7 +56,7 @@ export default function Navbar({ onPlay }) {
           <button
             type="button"
             onClick={onPlay}
-            className="hidden rounded-md border border-line-strong px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-muted transition hover:border-accent hover:text-accent sm:inline-flex"
+            className="px-btn px-btn-primary hidden !px-3 !py-1.5 !text-sm sm:inline-flex"
           >
             ▶ Play
           </button>
@@ -64,7 +64,7 @@ export default function Navbar({ onPlay }) {
             type="button"
             onClick={toggle}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="grid h-9 w-9 place-items-center rounded-md border border-line-strong text-muted transition hover:border-accent hover:text-accent"
+            className="grid h-9 w-9 place-items-center border-2 border-line-strong text-muted transition hover:border-accent hover:text-accent"
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </button>
@@ -74,7 +74,7 @@ export default function Navbar({ onPlay }) {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Menu"
-            className="grid h-9 w-9 place-items-center rounded-md border border-line-strong text-muted lg:hidden"
+            className="grid h-9 w-9 place-items-center border-2 border-line-strong text-muted lg:hidden"
           >
             <span aria-hidden="true" className="font-mono text-sm">{open ? "✕" : "≡"}</span>
           </button>

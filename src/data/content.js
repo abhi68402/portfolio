@@ -108,6 +108,7 @@ export const projectFilters = [
 export const projects = [
   {
     id: "vyu",
+    nova: "Sniff sniff… smells like popcorn. Vyu shows you the view from any cinema seat in 3D.", // what Nova says when you hover this card
     title: "Vyu",
     subtitle: "See your cinema seat in 3D before you book it",
     category: ["web"],
@@ -127,6 +128,7 @@ export const projects = [
   },
   {
     id: "sigrun",
+    nova: "A whole operating system, written from scratch. I can't even open doors.", // what Nova says when you hover this card
     title: "Sigrun",
     subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
     category: ["systems"],
@@ -146,6 +148,7 @@ export const projects = [
   },
   {
     id: "nasa-rul",
+    nova: "This one predicts when jet engines will fail. I predict dinner.", // what Nova says when you hover this card
     title: "Jet Engine RUL Prediction",
     subtitle: "NASA C-MAPSS predictive maintenance",
     category: ["ai"],
@@ -165,6 +168,7 @@ export const projects = [
   },
   {
     id: "hyd-days",
+    nova: "A pixel Hyderabad with traffic and the metro! I'd chase every auto.", // what Nova says when you hover this card
     title: "8bitHyd",
     subtitle: "A living pixel-art city on real map data",
     category: ["web"],
@@ -183,6 +187,7 @@ export const projects = [
   },
   {
     id: "clearsight",
+    nova: "Makes blurry video calls sharp. He led the team for Intel Unnati.", // what Nova says when you hover this card
     title: "Project ClearSight",
     subtitle: "Real-time image sharpening via knowledge distillation",
     category: ["ai"],
@@ -201,6 +206,7 @@ export const projects = [
   },
   {
     id: "ecobin",
+    nova: "Smart bins that report when they're full. Finally, no overflow to sniff through.", // what Nova says when you hover this card
     title: "EcoBin Smart Dustbins",
     subtitle: "IoT fill-level monitoring for a whole campus",
     category: ["iot", "web"],
@@ -219,6 +225,7 @@ export const projects = [
   },
   {
     id: "fer",
+    nova: "It reads 7 emotions from a face. Mine is always 'happy'.", // what Nova says when you hover this card
     title: "Facial Emotion Recognition",
     subtitle: "CNN that reads 7 emotions from a face",
     category: ["ai"],
@@ -267,13 +274,14 @@ export const certifications = [
   { name: "Certification name", issuer: "Issuer", year: "2024", url: "" }, // TODO
 ];
 
-// Navbar + section order. Plain labels for recruiters; codenames give the console flavour.
+// Navbar + section order. Each section is a "level" in Nova's journey from
+// the street to the Moon; `altitude` feeds the meter on the right edge (metres).
 export const sections = [
-  { id: "hero", code: "01", label: "Home", codename: "Flight Director" },
-  { id: "about", code: "02", label: "About", codename: "Crew Dossier" },
-  { id: "skills", code: "03", label: "Skills", codename: "Systems Check" },
-  { id: "projects", code: "04", label: "Projects", codename: "Mission Log" },
-  { id: "experience", code: "05", label: "Experience", codename: "Flight Record" },
-  { id: "certifications", code: "06", label: "Certs", codename: "Clearances" },
-  { id: "contact", code: "07", label: "Contact", codename: "Open Channel" },
+  { id: "hero", code: "01", label: "Home", codename: "Street level", altitude: 0 },
+  { id: "about", code: "02", label: "About", codename: "Monsoon lane", altitude: 30 },
+  { id: "skills", code: "03", label: "Skills", codename: "The lab", altitude: 2000 },
+  { id: "projects", code: "04", label: "Projects", codename: "Launch pad", altitude: 10000 },
+  { id: "experience", code: "05", label: "Experience", codename: "Orbit", altitude: 400000 },
+  { id: "certifications", code: "06", label: "Certs", codename: "Deep space", altitude: 36000000 },
+  { id: "contact", code: "07", label: "Contact", codename: "Moon base", altitude: 384400000 },
 ];

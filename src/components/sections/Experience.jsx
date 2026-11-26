@@ -4,10 +4,10 @@ import SectionFrame from "../layout/SectionFrame";
 // MOD 05 · Flight Record. A vertical timeline drawn like a telemetry trace.
 export default function Experience() {
   return (
-    <SectionFrame id="experience" title="Experience">
+    <SectionFrame id="experience" title="Flight record">
       <ol className="relative ml-2 border-l border-dashed border-line-strong sm:ml-[8.5rem]">
         {experience.map((e, i) => (
-          <li key={`${e.org}-${i}`} className="relative pb-10 pl-7 last:pb-0 sm:pl-10">
+          <li key={`${e.org}-${i}`} className="relative pb-20 pl-7 last:pb-0 sm:pl-10">
             {/* node on the trace */}
             <span aria-hidden="true" className="absolute -left-[7px] top-1.5 grid h-3.5 w-3.5 place-items-center rounded-full border border-accent bg-bg">
               <span className={`h-1.5 w-1.5 rounded-full ${i === 0 ? "pulse-dot bg-accent-fill" : "bg-accent-fill/60"}`} />
@@ -16,9 +16,9 @@ export default function Experience() {
             <p className="hud-label tabular mb-1 text-[0.65rem] sm:absolute sm:-left-[8.5rem] sm:top-1 sm:w-28 sm:text-right">
               T · {e.period}
             </p>
-            <div className="rounded-lg border border-line bg-panel p-5">
+            <div data-perch className="px-panel p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="text-lg font-semibold">{e.role}</h3>
+                <h3 className="font-pixel text-xl">{e.role}</h3>
                 <span className="hud-label text-[0.62rem]">{e.location}</span>
               </div>
               <p className="text-accent">{e.org}</p>

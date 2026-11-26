@@ -14,16 +14,16 @@ export default function ProjectModal({ project: p, onClose }) {
       </div>
       <div className="p-5 sm:p-7">
         <StatusChip status={p.status} />
-        <h3 id="project-modal-title" className="mt-3 text-3xl font-semibold tracking-tight">{p.title}</h3>
+        <h3 id="project-modal-title" className="mt-3 font-pixel text-4xl leading-none">{p.title}</h3>
         <p className="mt-1 text-muted">{p.subtitle}</p>
         <Telemetry seed={p.id} className="my-5 h-8 w-full" />
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-md border border-line bg-panel-2 p-4">
+          <div className="border-2 border-line-strong bg-panel-2 p-4">
             <h4 className="hud-label text-[0.62rem]">Problem</h4>
             <p className="mt-2 text-sm leading-relaxed">{p.problem}</p>
           </div>
-          <div className="rounded-md border border-accent/40 bg-accent-soft p-4">
+          <div className="border-2 border-accent-fill bg-accent-soft p-4">
             <h4 className="hud-label text-[0.62rem] text-accent">Solution</h4>
             <p className="mt-2 text-sm leading-relaxed">{p.solution}</p>
           </div>

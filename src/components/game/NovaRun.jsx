@@ -44,6 +44,8 @@ export default function NovaRun({ onClose }) {
         setResult(r);
         setScreen("over");
         setBest((b) => {
+          // a new record earns Nova a party hat on the main page
+          if (r.score > b && r.score > 0) window.dispatchEvent(new CustomEvent("mascot", { detail: { type: "party" } }));
           const nb = Math.max(b, r.score);
           safeSet(BEST_KEY, String(nb));
           return nb;

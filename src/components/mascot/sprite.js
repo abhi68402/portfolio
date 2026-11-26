@@ -7,10 +7,12 @@
 //
 //  A pose is an object like { legs: 0.25, tail: 1, mouth: true, mode: "run" }.
 //  mode: "stand" | "run" | "jump" | "sit" | "sleep" | "crouch"
+//  head: "up" (howl) | "down" (sniff) | "tilt" (curious)       (optional)
+//  acc:  ["shades", "nightcap", "paper", "party"]               (optional)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const SPRITE_W = 32;
-export const SPRITE_H = 28;
+export const SPRITE_H = 36; // 28 for Nova + 8 headroom for hats
 
 const C = {
   fur: "#d9a066",     // tan, like the real street dog
@@ -53,6 +55,7 @@ function renderPose(p) {
   cv.width = SPRITE_W;
   cv.height = SPRITE_H;
   const g = cv.getContext("2d");
+  g.translate(0, SPRITE_H - 28); // leave headroom at the top for hats
   const px = (x, y, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), 1, 1); };
   const rect = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), w, h); };
   const line = (x0, y0, x1, y1, col, t = 2) => {
@@ -73,6 +76,8 @@ function renderPose(p) {
   let headDX = 0, headDY = bob + (crouch ? 3 : 0);
   if (sitting) headDY = -1;
   if (sleeping) { headDX = 1; headDY = 10; }
+  if (p.head === "down") { headDX += 1; headDY += 4; }
+  if (p.head === "up") headDY -= 1;
 
   // ── tail (behind body) ──
   const wag = p.tail ?? 0; // -1..1
@@ -121,13 +126,21 @@ function renderPose(p) {
   // ears: pointy street-dog ears
   if (!sleeping) {
     const earUp = p.ears === "down" ? 1 : 0;
-    line(hx + 1, hy + 2 + earUp, hx + 2, hy - 1 + earUp, C.shade, 2);
+    const tilt = p.head === "tilt" ? 2 : 0; // one ear flops when she's curious
+    line(hx + 1, hy + 2 + earUp, hx + 2 - tilt, hy - 1 + earUp + tilt, C.shade, 2);
     line(hx + 5, hy + 2 + earUp, hx + 6, hy - 1 + earUp, C.shade, 2);
   }
   rect(hx, hy + 1, 9, 7, C.fur);
-  rect(hx + 6, hy + 4, 4, 3, C.white);    // muzzle
-  rect(hx + 9, hy + 4, 1, 1, C.dark);     // nose
-  if (p.mouth) { rect(hx + 7, hy + 7, 3, 1, C.dark); rect(hx + 8, hy + 8, 2, 1, C.tongue); }
+  if (p.head === "up") {
+    // howling: snout points up, mouth an "O"
+    rect(hx + 6, hy + 1, 3, 4, C.white);
+    rect(hx + 8, hy, 1, 1, C.dark);
+    rect(hx + 6, hy + 4, 2, 2, C.dark);
+  } else {
+    rect(hx + 6, hy + 4, 4, 3, C.white);    // muzzle
+    rect(hx + 9, hy + 4, 1, 1, C.dark);     // nose
+    if (p.mouth) { rect(hx + 7, hy + 7, 3, 1, C.dark); rect(hx + 8, hy + 8, 2, 1, C.tongue); }
+  }
   // eye
   if (sleeping || p.blink) rect(hx + 5, hy + 3, 2, 1, C.dark);
   else { rect(hx + 5, hy + 2, 2, 2, C.dark); px(hx + 5, hy + 2, C.white); }
@@ -148,7 +161,33 @@ function renderPose(p) {
   }
   px(cx - 3, cy - 4, C.shine); px(cx - 4, cy - 3, C.shine); px(cx - 2, cy - 5, C.shine);
 
+  // accessories that sit inside the helmet
+  const acc = p.acc || [];
+  if (acc.includes("shades") && !sleeping) {
+    rect(hx + 3, hy + 2, 6, 2, C.dark);
+    rect(hx + 1, hy + 2, 2, 1, C.dark);
+    px(hx + 4, hy + 2, "#6b7a99");
+  }
+  if (acc.includes("paper")) {
+    rect(hx + 7, hy + 6, 5, 4, "#ffffff");
+    rect(hx + 8, hy + 7, 3, 1, "#9aa3b1");
+    rect(hx + 8, hy + 8, 2, 1, "#9aa3b1");
+  }
+
   addOutline(g);
+
+  // hats go on top of the helmet (drawn after the outline so they keep their own)
+  if (acc.includes("nightcap")) {
+    rect(cx - 5, cy - r - 2, 10, 3, "#3b5bdb");
+    rect(cx - 2, cy - r - 4, 7, 2, "#3b5bdb");
+    rect(cx + 4, cy - r - 4, 2, 4, "#3b5bdb");
+    rect(cx + 5, cy - r - 1, 3, 3, "#ffffff");
+    rect(cx - 5, cy - r, 10, 1, "#ffffff");
+  }
+  if (acc.includes("party")) {
+    for (let i = 0; i < 6; i++) rect(cx - 3 + i / 2, cy - r - 1 - i, 6 - i, 1, i % 2 ? "#e8697a" : C.rim);
+    rect(cx - 0.5, cy - r - 8, 2, 2, "#9fd3ff");
+  }
   return cv;
 }
 

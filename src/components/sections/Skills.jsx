@@ -13,9 +13,9 @@ export default function Skills() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <SectionFrame id="skills" title="Skills" kicker="Systems check across six subsystems. Hover or focus a group to find it on the radar.">
-      <div ref={ref} className="grid gap-6 lg:grid-cols-[360px_1fr]">
-        <div className="relative self-start rounded-lg border border-line bg-panel p-5 lg:sticky lg:top-24">
+    <SectionFrame id="skills" title="Skill tree" kicker="Six skill trees, levelled up through real projects. Hover or focus one to light it up on the radar.">
+      <div ref={ref} className="grid gap-10 lg:grid-cols-[360px_1fr]">
+        <div data-perch className="px-panel relative self-start p-5 lg:sticky lg:top-28">
           <div className="flex items-center justify-between">
             <span className="hud-label text-[0.62rem]">Subsystem radar</span>
             <span className="hud-label flex items-center gap-1.5 text-[0.62rem] text-accent">
@@ -26,7 +26,7 @@ export default function Skills() {
           <p className="hud-label text-center text-[0.6rem]">Rings: 25 · 50 · 75 · 100</p>
         </div>
 
-        <ul className="grid gap-4 sm:grid-cols-2">
+        <ul className="grid gap-x-6 gap-y-20 sm:grid-cols-2">
           {skillGroups.map((g, idx) => (
             <li
               key={g.id}
@@ -35,10 +35,11 @@ export default function Skills() {
               onMouseLeave={() => setHighlight(null)}
               onFocus={() => setHighlight(g.id)}
               onBlur={() => setHighlight(null)}
-              className={`rounded-lg border bg-panel p-4 transition ${highlight === g.id ? "border-accent" : "border-line"}`}
+              data-perch
+              className={`px-panel p-4 transition ${highlight === g.id ? "px-panel-accent" : ""}`}
             >
               <div className="mb-4 flex items-baseline justify-between">
-                <h3 className="font-semibold">
+                <h3 className="font-pixel text-lg">
                   <span className="mr-2 font-mono text-xs text-muted">S{String(idx + 1).padStart(2, "0")}</span>
                   {g.name}
                 </h3>

@@ -15,16 +15,18 @@ const ProjectCard = forwardRef(function ProjectCard({ project: p, index, onOpen 
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.3 }}
-      className={`group relative flex flex-col rounded-lg border bg-panel p-5 transition-colors hover:border-line-strong ${p.featured ? "border-line-strong" : "border-line"}`}
+      data-perch
+      data-project={p.id}
+      className={`px-panel group relative flex flex-col p-5 transition-transform hover:-translate-y-1 ${p.featured ? "px-panel-accent" : ""}`}
     >
-      {p.featured && <span aria-hidden="true" className="absolute inset-x-5 top-0 h-0.5 bg-accent-fill" />}
+      {p.featured && <span aria-hidden="true" className="absolute -top-3.5 right-4 bg-accent-fill px-2 py-0.5 font-pixel text-xs uppercase text-accent-ink">★ Featured</span>}
       <div className="flex items-center justify-between gap-3">
         <span className="hud-label text-[0.62rem]">MSN-{String(index + 1).padStart(2, "0")} · {p.year}</span>
         <StatusChip status={p.status} />
       </div>
       <Telemetry seed={p.id} className="mt-3 h-6 w-full opacity-60 transition-opacity group-hover:opacity-100" />
 
-      <h3 className="mt-3 text-xl font-semibold tracking-tight">{p.title}</h3>
+      <h3 className="mt-3 font-pixel text-2xl leading-none">{p.title}</h3>
       <p className="mt-1 text-sm text-muted">{p.subtitle}</p>
 
       <dl className="mt-4 space-y-2 text-sm">
@@ -67,7 +69,7 @@ export function IconLink({ href, label, children, accent }) {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className={`rounded border px-2 py-1 font-mono text-[0.68rem] uppercase tracking-widest transition ${accent ? "border-accent text-accent hover:bg-accent-soft" : "border-line-strong text-muted hover:border-accent hover:text-accent"}`}
+      className={`border-2 px-2 py-1 font-pixel text-xs uppercase transition ${accent ? "border-accent-fill bg-accent-fill text-accent-ink hover:brightness-110" : "border-line-strong text-muted hover:border-accent hover:text-accent"}`}
     >
       {children}
     </a>

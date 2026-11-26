@@ -79,6 +79,7 @@ export const commands = {
   "rm": { hidden: true, run: () => ["rm: nope. This portfolio is load-bearing."] },
   pet: { hidden: true, run: () => ({ lines: ["You pet Nova. Tail velocity: critical. 🐾", { text: "(close the terminal to see her react)", tone: "muted" }], action: "mascot", mascot: "pet" }) },
   fetch: { hidden: true, run: () => ({ lines: ["*throws a ball over the console*", { text: "(close the terminal to watch Nova fetch)", tone: "muted" }], action: "mascot", mascot: "fetch" }) },
+  laser: { hidden: true, run: () => ({ lines: ["*clicks laser pointer*", { text: "(close the terminal and watch Nova lose her mind)", tone: "muted" }], action: "mascot", mascot: "laser" }) },
   nova: {
     hidden: true,
     run: () => ({
@@ -87,7 +88,7 @@ export const commands = {
         "  species   street dog (certified good girl)",
         "  helmet    yes, always",
         "  skills    fetch 100%, barking 100%, debugging 0%",
-        { text: "Try: pet, fetch", tone: "muted" },
+        { text: "Try: pet, fetch, laser", tone: "muted" },
       ],
       action: "mascot",
       mascot: "hello",

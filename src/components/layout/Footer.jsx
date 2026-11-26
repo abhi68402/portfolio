@@ -3,16 +3,16 @@ import { profile } from "../../data/content";
 // Bottom strip. The tiny ">_" button is the hidden way into the terminal.
 export default function Footer({ onTerminal, novaOn, onToggleNova }) {
   return (
-    <footer className="border-t border-line">
+    <footer className="border-t-4 border-[var(--px-edge)] bg-bg">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 sm:flex-row sm:items-center sm:px-6">
         <p className="hud-label">
-          © {new Date().getFullYear()} {profile.name} · Built with React, Tailwind & Canvas
+          © {new Date().getFullYear()} {profile.name} · Built with React, Tailwind & a lot of pixels
         </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <button
           type="button"
           onClick={() => onToggleNova(!novaOn)}
-          className="hud-label rounded border border-line-strong px-2 py-1 transition hover:border-accent hover:text-accent"
+          className="border-2 border-line-strong px-2 py-1 font-pixel text-sm uppercase text-muted transition hover:border-accent hover:text-accent"
         >
           {novaOn ? "Send Nova home" : "🐾 Call Nova back"}
         </button>
