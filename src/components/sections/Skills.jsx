@@ -105,12 +105,11 @@ export default function Skills() {
           {/* Strengths: grows so this column ends level with the skills list */}
           <div className="card flex flex-1 flex-col p-5 sm:p-6">
             <p className="hud-label">Strengths</p>
-            <p className="mt-1 font-hand text-xl text-red">what projects taught me</p>
-            <ul className="mt-4 space-y-4">
+            <ul className="mt-3 flex flex-1 flex-col justify-center gap-3">
               {strengths.map((st) => (
                 <li key={st.title} className="border-l-2 border-hl pl-3">
-                  <span className="block font-serif text-lg font-semibold leading-snug">{st.title}</span>
-                  <span className="mt-0.5 block text-sm text-muted">{st.text}</span>
+                  <span className="block font-semibold leading-snug">{st.title}</span>
+                  <span className="block text-sm text-muted">{st.text}</span>
                 </li>
               ))}
             </ul>

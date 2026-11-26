@@ -75,11 +75,9 @@ export const skillGroups = [
 // "Strengths" card in the Skills section: how I work on projects and what
 // they taught me. Personal skills, in my own words.
 export const strengths = [
-  { title: "Leading small teams", text: "On ClearSight I split the work across three people, kept us in sync and merged it into one system." },
-  { title: "Learning fast, from scratch", text: "Sigrun meant teaching myself RISC-V, OpenSBI and QEMU with no tutorial to follow." },
-  { title: "Owning it end to end", text: "I'm comfortable going from wiring a sensor to shipping the dashboard people actually use." },
-  { title: "Patient, methodical debugging", text: "Kernel bugs that freeze the whole machine taught me to slow down, isolate, and test one idea at a time." },
-  { title: "Thinking about the user", text: "Vyu started from a real frustration with seat maps, and accessibility was a goal from day one." },
+  { title: "Leading small teams", text: "Ran a three-person team on ClearSight." },
+  { title: "Learning fast", text: "Taught myself RISC-V to build Sigrun." },
+  { title: "Owning it end to end", text: "From the sensor wiring to the dashboard." },
 ];
 
 export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
