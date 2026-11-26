@@ -10,7 +10,7 @@ export default function SectionFrame({ id, title, kicker, doodle, children, clas
   const meta = sections.find((s) => s.id === id);
   return (
     <section id={id} aria-labelledby={`${id}-title`} className={`relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 ${className}`}>
-      {doodle && <Sketch kind={doodle} className="pointer-events-none absolute right-4 top-12 hidden h-28 w-28 text-blue/60 lg:block" />}
+      {doodle && <Sketch kind={doodle} className="drift pointer-events-none absolute right-4 top-12 hidden h-28 w-28 text-blue/60 lg:block" />}
       <header className="mb-10 max-w-3xl">
         <p className="hud-label">
           Log entry {meta?.code} <span className="text-red">·</span> {meta?.codename}

@@ -20,6 +20,7 @@ export default function Robot({ onHide }) {
   const [bubble, setBubble] = useState(null);
   const [hover, setHover] = useState(false);
   const [bounce, setBounce] = useState(0);
+  const [lean, setLean] = useState(0); // tilts with scroll speed
   const tipIndex = useRef(0);
   const spoken = useRef(new Set());
   const bubbleTimer = useRef(0);
@@ -68,6 +69,26 @@ export default function Robot({ onHide }) {
     };
   }, []);
 
+  // lean into the scroll: Bolt tilts with scroll speed, and says something once if you speed-scroll
+  useEffect(() => {
+    if (reduce) return;
+    let lastY = window.scrollY, lastT = performance.now(), settle = 0, saidFast = false, raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const now = performance.now(), y = window.scrollY;
+        const v = (y - lastY) / Math.max(16, now - lastT); // px per ms
+        lastY = y; lastT = now;
+        setLean(Math.max(-14, Math.min(14, v * 9)));
+        if (!saidFast && Math.abs(v) > 4) { saidFast = true; say("Whoa, speedrunner! Hold on to your antenna. 🌀", 3500); setMood("wow"); setTimeout(() => setMood("idle"), 1200); }
+        clearTimeout(settle);
+        settle = setTimeout(() => setLean(0), 140);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); clearTimeout(settle); };
+  }, [reduce]);
+
   // one line per section, once per visit
   useEffect(() => {
     const line = robot.lines[active];
@@ -110,7 +131,8 @@ export default function Robot({ onHide }) {
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           aria-label={`${robot.name} the robot. Press for a tip`}
-          className="block"
+          className="block transition-transform duration-300 ease-out"
+          style={{ transform: `rotate(${lean}deg)`, transformOrigin: "50% 100%" }}
         >
           <svg key={bounce} viewBox="0 0 80 92" className={`h-[76px] w-[66px] sm:h-[92px] sm:w-[80px] ${bounce && !reduce ? "animate-[robot-hop_0.45s_ease-out]" : ""}`}>
             {/* antenna */}

@@ -47,12 +47,12 @@ const svg = `
     <text x="64" y="560">AI · FULL STACK · SYSTEMS · IOT</text>
   </g>
   <circle cx="72" cy="140" r="7" fill="#2448B8"/>
-  <text x="92" y="147" font-family="Menlo, monospace" font-size="20" fill="#2448B8" letter-spacing="3">OPEN TO ROLES · 2026</text>
+  <text x="92" y="147" font-family="Menlo, monospace" font-size="20" fill="#2448B8" letter-spacing="3">AI / ML · OPEN TO ROLES · 2026</text>
   <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" fill="#1B2232">
     <text x="60" y="290" font-size="96" letter-spacing="-3">Harshit</text>
     <text x="60" y="390" font-size="96" letter-spacing="-3">Abhinav</text>
   </g>
-  <text x="64" y="460" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" fill="#1B2232">I build models, systems &amp; the web.</text>
+  <text x="64" y="460" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" fill="#1B2232">AI / ML engineer: models that ship.</text>
   <path d="M60 520H640" stroke="#2448B8" stroke-width="2"/>
 </svg>`;
 

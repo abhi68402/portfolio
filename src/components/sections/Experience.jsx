@@ -32,7 +32,7 @@ export default function Experience() {
           <li key={`${e.org}-${i}`} className="relative pb-12 pl-8 last:pb-0 sm:pl-10">
             <span aria-hidden="true" className="absolute -left-[7px] top-2 h-3.5 w-3.5 rounded-full border-2 border-ink bg-hl" />
             <p className="hud-label tabular mb-1 sm:absolute sm:-left-[9rem] sm:top-1.5 sm:w-28 sm:text-right">{e.period}</p>
-            <div className={`card lift p-5 ${i % 2 ? "tilt-r" : "tilt-l"}`}>
+            <div className={`card lift rise p-5 ${i % 2 ? "tilt-r" : "tilt-l"}`}>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="font-serif text-xl font-semibold">{e.role}</h3>
                 <span className="hud-label">{e.location}</span>

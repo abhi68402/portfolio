@@ -94,9 +94,9 @@ function RoleLine() {
 function Polaroid() {
   return (
     <div className="relative mx-auto w-full max-w-[380px]">
-      <Sketch kind="planet" className="absolute -right-2 -top-10 h-24 w-24 text-blue/70" />
-      <Sketch kind="star" className="absolute -left-8 top-10 h-8 w-8 text-red/70" />
-      <Sketch kind="orbit" className="absolute -bottom-10 -left-12 hidden h-24 w-32 text-blue/50 sm:block" />
+      <Sketch kind="planet" className="drift-rev absolute -right-2 -top-10 h-24 w-24 text-blue/70" />
+      <Sketch kind="star" className="drift absolute -left-8 top-10 h-8 w-8 text-red/70" />
+      <Sketch kind="orbit" className="drift absolute -bottom-10 -left-12 hidden h-24 w-32 text-blue/50 sm:block" />
       <m.figure
         initial={{ opacity: 0, y: 24, rotate: 4 }}
         animate={{ opacity: 1, y: 0, rotate: 2 }}
@@ -107,7 +107,7 @@ function Polaroid() {
         <div className="aspect-[4/5] overflow-hidden rounded-md">
           <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 380px, 85vw" />
         </div>
-        <figcaption className="mt-3 text-center font-hand text-2xl text-ink">campus · probably thinking about kernels</figcaption>
+        <figcaption className="mt-3 text-center font-hand text-2xl text-ink">campus · probably tuning a learning rate</figcaption>
       </m.figure>
       <MarginNote arrow="left" className="absolute -bottom-12 right-2 text-2xl">that's me!</MarginNote>
     </div>

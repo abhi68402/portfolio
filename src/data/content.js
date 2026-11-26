@@ -10,8 +10,8 @@ export const profile = {
   firstName: "Harshit",
   lastName: "Abhinav",
   // The hero cycles through these, so the page works for any role you apply to.
-  roles: ["Software Engineer", "AI / ML Engineer", "Full Stack Developer", "Systems Tinkerer", "IoT Builder"],
-  tagline: "I build things that think, ship and survive real use: ML models, operating systems, and web apps people actually open.",
+  roles: ["AI / ML Engineer", "Deep Learning Builder", "Computer Vision Engineer", "Full Stack Developer", "Systems Tinkerer"],
+  tagline: "I train models that see, predict and adapt, then ship them inside real software: a BiLSTM that forecasts jet-engine failure, a vision model distilled to run at 60 FPS, and the apps around them.",
   location: "India", // TODO: e.g. "Visakhapatnam, IN"
   timezone: "Asia/Kolkata",
   education: {
@@ -32,10 +32,10 @@ export const profile = {
 
 export const about = {
   lines: [
-    "I'm a CSE student at GITAM who likes the whole stack, from a RISC-V kernel up to the pixels on screen.",
-    "I've predicted jet-engine failures with LSTMs, wired ESP32 sensors into smart bins, and built a 3D cinema seat viewer that people actually use.",
-    "I care about software that is fast, accessible and honest about what it does.",
-    "Right now I'm looking for a team where I can ship, learn fast and own real problems.",
+    "I'm a CSE student at GITAM who builds AI that leaves the notebook and runs in the real world.",
+    "I've predicted jet-engine failures with BiLSTMs, distilled a SwinIR model into a real-time sharpener, and taught a CNN to read emotions. Around the models I build the rest: web apps, IoT sensors, even a RISC-V kernel.",
+    "I care about models that are fast enough to use, measured honestly, and wrapped in software people actually open.",
+    "Right now I'm looking for an AI / ML or software team where I can ship, learn fast and own real problems.",
   ],
   hobbies: [
     { icon: "🐕", label: "Befriending every street dog", note: "rain or shine" },
@@ -47,14 +47,18 @@ export const about = {
 
 // level: 0–100. Be honest; recruiters respect calibrated numbers.
 export const skillGroups = [
+  { id: "ai", name: "AI / ML", core: true, level: 84, skills: [
+    { name: "TensorFlow / Keras", level: 84 }, { name: "PyTorch", level: 70 }, { name: "Pandas / NumPy", level: 86 },
+    { name: "scikit-learn", level: 76 }, { name: "OpenCV", level: 72 },
+  ] },
+  { id: "dl", name: "Deep learning", core: true, level: 78, skills: [
+    { name: "CNNs", level: 80 }, { name: "LSTM / BiLSTM", level: 78 }, { name: "Knowledge distillation", level: 70 }, { name: "Computer vision", level: 74 },
+  ] },
   { id: "lang", name: "Languages", level: 85, skills: [
     { name: "Python", level: 90 }, { name: "Java", level: 78 }, { name: "JavaScript", level: 85 }, { name: "SQL", level: 75 }, { name: "C", level: 70 },
   ] },
   { id: "web", name: "Web", level: 82, skills: [
     { name: "HTML / CSS", level: 88 }, { name: "React", level: 82 }, { name: "Tailwind CSS", level: 80 }, { name: "three.js", level: 62 },
-  ] },
-  { id: "ai", name: "AI / ML", level: 80, skills: [
-    { name: "TensorFlow / Keras", level: 82 }, { name: "PyTorch", level: 65 }, { name: "Pandas / NumPy", level: 85 }, { name: "Computer Vision", level: 72 },
   ] },
   { id: "db", name: "Databases", level: 72, skills: [
     { name: "MongoDB", level: 70 }, { name: "SQL (MySQL)", level: 76 },
@@ -67,6 +71,9 @@ export const skillGroups = [
   ] },
 ];
 
+// Shown in the Skills section as "currently learning". TODO: edit to match what you're actually exploring.
+export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
+
 // Bolt, the tiny robot co-pilot in the corner. Change what it says here.
 export const robot = {
   name: "Bolt",
@@ -74,7 +81,7 @@ export const robot = {
   // said once per visit when each section comes into view
   lines: {
     about: "That's my engineer. He shares his umbrella with street dogs.",
-    skills: "Hover a constellation to light up a skill group.",
+    skills: "That's my neural net. Hit Train and watch it learn!",
     projects: "Sigrun is a whole operating system. I run on it. (Not really.)",
     experience: "Flight record: where he's been on missions so far.",
     certifications: "Badges earned. Shiny.",
@@ -83,6 +90,7 @@ export const robot = {
   tips: [
     "His resume is one click away, top of the page.",
     "Psst: press ` (backtick) for a secret terminal.",
+    "Press Train in the Skills section. It always converges.",
     "Try the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
     "Vyu is live. Go pick a cinema seat in 3D!",
     "Pet the dog in the About section. Trust me.",
@@ -91,14 +99,14 @@ export const robot = {
 };
 
 // The "now building" tile in the hero. Update it whenever you like.
-export const nowBuilding = { title: "Sigrun", what: "consent faults for a RISC-V kernel", progress: 62 };
+export const nowBuilding = { title: "Sigrun", what: "a RISC-V kernel that makes AI agents ask before they act", progress: 62 };
 
 // The little quiz tile: one question, a few answers, one correct.
 export const quiz = {
-  question: "Guess my favourite stack to build with",
-  options: ["React + Tailwind", "Python + Keras", "C on bare metal", "All of the above"],
-  answer: 3,
-  reveal: "All of the above! Web, ML and bare-metal C, depending on the mission.",
+  question: "What does my BiLSTM model predict?",
+  options: ["Stock prices", "Jet-engine failure", "Cricket scores", "Your next tab"],
+  answer: 1,
+  reveal: "It reads NASA turbofan sensor data and predicts how many cycles each engine has left.",
 };
 
 // Short skill names (used in the terminal).
@@ -286,7 +294,7 @@ export const certifications = [
 export const sections = [
   { id: "hero", code: "01", label: "Home", codename: "Mission brief" },
   { id: "about", code: "02", label: "About", codename: "Crew profile" },
-  { id: "skills", code: "03", label: "Skills", codename: "Star chart" },
+  { id: "skills", code: "03", label: "Skills", codename: "Neural net" },
   { id: "projects", code: "04", label: "Projects", codename: "Missions flown" },
   { id: "experience", code: "05", label: "Experience", codename: "Flight record" },
   { id: "certifications", code: "06", label: "Certs", codename: "Badges" },

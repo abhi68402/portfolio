@@ -1,16 +1,17 @@
 import { useState } from "react";
+import { m, useScroll, useSpring } from "motion/react";
 import { sections, profile } from "../../data/content";
 import { useActiveSection } from "../../hooks/useActiveSection";
 import { scrollToSection } from "../../hooks/scrollTo";
-import { useTheme } from "../../hooks/useTheme";
 
 const ids = sections.map((s) => s.id);
 
 // Sticky top bar. Highlights the section you're reading; collapses into a menu on phones.
 export default function Navbar() {
   const active = useActiveSection(ids);
-  const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, restDelta: 0.001 });
 
   const go = (e, id) => {
     e.preventDefault();
@@ -55,14 +56,6 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={toggle}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="grid h-9 w-9 place-items-center rounded-lg border-2 border-line-strong text-muted transition hover:border-ink hover:text-ink"
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-          </button>
-          <button
-            type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -73,6 +66,10 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
+      {/* reading progress along the bottom edge of the bar */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 -bottom-[3px] h-[3px]">
+        <m.div className="h-full origin-left bg-blue" style={{ scaleX: progress }} />
+      </div>
 
       {open && (
         <ul id="mobile-menu" className="border-t border-line bg-bg px-4 py-2 lg:hidden">
@@ -93,21 +90,5 @@ export default function Navbar() {
         </ul>
       )}
     </header>
-  );
-}
-
-function SunIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-    </svg>
-  );
-}
-function MoonIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-    </svg>
   );
 }

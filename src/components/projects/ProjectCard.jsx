@@ -15,7 +15,7 @@ const ProjectCard = forwardRef(function ProjectCard({ project: p, index, onOpen 
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.3 }}
-      className={`card lift ${tilt} ${p.featured ? "tape" : ""} relative flex flex-col p-5 pt-6`}
+      className={`card lift rise ${tilt} ${p.featured ? "tape" : ""} relative flex flex-col p-5 pt-6`}
     >
       <div className="flex items-center justify-between gap-3">
         <span className="hud-label">#{String(index + 1).padStart(2, "0")} · {p.year}</span>

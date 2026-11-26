@@ -7,12 +7,9 @@
 @font-face { font-family: "Caveat"; src: url("/fonts/caveat.woff2") format("woff2"); font-weight: 400 700; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* ── Theme: the space notebook ───────────────────────────────────────────────
-   Light = a dot-grid engineer's notebook on warm paper.
-   Dark  = the same notebook at night (navy paper, chalky ink).
-   <html data-theme="light|dark"> picks the set. Everything reads on solid
-   paper/card colours; the doodles are decoration in the margins.           */
-:root,
-[data-theme="light"] {
+   A dot-grid engineer's notebook on warm paper (light only, on purpose).
+   Everything reads on solid paper/card colours; doodles live in the margins. */
+:root {
   --paper: #f8f5ee;
   --dot: rgb(36 72 184 / 0.17);
   --card: #fffdf8;
@@ -29,25 +26,6 @@
   --shadow: 20 30 60;
   --margin-line: rgb(212 71 63 / 0.28);
   color-scheme: light;
-}
-
-[data-theme="dark"] {
-  --paper: #121725;
-  --dot: rgb(255 255 255 / 0.09);
-  --card: #1a2032;
-  --card-2: #222a3f;
-  --line: #2b3450;
-  --line-strong: #3b4668;
-  --ink: #e9edf6;
-  --muted: #a6b0c4;
-  --blue: #93b3ff;
-  --red: #ff9a8b;
-  --hl: rgb(255 214 80 / 0.3);
-  --tape: rgb(255 214 102 / 0.4);
-  --tape-2: rgb(143 176 255 / 0.35);
-  --shadow: 0 0 0;
-  --margin-line: rgb(255 138 122 / 0.18);
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -134,7 +112,6 @@ body {
   .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
   .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
   .btn-primary { background: var(--blue); color: #fff; }
-  [data-theme="dark"] .btn-primary { color: #0e1424; }
   .btn-ghost { background: var(--card); color: var(--ink); }
 }
 
@@ -185,9 +162,21 @@ body {
   html { scroll-behavior: auto; }
   .hl { background-size: 100% 100%; }
   .sketch path, .sketch circle, .sketch ellipse, .sketch line, .sketch polyline { stroke-dashoffset: 0; }
+  .drift, .drift-rev, .rise { animation: none !important; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
 /* Wave hello */
 @keyframes wave { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-18deg); } 40% { transform: rotate(14deg); } 60% { transform: rotate(-10deg); } 80% { transform: rotate(8deg); } }
 @keyframes robot-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 70% { transform: translateY(2px); } }
+
+/* ── Scroll effects (CSS scroll-driven animations; browsers without support
+   simply show everything still) ────────────────────────────────────────── */
+@keyframes drift { from { translate: 0 60px; rotate: -12deg; } to { translate: 0 -60px; rotate: 12deg; } }
+@keyframes drift-rev { from { translate: 0 -30px; rotate: 10deg; } to { translate: 0 40px; rotate: -10deg; } }
+@keyframes rise { from { opacity: 0; translate: 0 40px; scale: 0.96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@supports (animation-timeline: view()) {
+  .drift { animation: drift linear both; animation-timeline: view(); }
+  .drift-rev { animation: drift-rev linear both; animation-timeline: view(); }
+  .rise { animation: rise ease-out both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+}

@@ -40,7 +40,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | --- | --- |
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
-| Skill groups and levels (0–100); these also draw the star chart | `skillGroups` |
+| Skill groups and levels (0–100); these also drive the neural net | `skillGroups` |
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | The pop-quiz tile (question, options, answer) | `quiz` |
@@ -61,7 +61,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 ## 3. How the code is organised
 
 ```
-index.html                 title, SEO + LinkedIn preview tags, theme picked before paint
+index.html                 title, SEO + LinkedIn preview tags
 public/                    files served as-is: photos, resume, og-image, favicon, robots
 scripts/optimize-images.mjs  crops + compresses photos, builds og-image.jpg
 src/
@@ -69,12 +69,12 @@ src/
   App.jsx                  page order; loads Bolt + terminal; backtick shortcut
   index.css                paper/ink colour tokens (light + night), cards, buttons, highlighter, doodle animation
   data/content.js          ALL your text and data
-  hooks/                   theme, active section, safe localStorage, scrolling
+  hooks/                   active section, safe localStorage, scrolling
   components/
     layout/                Navbar, Footer, SectionFrame (the "Log entry 0X" header + highlighter title)
     notebook/              Sketch (hand-drawn space doodles), Highlight, MarginNote, useInViewOnce
     sections/              Hero (+ HeroTiles), About, Skills, Projects, Experience, Certifications, Contact
-    skills/                StarChart (constellations) + GaugeBar
+    skills/                NeuralNet (animated network), TrainConsole (loss curve), GaugeBar
     projects/              index-card ProjectCard, filters, details modal
     robot/Robot.jsx        Bolt, the tiny robot co-pilot
     fun/                   Toasts, Konami Rocket, useVisitorReactions
@@ -85,7 +85,7 @@ src/
 **In plain words:**
 
 - **`content.js` is the database.** Components just read it and draw it.
-- **Theme:** `index.html` picks light or dark before anything paints (your saved choice, otherwise light by day and dark at night). `index.css` swaps every colour from that.
+- **Theme:** one light notebook theme. Every colour is a token at the top of `index.css`.
 - **Doodles** (`notebook/Sketch.jsx`) are small SVG drawings. Each path has `pathLength="1"`, so CSS can animate the stroke from hidden to drawn when it scrolls into view.
 - **The highlighter** (`Highlight.jsx`) is a yellow background that grows from 0% to 100% width the first time the words are seen.
 - **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It never moves around or covers content; the × or the footer hides it.
@@ -94,14 +94,14 @@ src/
 
 - Hero tiles: **Now building** progress, a one-question **pop quiz**, and a **wave** button that remembers how many times you've waved.
 - **Pet the dog** in About (hearts + a pet counter).
-- **Star chart:** hover a constellation (or a skill group) to light it up.
+- **Neural net:** signals flow through a small network of your skill groups. Pick a group to see what fires; press **Train** to watch the loss curve drop over 12 epochs.
 - **Flight record:** a little rocket climbs the dashed flight path as you scroll.
 - **Contact:** sending folds your note into a paper plane.
 - **Badges** spin when you hover them.
 
 ### Easter eggs
 
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `bolt`, `launch`.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `hello`, `bolt`, `launch`.
 - The Konami code (↑↑↓↓←→←→BA) launches a doodle rocket.
 - Switch tabs and the title waves at you; returning visitors get a welcome back.
 
