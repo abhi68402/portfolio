@@ -12,7 +12,8 @@ const WIDTHS = [480, 800, 1200];
 
 // crop: how to cut each photo down to 4:5. "extract" picks an exact box (in original pixels).
 const photos = {
-  hero: { extract: { left: 0, top: 330, width: 1126, height: 1407 } },
+  // 1010 px wide box: puts his face and shoulders at x~505, the exact middle of the crop.
+  hero: { extract: { left: 0, top: 330, width: 1010, height: 1262 } },
   fun: { position: "center" },
 };
 

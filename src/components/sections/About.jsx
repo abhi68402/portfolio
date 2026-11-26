@@ -11,7 +11,7 @@ import ProjectStack from "../projects/ProjectStack";
 export default function About() {
   return (
     <SectionFrame id="about" title="Crew profile" doodle="moon">
-      <div className="grid items-stretch gap-10 lg:grid-cols-[1.35fr_1fr]">
+      <div className="grid items-stretch gap-8 lg:grid-cols-[1.35fr_1fr]">
         <div className="flex flex-col gap-8">
         <div className="card p-6 sm:p-8">
           <p className="font-serif text-2xl font-medium leading-snug sm:text-[1.75rem]">{about.lines[0]}</p>

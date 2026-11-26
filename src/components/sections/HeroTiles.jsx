@@ -8,7 +8,7 @@ import Sketch from "../notebook/Sketch";
 // and a wave button. Light fun; none of them hide any information.
 export default function HeroTiles() {
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 md:grid-cols-3">
+    <div className="mx-auto grid max-w-6xl items-stretch gap-6 px-4 pb-8 sm:px-6 md:grid-cols-3">
       <h2 className="sr-only">At a glance</h2>
       <NowBuilding />
       <ByTheNumbers />
@@ -19,7 +19,7 @@ export default function HeroTiles() {
 
 function NowBuilding() {
   return (
-    <article className="card tilt-l lift p-5">
+    <article className="card tilt-l lift h-full p-5">
       <p className="hud-label flex items-center gap-2"><span className="pulse-dot h-2 w-2 rounded-full bg-red" /> Now building</p>
       <h3 className="mt-2 font-serif text-2xl font-semibold">{nowBuilding.title}</h3>
       <p className="text-sm text-muted">{nowBuilding.what}</p>
@@ -37,7 +37,7 @@ function ByTheNumbers() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <article ref={ref} className="card tape-blue tape lift relative p-5">
+    <article ref={ref} className="card tape-blue tape lift relative h-full p-5">
       <p className="hud-label">By the numbers</p>
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-4">
         {stats.map((s) => (
@@ -83,7 +83,7 @@ function Wave() {
   };
   const reply = count === 0 ? "Go on, say hi." : count < 3 ? "He waved back! (in spirit)" : count < 10 ? `That's ${count} waves. You're friends now.` : `${count} waves?! Just email him already 😄`;
   return (
-    <article className="card tilt-r lift relative overflow-hidden p-5">
+    <article className="card tilt-r lift relative h-full overflow-hidden p-5">
       <Sketch kind="comet" className="absolute -right-3 -top-3 h-20 w-20 text-blue/40" />
       <p className="hud-label">Wave at Harshit</p>
       <button

@@ -11,7 +11,7 @@ import MarginNote from "../notebook/MarginNote";
 export default function Contact() {
   return (
     <SectionFrame id="contact" title="Let's talk" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The radio is on." doodle="comet">
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
         <div className="flex flex-col gap-5">
           <p className="flex items-center gap-2 text-sm text-muted">
             <span className="pulse-dot h-2 w-2 rounded-full bg-blue" /> Usually replies within a day · {profile.status}
