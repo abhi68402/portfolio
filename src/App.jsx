@@ -1,8 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { safeGet, safeSet } from "./hooks/storage";
 import { AnimatePresence, LazyMotion, MotionConfig } from "motion/react";
-
-const loadFeatures = () => import("./motion-features.js").then((mod) => mod.default);
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Hero from "./components/sections/Hero";
@@ -12,43 +9,37 @@ import Projects from "./components/sections/Projects";
 import Experience from "./components/sections/Experience";
 import Certifications from "./components/sections/Certifications";
 import Contact from "./components/sections/Contact";
+import Toasts from "./components/fun/Toasts";
+import Screensaver from "./components/fun/Screensaver";
+import { useVisitorReactions } from "./components/fun/useVisitorReactions";
+import { useChaos } from "./hooks/useChaos";
 
-// The game and terminal are only downloaded when someone opens them,
-// so they never slow down the first page load.
-const NovaRun = lazy(() => import("./components/game/NovaRun"));
-const Mascot = lazy(() => import("./components/mascot/Mascot"));
+const loadFeatures = () => import("./motion-features.js").then((mod) => mod.default);
+
+// The heavy/fun pieces load only after the page is ready (or when opened),
+// so they never slow down the content a recruiter came for.
+const NeonGrid = lazy(() => import("./components/neon/NeonGrid"));
+const Glitch = lazy(() => import("./components/glitch/Glitch"));
+const BugBlitz = lazy(() => import("./components/blitz/BugBlitz"));
 const Terminal = lazy(() => import("./components/terminal/Terminal"));
-const WorldCanvas = lazy(() => import("./components/world/WorldCanvas"));
-import AltitudeMeter from "./components/world/AltitudeMeter";
-import { useClickSparkles } from "./hooks/useClickSparkles";
 
 export default function App() {
-  const [gameOpen, setGameOpen] = useState(false);
+  const [blitzOpen, setBlitzOpen] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [chaos] = useChaos();
 
-  // Nova the mascot: on unless the visitor sent her home. She loads only after
-  // the page is idle, so she never delays the important content.
-  const [novaOn, setNovaOn] = useState(() => safeGet("nova", "on") !== "off");
-  const [novaReady, setNovaReady] = useState(false);
   useEffect(() => {
     const ric = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
-    ric(() => setNovaReady(true), { timeout: 2500 });
+    ric(() => setReady(true), { timeout: 2500 });
   }, []);
-  const toggleNova = useCallback((on) => {
-    setNovaOn(on);
-    safeSet("nova", on ? "on" : "off");
-  }, []);
-  // "Say hi to Nova" (About) or terminal commands bring her back if she was sent home
-  useEffect(() => {
-    const onMascot = (e) => { if (["call", "pet", "fetch", "hello", "laser"].includes(e.detail?.type)) toggleNova(true); };
-    window.addEventListener("mascot", onMascot);
-    return () => window.removeEventListener("mascot", onMascot);
-  }, [toggleNova]);
 
-  useClickSparkles();
+  useVisitorReactions();
+  useNeonSpotlight();
+  useClickSparks(chaos);
 
-  const openGame = useCallback(() => { setTerminalOpen(false); setGameOpen(true); }, []);
-  const closeGame = useCallback(() => setGameOpen(false), []);
+  const openBlitz = useCallback(() => { setTerminalOpen(false); setBlitzOpen(true); }, []);
+  const closeBlitz = useCallback(() => setBlitzOpen(false), []);
   const openTerminal = useCallback(() => setTerminalOpen(true), []);
   const closeTerminal = useCallback(() => setTerminalOpen(false), []);
 
@@ -67,32 +58,70 @@ export default function App() {
   }, []);
 
   return (
-    // reducedMotion="user": every Framer Motion animation calms down automatically
-    // when the visitor's OS asks for reduced motion.
+    // reducedMotion="user": every Motion animation calms down when the OS asks for reduced motion
     <MotionConfig reducedMotion="user">
       <LazyMotion features={loadFeatures} strict>
-      <Suspense fallback={null}>{novaReady && <WorldCanvas />}</Suspense>
-      <Navbar onPlay={openGame} />
-      <AltitudeMeter />
-      <main id="main">
-        <Hero onPlay={openGame} />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Certifications />
-        <Contact />
-      </main>
-      <Footer onTerminal={openTerminal} novaOn={novaOn} onToggleNova={toggleNova} />
+        <Suspense fallback={null}>{ready && <NeonGrid />}</Suspense>
+        <Navbar onPlay={openBlitz} />
+        <main id="main">
+          <Hero onPlay={openBlitz} />
+          <About />
+          <Skills />
+          <Projects />
+          <Experience />
+          <Certifications />
+          <Contact />
+        </main>
+        <Footer onTerminal={openTerminal} />
 
-      <Suspense fallback={null}>
-        {novaReady && novaOn && <Mascot onSendHome={() => toggleNova(false)} />}
-        <AnimatePresence>{gameOpen && <NovaRun key="game" onClose={closeGame} />}</AnimatePresence>
-        <AnimatePresence>
-          {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={openGame} />}
-        </AnimatePresence>
-      </Suspense>
+        <Toasts />
+        <Screensaver enabled={chaos} />
+        {ready && chaos && <div className="crt" aria-hidden="true" />}
+
+        <Suspense fallback={null}>
+          {ready && chaos && <Glitch />}
+          {blitzOpen && <BugBlitz key="blitz" onClose={closeBlitz} />}
+          <AnimatePresence>
+            {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={openBlitz} />}
+          </AnimatePresence>
+        </Suspense>
       </LazyMotion>
     </MotionConfig>
   );
+}
+
+// Neon panels get a spotlight that follows the cursor (CSS reads --mx / --my).
+function useNeonSpotlight() {
+  useEffect(() => {
+    const onMove = (e) => {
+      const el = e.target.closest?.(".neon-panel");
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+}
+
+// Every click throws a few neon sparks (only while chaos is on).
+function useClickSparks(on) {
+  useEffect(() => {
+    if (!on || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const colors = ["#ff2bd6", "#22e6ff", "#ffd23f", "#a970ff"];
+    const onClick = (e) => {
+      if (!e.clientX && !e.clientY) return;
+      for (let i = 0; i < 8; i++) {
+        const s = document.createElement("span");
+        const a = (Math.PI * 2 * i) / 8 + Math.random() * 0.4, d = 18 + Math.random() * 24;
+        s.className = "spark";
+        s.style.cssText = `left:${e.clientX - 2}px;top:${e.clientY - 2}px;background:${colors[i % 4]};color:${colors[i % 4]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`;
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 560);
+      }
+    };
+    window.addEventListener("click", onClick);
+    return () => window.removeEventListener("click", onClick);
+  }, [on]);
 }

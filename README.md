@@ -1,6 +1,6 @@
-# Harshit Abhinav · Mission Control Portfolio
+# Harshit Abhinav · Neon Arcade Portfolio
 
-A personal portfolio set in a living pixel-art world: scrolling the page launches you from street level to the Moon, one section ("level") at a time. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. The extras (Nova the astro-pup mascot, the Nova Run game and a hidden terminal) load after the page is ready and never block content.
+A personal portfolio styled as a neon arcade. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. Everyone else also gets a living synthwave backdrop, a name you can fling around, a skill ball pit, throwable cards, **Glitch** (a mischievous bug that roams the page), the **Bug Blitz** mini-game, and a pile of easter eggs. A **Pause chaos** switch in the navbar calms it all down.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -40,19 +40,18 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | --- | --- |
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
-| Skill groups and levels (0–100) | `skillGroups` |
-| Skill names on the orbs in Nova Run | `gameSkills` |
-| Nova's name, greeting, per-section lines and random facts | `mascot` |
-| Projects (add, remove, reorder; `featured: true` gets the amber edge) | `projects` |
+| Skill groups and levels (0–100); these also become the ball-pit balls | `skillGroups` |
+| What Glitch says (taunts, squash lines…) | `glitch` |
+| Projects (add, remove, reorder; `featured: true` gets the magenta frame; `quip` is what Glitch says when it chews the card) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
-| Navbar labels and section codenames | `sections` |
+| Navbar labels and stage names | `sections` |
 
 **Other things to replace:**
 
 - **Resume:** put your PDF at `public/resume/Harshit_Abhinav_Resume.pdf` (same name, overwrite the placeholder).
 - **Contact form:** by default it opens the visitor's email app. To receive messages directly, make a free form at [formspree.io](https://formspree.io), copy the ID (the part after `/f/`), and paste it into `profile.formspreeId`.
-- **Photos:** originals live in `assets-src/photos/` (`hero`, `about`, `fun`, `offduty`). Replace one with the same name, then run `npm run images` to rebuild the compressed versions and the link-preview image.
+- **Photos:** originals live in `assets-src/photos/` (`hero`, `fun`). Replace one with the same name, then run `npm run images` to rebuild the compressed versions and the link-preview image.
 - **Your URL:** after deploying, replace `harshit-abhinav.vercel.app` in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ---
@@ -60,58 +59,56 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 ## 3. How the code is organised
 
 ```
-index.html                 page title, SEO + LinkedIn preview tags, theme picked before paint
+index.html                 title, SEO + LinkedIn preview tags, theme picked before paint
 public/                    files served as-is: photos, resume, og-image, favicon, robots
 scripts/optimize-images.mjs  crops + compresses photos, builds og-image.jpg
 src/
   main.jsx                 starts the app, loads fonts and CSS
-  App.jsx                  page order; opens the game/terminal; backtick shortcut
-  index.css                colour tokens for dark/light, HUD styles, reduced-motion rules
+  App.jsx                  page order; loads the fun layers; terminal shortcut; spotlight + sparks
+  index.css                neon colour tokens (dark/light), panels, buttons, CRT, effects
   data/content.js          ALL your text and data
-  hooks/                   small helpers: theme, active section, safe localStorage, scrolling
+  hooks/                   theme, chaos switch, active section, safe localStorage, scrolling
   components/
-    layout/                Navbar, Footer, SectionFrame (the "MOD 0X" wrapper)
-    ui/                    Button, Badge, Modal, Photo, HudCorners
+    layout/                Navbar (with Pause chaos), Footer, SectionFrame (the "STAGE 0X" sign)
+    ui/                    Button, Badge, Modal, Photo
     sections/              one file per section: Hero, About, Skills, Projects, ...
-    hero/StarfieldCanvas   the animated stars + orbits behind the hero
-    skills/                RadarChart (plain SVG) and GaugeBar
-    projects/              cards, filters, details modal, status chip, signal trace
-    world/                 scenes.js (the 7 pixel scenes), WorldCanvas.jsx (draws + blends them), AltitudeMeter.jsx
-    mascot/                sprite.js (Nova's pixel art), brain.js (movement + moods), reactions.js (what she reacts to), Mascot.jsx
-    game/                  runner.js (Nova Run engine), sound.js (bleeps), NovaRun.jsx (its window)
+    neon/                  NeonGrid.jsx (the synthwave backdrop) + palettes.js (colours per section)
+    physics/               physics.js (springs, circles), KineticName.jsx (fling the letters), BallPit.jsx
+    glitch/                sprite.js (the bug, drawn in code), Glitch.jsx (movement, squashing), mischief.js (its tricks)
+    blitz/                 BugBlitz.jsx (the 30-second mini-game)
+    fun/                   Toasts, Screensaver, useVisitorReactions (visits, tab title, shake, Konami), rainbow mode
+    projects/              cards (tilt + throw), filters, details modal
     terminal/              commands.js (what each command prints) + Terminal.jsx
 ```
 
 **In plain words:**
 
 - **`content.js` is the database.** Components just read it and draw it.
-- **`SectionFrame`** gives every section the same console header (`MOD 04 · MISSION LOG`) and fades it in once.
-- **Theme:** `index.html` sets `data-theme="dark"` or `"light"` on `<html>` before anything paints. `index.css` swaps every colour based on that. The toggle saves your choice in localStorage (wrapped in try/catch so private windows don't break).
-- **Nova's art** (`sprite.js`) is drawn pixel by pixel on a tiny 32×28 canvas, then scaled up without smoothing. No image files.
-- **The world** (`scenes.js`) is seven painter functions, one per level, drawn on a canvas a quarter of the screen size and scaled up crisp. `WorldCanvas.jsx` works out which level you're in and crossfades into the next.
-- **Pixel UI:** `.px-panel` (notched pixel border + hard shadow) and `.px-btn` (chunky press-down button) live in `src/index.css`.
-- **Nova's brain** (`brain.js`) gives her gravity and platforms: the top edges of panels marked `data-perch`, plus the floor. She rides them as you scroll and falls when they leave the screen. `reactions.js` connects page events (hovering projects, theme switch, resume download, typing in the form, the laser) to her.
-- **Nova Run** (`runner.js`) draws a 320×180 pixel world and scales it up. Each frame it moves Nova, spawns bugs, drones, orbs and power-ups, checks collisions and draws. React only shows the score bar and menus.
-- **The terminal** is a list of commands in `commands.js`. To add one, copy an entry and change its text. Entries with `hidden: true` don't appear in `help`.
-- **Speed:** the game, the terminal and the heavier animation code are split into separate files that only download when needed.
+- **Theme:** `index.html` picks dark or light before anything paints (your saved choice, otherwise light by day and dark at night). `index.css` swaps every colour from that.
+- **The backdrop** (`NeonGrid.jsx`) draws the sun, mountains and a perspective grid on a canvas ~30 times a second. Scroll speed drives the grid, the cursor dents it, clicks ripple it, and each section has its own palette.
+- **Physics** (`physics.js`) is a few lines of springs and bouncing circles. `KineticName` turns each letter into a body you can fling; `BallPit` drops every skill into a box with gravity.
+- **Glitch** (`Glitch.jsx`) steers one to three bugs around the screen. Every few seconds `mischief.js` picks a trick based on what's visible: chew a heading, shove a card, kick your name, steal an idle cursor, or burrow into a card. Clicking a bug squashes it before the click reaches the page.
+- **Bug Blitz** covers the page with a click-catching layer, spawns bugs for 30 s and scores your squashes.
+- **Pause chaos** (`hooks/useChaos.js`) removes Glitch, the CRT scanlines and click sparks, and is remembered.
+- **Speed:** the backdrop, Glitch, the game and the terminal are split into separate files that load after the page is ready or when opened.
 
-### Nova, the astro-pup
+### Glitch, the chaos bug
 
-- She hops onto panels, rides them as you scroll, and drops to the floor when they leave the screen. Hover a project and she sniffs it and comments.
-- Scroll on the floor and she runs with you. Click her for a fact; triple-click for a backflip.
-- Click any empty space and she fetches a ball.
-- She comments once on each section, sits after 20 s and naps after 45 s (nightcap in dark mode).
-- Light mode: sunglasses. Resume download: she grabs the paper. Typing in the contact form: she sits and listens. Copying the email or sending the form: happy spin.
-- Wiggle the mouse fast over empty space for a laser pointer. Reach the space levels in dark mode and she may howl at the Moon. Beat your Nova Run record and she wears a party hat.
-- Visitors can send her home (footer button); the choice is remembered. With "reduce motion" on she just sits quietly.
+- Click/tap it to squash it. It comes back faster. 5 squashes = Exterminator; 10 = it surrenders and unlocks rainbow mode.
+- It chews headings (the text grows back), shoves cards, scatters your name, steals your cursor if you leave the mouse still (move the mouse to get it back), and hides inside cards.
+- Ignore it for 40 seconds and it brings a friend (up to three).
 
-### Nova Run controls
+### Bug Blitz
 
-Space / ↑ / tap to jump (hold for higher, tap again mid-air to double jump), ↓ / swipe down to duck, P to pause. Power-ups: ☕ coffee (unstoppable for 3 s), 🛡 unit tests (absorbs one hit), 🧲 git pull (magnet). Sound is off by default.
+Squash as many bugs as you can in 30 s. Fast squashes build a combo (up to ×5), golden bugs are worth 5, a crowned boss takes 5 hits (15 points), and bombs cost 10. Esc quits.
 
-### Easter eggs
+### Easter eggs and reactions
 
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `pet`, `fetch`, `laser`, `nova`.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `bugs`, `squash`, `blitz`, `chaos off`.
+- Konami code (↑↑↓↓←→←→BA) toggles rainbow mode.
+- The hero greets you by time of day; returning visitors get a welcome-back with their visit number.
+- Switch tabs and the title changes; come back and you get a toast.
+- Scroll very fast for warp speed; shake the browser window for an earthquake; sit idle for 30 s for the arcade screensaver.
 
 ---
 
@@ -138,7 +135,7 @@ Space / ↑ / tap to jump (hold for higher, tap again mid-air to double jump), �
 
 ## 5. Quality notes
 
-- Lighthouse (mobile, production build): Performance 94 · Accessibility 100 · Best Practices 100 · SEO 100.
+- Everything a recruiter needs is plain text in the page; the fun layers are decoration on top and can be paused.
 - Everything works with the keyboard; Esc closes every overlay; focus returns where it was.
-- With "reduce motion" turned on in the OS, the starfield freezes, typing effects stop and transitions are instant.
+- With "reduce motion" turned on in the OS, chaos starts paused, the backdrop is a still image, and animations are instant.
 - Photos are served as WebP in three sizes; only the hero loads eagerly.

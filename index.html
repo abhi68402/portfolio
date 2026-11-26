@@ -6,7 +6,7 @@
     <title>Harshit Abhinav · Software Engineer (AI, Full Stack, Systems)</title>
     <meta name="description" content="Harshit Abhinav: software engineer and B.Tech CSE (GITAM, 2026) building ML models, operating systems, IoT devices and web apps. Projects, skills, experience and resume." />
     <meta name="author" content="Harshit Abhinav" />
-    <meta name="theme-color" content="#0B0D10" />
+    <meta name="theme-color" content="#07040F" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- TODO: after deploying, set your real URL in the three places below -->
     <link rel="canonical" href="https://harshit-abhinav.vercel.app/" />
@@ -32,7 +32,8 @@
       (function () {
         var t;
         try { t = localStorage.getItem("theme"); } catch (e) {}
-        if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        // no saved choice: follow the visitor's clock (light by day, neon dark at night)
+        if (t !== "light" && t !== "dark") { var h = new Date().getHours(); t = h >= 7 && h < 18 ? "light" : "dark"; }
         document.documentElement.dataset.theme = t;
       })();
     </script>

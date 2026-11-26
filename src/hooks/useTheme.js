@@ -18,7 +18,7 @@ export function useTheme() {
 
 export function setGlobalTheme(next) {
   document.documentElement.dataset.theme = next;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "dark" ? "#0B0D10" : "#F3F0E8");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "dark" ? "#07040F" : "#F4EEFC");
   safeSet("theme", next);
   window.dispatchEvent(new Event("themechange"));
 }

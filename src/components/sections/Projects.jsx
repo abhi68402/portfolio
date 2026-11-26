@@ -21,13 +21,13 @@ export default function Projects() {
   const shown = filter === "all" ? ordered : ordered.filter((p) => p.category.includes(filter));
 
   return (
-    <SectionFrame id="projects" title="Quest log" kicker="What I built, why, and how. Hover a card and Nova will sniff it out.">
+    <SectionFrame id="projects" title="Quest log" kicker="What I built, why, and how. Go ahead and throw a card around: it always comes back.">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <FilterTabs value={filter} onChange={setFilter} counts={counts} />
-        <p className="font-pixel text-sm uppercase text-muted" aria-live="polite">{shown.length} quests on screen</p>
+        <p className="font-display text-sm uppercase text-muted" aria-live="polite">{shown.length} quests on screen</p>
       </div>
 
-      <ul className="grid gap-x-7 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-x-6 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {shown.map((p) => (
             <ProjectCard key={p.id} project={p} index={ordered.indexOf(p)} onOpen={setOpen} />

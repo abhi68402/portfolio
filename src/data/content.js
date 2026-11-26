@@ -67,33 +67,16 @@ export const skillGroups = [
   ] },
 ];
 
-// Nova, the astro-pup mascot. Rename her or change what she says here.
-export const mascot = {
-  name: "Nova",
-  greeting: "Hi! I'm Nova, Harshit's co-pilot. Click me, or click anywhere to throw a ball!",
-  // said once per visit when each section scrolls into view
-  lines: {
-    about: "That's my human. He shares his umbrella with every street dog he meets.",
-    skills: "Python at 90%. My fetch skills are at 100%.",
-    projects: "Sigrun is an operating system he wrote from scratch. Like, the whole thing.",
-    experience: "He led a team at Intel Unnati. I led a squirrel chase. Same energy.",
-    certifications: "Clearances checked. All systems go.",
-    contact: "Hire him and I come free. Mostly.",
-  },
-  // random facts when you click Nova
-  facts: [
-    "Psst: press ` for the secret terminal.",
-    "Vyu lets you see a cinema seat in 3D before you book it. Try it live!",
-    "He predicted jet engine failures with LSTMs. I predict snack time.",
-    "Try typing 'sudo hire harshit' in the terminal.",
-    "Triple-click me. Go on.",
-    "I'm a street dog in a space helmet. Ask me anything (I'll just wag).",
-    "Hit 'Play a Game' and help me dodge bugs!",
-    "His resume is one click away, top of the page.",
-  ],
+// Glitch, the chaos bug. Change what it says here.
+export const glitch = {
+  name: "Glitch",
+  taunts: ["catch me if you can!", "nom nom nom", "too slow!", "404: bug not found", "it's not a bug, it's a feature", "*crunch*", "you'll never patch me"],
+  onSquash: ["ow!", "rude.", "I'll be back.", "segfault!", "respawning…"],
+  onSteal: ["yoink! 🖱️", "mine now", "borrowing this"],
+  onBreed: ["I brought a friend", "we multiply when ignored", "the backlog grows…"],
 };
 
-// Skills that fall in the minigame (short labels fit the capsules best).
+// Short skill names (used in the ball pit and the terminal).
 export const gameSkills = ["Python", "React", "Java", "JS", "SQL", "C", "Keras", "PyTorch", "ESP32", "Git", "MongoDB", "Tailwind", "three.js", "Pandas", "Linux"];
 
 export const projectFilters = [
@@ -108,7 +91,7 @@ export const projectFilters = [
 export const projects = [
   {
     id: "vyu",
-    nova: "Sniff sniff… smells like popcorn. Vyu shows you the view from any cinema seat in 3D.", // what Nova says when you hover this card
+    quip: "Vyu: see your cinema seat in 3D. I'd sit in row Z and crunch popcorn.", // a one-liner Glitch says when it chews this card
     title: "Vyu",
     subtitle: "See your cinema seat in 3D before you book it",
     category: ["web"],
@@ -128,7 +111,7 @@ export const projects = [
   },
   {
     id: "sigrun",
-    nova: "A whole operating system, written from scratch. I can't even open doors.", // what Nova says when you hover this card
+    quip: "An OS that freezes programs before they touch things? That's bug discrimination.", // a one-liner Glitch says when it chews this card
     title: "Sigrun",
     subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
     category: ["systems"],
@@ -148,7 +131,7 @@ export const projects = [
   },
   {
     id: "nasa-rul",
-    nova: "This one predicts when jet engines will fail. I predict dinner.", // what Nova says when you hover this card
+    quip: "Predicts jet-engine failures. Couldn't predict ME though.", // a one-liner Glitch says when it chews this card
     title: "Jet Engine RUL Prediction",
     subtitle: "NASA C-MAPSS predictive maintenance",
     category: ["ai"],
@@ -168,7 +151,7 @@ export const projects = [
   },
   {
     id: "hyd-days",
-    nova: "A pixel Hyderabad with traffic and the metro! I'd chase every auto.", // what Nova says when you hover this card
+    quip: "A whole pixel Hyderabad. So many places to hide.", // a one-liner Glitch says when it chews this card
     title: "8bitHyd",
     subtitle: "A living pixel-art city on real map data",
     category: ["web"],
@@ -187,7 +170,7 @@ export const projects = [
   },
   {
     id: "clearsight",
-    nova: "Makes blurry video calls sharp. He led the team for Intel Unnati.", // what Nova says when you hover this card
+    quip: "Sharpens blurry video. Now everyone can see me clearly. Great.", // a one-liner Glitch says when it chews this card
     title: "Project ClearSight",
     subtitle: "Real-time image sharpening via knowledge distillation",
     category: ["ai"],
@@ -206,7 +189,7 @@ export const projects = [
   },
   {
     id: "ecobin",
-    nova: "Smart bins that report when they're full. Finally, no overflow to sniff through.", // what Nova says when you hover this card
+    quip: "Smart bins. I used to live in one.", // a one-liner Glitch says when it chews this card
     title: "EcoBin Smart Dustbins",
     subtitle: "IoT fill-level monitoring for a whole campus",
     category: ["iot", "web"],
@@ -225,7 +208,7 @@ export const projects = [
   },
   {
     id: "fer",
-    nova: "It reads 7 emotions from a face. Mine is always 'happy'.", // what Nova says when you hover this card
+    quip: "Reads 7 emotions. Mine is always 'chaotic'.", // a one-liner Glitch says when it chews this card
     title: "Facial Emotion Recognition",
     subtitle: "CNN that reads 7 emotions from a face",
     category: ["ai"],
@@ -274,14 +257,13 @@ export const certifications = [
   { name: "Certification name", issuer: "Issuer", year: "2024", url: "" }, // TODO
 ];
 
-// Navbar + section order. Each section is a "level" in Nova's journey from
-// the street to the Moon; `altitude` feeds the meter on the right edge (metres).
+// Navbar + section order. Each section is a "stage" in the arcade.
 export const sections = [
-  { id: "hero", code: "01", label: "Home", codename: "Street level", altitude: 0 },
-  { id: "about", code: "02", label: "About", codename: "Monsoon lane", altitude: 30 },
-  { id: "skills", code: "03", label: "Skills", codename: "The lab", altitude: 2000 },
-  { id: "projects", code: "04", label: "Projects", codename: "Launch pad", altitude: 10000 },
-  { id: "experience", code: "05", label: "Experience", codename: "Orbit", altitude: 400000 },
-  { id: "certifications", code: "06", label: "Certs", codename: "Deep space", altitude: 36000000 },
-  { id: "contact", code: "07", label: "Contact", codename: "Moon base", altitude: 384400000 },
+  { id: "hero", code: "01", label: "Home", codename: "Insert coin" },
+  { id: "about", code: "02", label: "About", codename: "Player 1" },
+  { id: "skills", code: "03", label: "Skills", codename: "Skill tree" },
+  { id: "projects", code: "04", label: "Projects", codename: "Quest log" },
+  { id: "experience", code: "05", label: "Experience", codename: "High scores" },
+  { id: "certifications", code: "06", label: "Certs", codename: "Trophies" },
+  { id: "contact", code: "07", label: "Contact", codename: "Continue?" },
 ];

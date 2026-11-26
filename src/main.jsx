@@ -3,10 +3,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/jetbrains-mono";
-import "@fontsource/pixelify-sans/latin-500.css";
-import "@fontsource/pixelify-sans/latin-700.css";
+import "@fontsource/bungee/latin-400.css";
 import "./index.css";
 import App from "./App.jsx";
+import { initChaos } from "./hooks/useChaos";
+
+initChaos();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

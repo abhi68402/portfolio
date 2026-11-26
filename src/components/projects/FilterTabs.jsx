@@ -12,7 +12,7 @@ export default function FilterTabs({ value, onChange, counts }) {
             type="button"
             aria-pressed={on}
             onClick={() => onChange(f.id)}
-            className={`border-2 px-3 py-1.5 font-pixel text-sm uppercase transition ${on ? "border-accent-fill bg-accent-fill text-accent-ink" : "border-line-strong text-muted hover:border-accent hover:text-accent"}`}
+            className={`border-2 px-3 py-1.5 font-display text-sm uppercase transition ${on ? "border-accent-fill bg-accent-fill text-accent-ink" : "border-line-strong text-muted hover:border-accent hover:text-accent"}`}
           >
             {f.label} <span className={on ? "opacity-70" : "opacity-60"}>{counts[f.id]}</span>
           </button>

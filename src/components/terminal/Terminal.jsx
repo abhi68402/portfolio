@@ -3,10 +3,11 @@ import { m } from "motion/react";
 import { profile } from "../../data/content";
 import { scrollToSection } from "../../hooks/scrollTo";
 import { setGlobalTheme } from "../../hooks/useTheme";
+import { setChaos } from "../../hooks/useChaos";
 import { complete, runCommand } from "./commands";
 
 const BOOT = [
-  { text: "GROUND CONTROL OS v1.0 · uplink established", tone: "accent" },
+  { text: "ARCADE OS v2.0 · 1 credit inserted", tone: "accent" },
   { text: `Connected to ${profile.name}'s portfolio.`, tone: "muted" },
   "Type 'help' to see commands. Press Esc or ` to close.",
 ];
@@ -51,7 +52,7 @@ export default function Terminal({ onClose, onGame }) {
     if (res.action === "exit") setTimeout(onClose, 350);
     if (res.action === "game") setTimeout(onGame, 350);
     if (res.action === "resume") window.open(profile.resume, "_blank", "noopener");
-    if (res.action === "mascot") window.dispatchEvent(new CustomEvent("mascot", { detail: { type: res.mascot } }));
+    if (res.action === "chaos") setChaos(res.on);
     if (res.action === "theme") setGlobalTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
     if (res.action === "goto") setTimeout(() => { onClose(); setTimeout(() => scrollToSection(res.target), 200); }, 300);
   }
@@ -95,23 +96,23 @@ export default function Terminal({ onClose, onGame }) {
         animate={{ scaleY: 1, opacity: 1 }}
         exit={{ scaleY: 0.02, opacity: 0 }}
         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className="relative flex h-[78vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-[#ffb224]/40 bg-[#0a0905] font-mono text-[13px] text-[#ffcf73] shadow-[0_0_60px_rgba(255,178,36,0.15)] sm:text-sm"
+        className="relative flex h-[78vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-[#ff2bd6]/40 bg-[#07040f] font-mono text-[13px] text-[#7ff3ff] shadow-[0_0_60px_rgba(255,43,214,0.15)] sm:text-sm"
         onClick={() => inputRef.current?.focus()}
       >
         {/* CRT scanlines */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.25)_0px,rgba(0,0,0,0.25)_1px,transparent_1px,transparent_3px)]" />
 
-        <div className="flex items-center justify-between border-b border-[#ffb224]/25 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-[#ffb224]/70">
-          <span>ground-control — tty1</span>
-          <button type="button" onClick={onClose} aria-label="Close terminal" className="relative z-20 rounded border border-[#ffb224]/40 px-2 py-0.5 hover:bg-[#ffb224]/10">
+        <div className="flex items-center justify-between border-b border-[#ff2bd6]/25 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-[#ff2bd6]/70">
+          <span>arcade — tty1</span>
+          <button type="button" onClick={onClose} aria-label="Close terminal" className="relative z-20 rounded border border-[#ff2bd6]/40 px-2 py-0.5 hover:bg-[#ff2bd6]/10">
             ✕ esc
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-3 [text-shadow:0_0_6px_rgba(255,178,36,0.35)]" aria-live="polite">
+        <div className="flex-1 overflow-y-auto px-4 py-3 [text-shadow:0_0_6px_rgba(255,43,214,0.35)]" aria-live="polite">
           {lines.map((l, i) => <Line key={i} line={l} />)}
           <form onSubmit={submit} className="mt-1 flex items-center gap-2">
-            <label htmlFor="term-input" className="shrink-0 text-[#ffb224]">guest@harshit:~$</label>
+            <label htmlFor="term-input" className="shrink-0 text-[#ff2bd6]">guest@harshit:~$</label>
             <input
               id="term-input"
               ref={inputRef}
@@ -122,7 +123,7 @@ export default function Terminal({ onClose, onGame }) {
               autoComplete="off"
               autoCapitalize="off"
               spellCheck="false"
-              className="min-w-0 flex-1 bg-transparent text-[#ffe2a8] caret-[#ffb224] outline-none focus-visible:outline-none"
+              className="min-w-0 flex-1 bg-transparent text-[#e6fbff] caret-[#ff2bd6] outline-none focus-visible:outline-none"
             />
           </form>
           <div ref={endRef} />
@@ -134,14 +135,14 @@ export default function Terminal({ onClose, onGame }) {
 
 function Line({ line }) {
   if (typeof line === "string") return <pre className="whitespace-pre-wrap break-words">{line}</pre>;
-  if (line.prompt) return <pre className="whitespace-pre-wrap break-words"><span className="text-[#ffb224]">guest@harshit:~$ </span><span className="text-[#ffe2a8]">{line.text}</span></pre>;
-  if (line.image) return <img src={line.image} alt={line.alt} className="my-2 w-40 rounded border border-[#ffb224]/40 sepia" loading="lazy" />;
+  if (line.prompt) return <pre className="whitespace-pre-wrap break-words"><span className="text-[#ff2bd6]">guest@harshit:~$ </span><span className="text-[#e6fbff]">{line.text}</span></pre>;
+  if (line.image) return <img src={line.image} alt={line.alt} className="my-2 w-40 rounded border border-[#ff2bd6]/40 sepia" loading="lazy" />;
   if (line.link)
     return (
       <pre className="whitespace-pre-wrap">
-        <a href={line.link} target={line.link.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer" className="underline decoration-[#ffb224]/50 underline-offset-2 hover:text-white">{line.text}</a>
+        <a href={line.link} target={line.link.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer" className="underline decoration-[#ff2bd6]/50 underline-offset-2 hover:text-white">{line.text}</a>
       </pre>
     );
-  const tone = line.tone === "accent" ? "text-[#ffb224]" : line.tone === "muted" ? "text-[#ffcf73]/60" : "";
+  const tone = line.tone === "accent" ? "text-[#ff2bd6]" : line.tone === "muted" ? "text-[#7ff3ff]/60" : "";
   return <pre className={`whitespace-pre-wrap break-words ${tone}`}>{line.text}</pre>;
 }

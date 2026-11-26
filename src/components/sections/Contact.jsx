@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { profile } from "../../data/content";
 import SectionFrame from "../layout/SectionFrame";
-import NovaAvatar from "../mascot/NovaAvatar";
 
 // MOD 07 · Open Channel. Direct links on the left (fastest for recruiters),
 // a message form on the right. The form sends through Formspree if you set
 // profile.formspreeId in content.js; otherwise it opens the visitor's email app.
 export default function Contact() {
   return (
-    <SectionFrame id="contact" title="Open channel" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The channel is open.">
+    <SectionFrame id="contact" title="Continue?" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The channel is open.">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
         <div className="flex flex-col gap-6">
-          <div data-perch className="px-panel flex items-center gap-4 p-4">
-            <NovaAvatar />
+          <div className="neon-panel flex items-center gap-4 p-4">
+            <span aria-hidden="true" className="grid h-16 w-16 shrink-0 place-items-center rounded-xl border border-line-strong bg-panel-2 text-3xl">🕹️</span>
             <div>
               <p className="hud-label flex items-center gap-2 text-[0.62rem] text-accent">
-                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-accent-fill" /> Operator on standby
+                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-accent-fill" /> Player 2 wanted
               </p>
               <p className="mt-1 text-sm text-muted">Usually replies within a day. {profile.status}.</p>
             </div>
@@ -39,12 +38,12 @@ function ChannelLink({ label, value, href, external, download, copy }) {
     try {
       await navigator.clipboard.writeText(copy);
       setCopied(true);
-      window.dispatchEvent(new CustomEvent("nova-react", { detail: { type: "happy", text: "Copied! Now send him something nice." } }));
+      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "📋", text: "Email copied. Go make his day." } }));
       setTimeout(() => setCopied(false), 1600);
     } catch { /* clipboard blocked: the link still works */ }
   };
   return (
-    <div className="px-panel group flex items-center gap-3 transition-transform hover:-translate-x-1">
+    <div className="neon-panel group flex items-center gap-3 transition-transform hover:-translate-x-1">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
@@ -56,7 +55,7 @@ function ChannelLink({ label, value, href, external, download, copy }) {
         <span aria-hidden="true" className="ml-auto text-muted transition group-hover:translate-x-1 group-hover:text-accent">{download ? "↓" : "↗"}</span>
       </a>
       {copy && (
-        <button type="button" onClick={doCopy} className="mr-3 border-2 border-line-strong px-2 py-1 font-pixel text-xs uppercase text-muted hover:text-accent">
+        <button type="button" onClick={doCopy} className="mr-3 border-2 border-line-strong px-2 py-1 font-display text-xs uppercase text-muted hover:text-accent">
           <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
         </button>
       )}
@@ -75,7 +74,7 @@ function ContactForm() {
     if (!profile.formspreeId) {
       // No Formspree set up: hand off to the visitor's email app instead.
       const body = `${data.message}\n\n— ${data.name} (${data.email})`;
-      window.dispatchEvent(new CustomEvent("nova-react", { detail: { type: "happy", text: "Opening your email app. Woof!" } }));
+      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "✉️", text: "Opening your email app…" } }));
       window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(`Portfolio: message from ${data.name}`)}&body=${encodeURIComponent(body)}`;
       setState("sent");
       return;
@@ -91,7 +90,7 @@ function ContactForm() {
       if (!res.ok) throw new Error();
       form.reset();
       setState("sent");
-      window.dispatchEvent(new CustomEvent("nova-react", { detail: { type: "happy", text: "Message delivered! *happy tail*" } }));
+      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "🏆", text: "Message delivered! Achievement unlocked: Networking." } }));
     } catch {
       setState("error");
     }
@@ -100,7 +99,7 @@ function ContactForm() {
   const field = "mt-1.5 w-full border-2 border-line-strong bg-bg px-3 py-2.5 text-text placeholder:text-muted/70 focus:border-accent focus:outline-none";
 
   return (
-    <form data-perch id="contact-form" onSubmit={onSubmit} className="px-panel p-5 sm:p-6">
+    <form id="contact-form" onSubmit={onSubmit} className="neon-panel p-5 sm:p-6">
       <p className="hud-label mb-5 text-[0.62rem]">Transmit message</p>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
@@ -120,7 +119,7 @@ function ContactForm() {
         <button
           type="submit"
           disabled={state === "sending"}
-          className="px-btn px-btn-primary disabled:opacity-60"
+          className="neon-btn neon-btn-primary disabled:opacity-60"
         >
           {state === "sending" ? "Transmitting…" : "Send message ↗"}
         </button>

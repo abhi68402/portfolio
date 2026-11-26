@@ -1,24 +1,18 @@
 import { profile } from "../../data/content";
 
 // Bottom strip. The tiny ">_" button is the hidden way into the terminal.
-export default function Footer({ onTerminal, novaOn, onToggleNova }) {
+export default function Footer({ onTerminal }) {
   return (
-    <footer className="border-t-4 border-[var(--px-edge)] bg-bg">
+    <footer className="border-t border-line bg-bg/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 sm:flex-row sm:items-center sm:px-6">
         <p className="hud-label">
-          © {new Date().getFullYear()} {profile.name} · Built with React, Tailwind & a lot of pixels
+          © {new Date().getFullYear()} {profile.name} · Built with React, Tailwind, canvas & neon
         </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-        <button
-          type="button"
-          onClick={() => onToggleNova(!novaOn)}
-          className="border-2 border-line-strong px-2 py-1 font-pixel text-sm uppercase text-muted transition hover:border-accent hover:text-accent"
-        >
-          {novaOn ? "Send Nova home" : "🐾 Call Nova back"}
-        </button>
+        <p className="hud-label">Try the Konami code ↑↑↓↓←→←→BA</p>
         <p className="hud-label flex items-center gap-2">
           <span>
-            psst… press <kbd className="rounded border border-line-strong px-1.5 py-0.5 text-accent">`</kbd> for ground control
+            psst… press <kbd className="rounded border border-line-strong px-1.5 py-0.5 text-accent">`</kbd> for the secret terminal
           </span>
           <button
             type="button"

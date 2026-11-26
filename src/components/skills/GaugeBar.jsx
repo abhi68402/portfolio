@@ -1,5 +1,5 @@
-// A segmented "instrument" bar: 20 blocks, lit up to the skill level.
-// `on` turns the lights on (we flip it when the card scrolls into view).
+// A segmented neon meter: 20 blocks, lit up to the skill level.
+// `on` turns the lights on (flipped when the list scrolls into view).
 export default function GaugeBar({ name, level, on }) {
   const lit = Math.round(level / 5);
   return (
@@ -12,10 +12,10 @@ export default function GaugeBar({ name, level, on }) {
         {Array.from({ length: 20 }, (_, i) => (
           <span
             key={i}
-            className="h-2 flex-1 rounded-[1px] transition-colors duration-300"
+            className="h-1.5 flex-1 rounded-[2px] transition-colors duration-300"
             style={{
-              background: on && i < lit ? "var(--accent-fill)" : "var(--line)",
-              transitionDelay: `${i * 25}ms`,
+              background: on && i < lit ? (i < lit * 0.6 ? "var(--cyan)" : "var(--mag)") : "var(--line)",
+              transitionDelay: `${i * 22}ms`,
             }}
           />
         ))}

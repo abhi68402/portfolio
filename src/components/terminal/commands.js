@@ -51,7 +51,7 @@ export const commands = {
       { link: profile.links.github, text: "  github    github.com/abhi68402" },
     ],
   },
-  game: { desc: "play Skill Catcher", run: () => ({ lines: ["Launching Skill Catcher…"], action: "game" }) },
+  game: { desc: "play Bug Blitz", run: () => ({ lines: ["Launching Bug Blitz…"], action: "game" }) },
   clear: { desc: "clear the screen", run: () => ({ lines: [], action: "clear" }) },
   exit: { desc: "close the terminal", run: () => ({ lines: ["Goodbye, commander."], action: "exit" }) },
 
@@ -77,22 +77,28 @@ export const commands = {
         : ["Nice try. This incident will be reported to Darth Vader."],
   },
   "rm": { hidden: true, run: () => ["rm: nope. This portfolio is load-bearing."] },
-  pet: { hidden: true, run: () => ({ lines: ["You pet Nova. Tail velocity: critical. 🐾", { text: "(close the terminal to see her react)", tone: "muted" }], action: "mascot", mascot: "pet" }) },
-  fetch: { hidden: true, run: () => ({ lines: ["*throws a ball over the console*", { text: "(close the terminal to watch Nova fetch)", tone: "muted" }], action: "mascot", mascot: "fetch" }) },
-  laser: { hidden: true, run: () => ({ lines: ["*clicks laser pointer*", { text: "(close the terminal and watch Nova lose her mind)", tone: "muted" }], action: "mascot", mascot: "laser" }) },
-  nova: {
+  bugs: {
     hidden: true,
-    run: () => ({
-      lines: [
-        { text: "NOVA · astro-pup · co-pilot", tone: "accent" },
-        "  species   street dog (certified good girl)",
-        "  helmet    yes, always",
-        "  skills    fetch 100%, barking 100%, debugging 0%",
-        { text: "Try: pet, fetch, laser", tone: "muted" },
-      ],
-      action: "mascot",
-      mascot: "hello",
-    }),
+    run: () => {
+      let n = 0;
+      try { n = Number(localStorage.getItem("bugs-total")) || 0; } catch { /* storage blocked */ }
+      return [
+        { text: "GLITCH · known bug · severity: chaotic", tone: "accent" },
+        "  habitat   your viewport",
+        "  diet      headings, cursors, your attention",
+        `  squashed  ${n} time${n === 1 ? "" : "s"} (it keeps coming back)`,
+        { text: "Try: squash, blitz, chaos off", tone: "muted" },
+      ];
+    },
+  },
+  squash: { hidden: true, run: () => ["*rolls up a newspaper*", { text: "Close the terminal and click the bug. Or type 'blitz' for a swarm.", tone: "muted" }] },
+  blitz: { hidden: true, run: () => ({ lines: ["Releasing the swarm…"], action: "game" }) },
+  chaos: {
+    hidden: true,
+    run: (args) => {
+      const on = args[0] !== "off";
+      return { lines: [on ? "Chaos ON. Good luck." : "Chaos paused. Glitch has been sent to /dev/null (for now)."], action: "chaos", on };
+    },
   },
   hello: { hidden: true, run: () => ["General Kenobi!"] },
 };

@@ -14,7 +14,7 @@ export default function ProjectModal({ project: p, onClose }) {
       </div>
       <div className="p-5 sm:p-7">
         <StatusChip status={p.status} />
-        <h3 id="project-modal-title" className="mt-3 font-pixel text-4xl leading-none">{p.title}</h3>
+        <h3 id="project-modal-title" className="mt-3 font-display text-4xl leading-none">{p.title}</h3>
         <p className="mt-1 text-muted">{p.subtitle}</p>
         <Telemetry seed={p.id} className="my-5 h-8 w-full" />
 
