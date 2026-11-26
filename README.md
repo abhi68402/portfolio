@@ -1,6 +1,6 @@
-# Harshit Abhinav · Neon Arcade Portfolio
+# Harshit Abhinav · Space Notebook Portfolio
 
-A personal portfolio styled as a neon arcade. Recruiters get name, skills, projects, experience, resume and contact on a normal scrolling page. Everyone else also gets a living synthwave backdrop, a name you can fling around, a skill ball pit, throwable cards, **Glitch** (a mischievous bug that roams the page), the **Bug Blitz** mini-game, and a pile of easter eggs. A **Pause chaos** switch in the navbar calms it all down.
+A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (quiz, wave button, pet the dog, a star-chart of skills) and hidden easter eggs.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -40,9 +40,11 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | --- | --- |
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
-| Skill groups and levels (0–100); these also become the ball-pit balls | `skillGroups` |
-| What Glitch says (taunts, squash lines…) | `glitch` |
-| Projects (add, remove, reorder; `featured: true` gets the magenta frame; `quip` is what Glitch says when it chews the card) | `projects` |
+| Skill groups and levels (0–100); these also draw the star chart | `skillGroups` |
+| What Bolt the robot says (hello, per-section lines, tips) | `robot` |
+| The "now building" tile in the hero | `nowBuilding` |
+| The pop-quiz tile (question, options, answer) | `quiz` |
+| Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
 | Navbar labels and stage names | `sections` |
@@ -64,51 +66,44 @@ public/                    files served as-is: photos, resume, og-image, favicon
 scripts/optimize-images.mjs  crops + compresses photos, builds og-image.jpg
 src/
   main.jsx                 starts the app, loads fonts and CSS
-  App.jsx                  page order; loads the fun layers; terminal shortcut; spotlight + sparks
-  index.css                neon colour tokens (dark/light), panels, buttons, CRT, effects
+  App.jsx                  page order; loads Bolt + terminal; backtick shortcut
+  index.css                paper/ink colour tokens (light + night), cards, buttons, highlighter, doodle animation
   data/content.js          ALL your text and data
-  hooks/                   theme, chaos switch, active section, safe localStorage, scrolling
+  hooks/                   theme, active section, safe localStorage, scrolling
   components/
-    layout/                Navbar (with Pause chaos), Footer, SectionFrame (the "STAGE 0X" sign)
-    ui/                    Button, Badge, Modal, Photo
-    sections/              one file per section: Hero, About, Skills, Projects, ...
-    neon/                  NeonGrid.jsx (the synthwave backdrop) + palettes.js (colours per section)
-    physics/               physics.js (springs, circles), KineticName.jsx (fling the letters), BallPit.jsx
-    glitch/                sprite.js (the bug, drawn in code), Glitch.jsx (movement, squashing), mischief.js (its tricks)
-    blitz/                 BugBlitz.jsx (the 30-second mini-game)
-    fun/                   Toasts, Screensaver, useVisitorReactions (visits, tab title, shake, Konami), rainbow mode
-    projects/              cards (tilt + throw), filters, details modal
+    layout/                Navbar, Footer, SectionFrame (the "Log entry 0X" header + highlighter title)
+    notebook/              Sketch (hand-drawn space doodles), Highlight, MarginNote, useInViewOnce
+    sections/              Hero (+ HeroTiles), About, Skills, Projects, Experience, Certifications, Contact
+    skills/                StarChart (constellations) + GaugeBar
+    projects/              index-card ProjectCard, filters, details modal
+    robot/Robot.jsx        Bolt, the tiny robot co-pilot
+    fun/                   Toasts, Konami Rocket, useVisitorReactions
     terminal/              commands.js (what each command prints) + Terminal.jsx
+    ui/                    Button, Badge, Modal, Photo
 ```
 
 **In plain words:**
 
 - **`content.js` is the database.** Components just read it and draw it.
-- **Theme:** `index.html` picks dark or light before anything paints (your saved choice, otherwise light by day and dark at night). `index.css` swaps every colour from that.
-- **The backdrop** (`NeonGrid.jsx`) draws the sun, mountains and a perspective grid on a canvas ~30 times a second. Scroll speed drives the grid, the cursor dents it, clicks ripple it, and each section has its own palette.
-- **Physics** (`physics.js`) is a few lines of springs and bouncing circles. `KineticName` turns each letter into a body you can fling; `BallPit` drops every skill into a box with gravity.
-- **Glitch** (`Glitch.jsx`) steers one to three bugs around the screen. Every few seconds `mischief.js` picks a trick based on what's visible: chew a heading, shove a card, kick your name, steal an idle cursor, or burrow into a card. Clicking a bug squashes it before the click reaches the page.
-- **Bug Blitz** covers the page with a click-catching layer, spawns bugs for 30 s and scores your squashes.
-- **Pause chaos** (`hooks/useChaos.js`) removes Glitch, the CRT scanlines and click sparks, and is remembered.
-- **Speed:** the backdrop, Glitch, the game and the terminal are split into separate files that load after the page is ready or when opened.
+- **Theme:** `index.html` picks light or dark before anything paints (your saved choice, otherwise light by day and dark at night). `index.css` swaps every colour from that.
+- **Doodles** (`notebook/Sketch.jsx`) are small SVG drawings. Each path has `pathLength="1"`, so CSS can animate the stroke from hidden to drawn when it scrolls into view.
+- **The highlighter** (`Highlight.jsx`) is a yellow background that grows from 0% to 100% width the first time the words are seen.
+- **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It never moves around or covers content; the × or the footer hides it.
 
-### Glitch, the chaos bug
+### Fun bits
 
-- Click/tap it to squash it. It comes back faster. 5 squashes = Exterminator; 10 = it surrenders and unlocks rainbow mode.
-- It chews headings (the text grows back), shoves cards, scatters your name, steals your cursor if you leave the mouse still (move the mouse to get it back), and hides inside cards.
-- Ignore it for 40 seconds and it brings a friend (up to three).
+- Hero tiles: **Now building** progress, a one-question **pop quiz**, and a **wave** button that remembers how many times you've waved.
+- **Pet the dog** in About (hearts + a pet counter).
+- **Star chart:** hover a constellation (or a skill group) to light it up.
+- **Flight record:** a little rocket climbs the dashed flight path as you scroll.
+- **Contact:** sending folds your note into a paper plane.
+- **Badges** spin when you hover them.
 
-### Bug Blitz
+### Easter eggs
 
-Squash as many bugs as you can in 30 s. Fast squashes build a combo (up to ×5), golden bugs are worth 5, a crowned boss takes 5 hits (15 points), and bombs cost 10. Esc quits.
-
-### Easter eggs and reactions
-
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `bugs`, `squash`, `blitz`, `chaos off`.
-- Konami code (↑↑↓↓←→←→BA) toggles rainbow mode.
-- The hero greets you by time of day; returning visitors get a welcome-back with their visit number.
-- Switch tabs and the title changes; come back and you get a toast.
-- Scroll very fast for warp speed; shake the browser window for an earthquake; sit idle for 30 s for the arcade screensaver.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `theme`, `hello`, `bolt`, `launch`.
+- The Konami code (↑↑↓↓←→←→BA) launches a doodle rocket.
+- Switch tabs and the title waves at you; returning visitors get a welcome back.
 
 ---
 
@@ -135,7 +130,7 @@ Squash as many bugs as you can in 30 s. Fast squashes build a combo (up to ×5),
 
 ## 5. Quality notes
 
-- Everything a recruiter needs is plain text in the page; the fun layers are decoration on top and can be paused.
+- Everything a recruiter needs is plain, high-contrast text on solid paper; the doodles are decoration in the margins.
 - Everything works with the keyboard; Esc closes every overlay; focus returns where it was.
-- With "reduce motion" turned on in the OS, chaos starts paused, the backdrop is a still image, and animations are instant.
+- With "reduce motion" turned on in the OS, doodles and highlights appear already drawn and all animations are instant.
 - Photos are served as WebP in three sizes; only the hero loads eagerly.

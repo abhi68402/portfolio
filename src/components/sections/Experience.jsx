@@ -1,31 +1,47 @@
+import { useEffect, useRef, useState } from "react";
 import { experience } from "../../data/content";
 import SectionFrame from "../layout/SectionFrame";
 
-// MOD 05 · Flight Record. A vertical timeline drawn like a telemetry trace.
+// LOG ENTRY 05 · Flight record. A dashed flight path with a little rocket
+// that climbs along it as you scroll through the entries.
 export default function Experience() {
+  const listRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const el = listRef.current;
+    const onScroll = () => {
+      const r = el.getBoundingClientRect();
+      const p = (window.innerHeight * 0.6 - r.top) / Math.max(1, r.height);
+      setProgress(Math.max(0, Math.min(1, p)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <SectionFrame id="experience" title="Flight record">
-      <ol className="relative ml-2 border-l border-dashed border-line-strong sm:ml-[8.5rem]">
+    <SectionFrame id="experience" title="Flight record" doodle="satellite">
+      <ol ref={listRef} className="relative ml-3 sm:ml-[9rem]">
+        {/* the flight path + the rocket riding it */}
+        <span aria-hidden="true" className="absolute bottom-0 left-0 top-0 border-l-2 border-dashed border-line-strong" />
+        <span aria-hidden="true" className="absolute left-0 top-0 w-0.5 -translate-x-[1px] bg-blue transition-[height] duration-150" style={{ height: `${progress * 100}%` }} />
+        <span aria-hidden="true" className="absolute left-0 -translate-x-1/2 -translate-y-1/2 text-xl transition-[top] duration-150" style={{ top: `${progress * 100}%` }}>🚀</span>
+
         {experience.map((e, i) => (
-          <li key={`${e.org}-${i}`} className="relative pb-8 pl-7 last:pb-0 sm:pl-10">
-            {/* node on the trace */}
-            <span aria-hidden="true" className="absolute -left-[7px] top-1.5 grid h-3.5 w-3.5 place-items-center rounded-full border border-accent bg-bg">
-              <span className={`h-1.5 w-1.5 rounded-full ${i === 0 ? "pulse-dot bg-accent-fill" : "bg-accent-fill/60"}`} />
-            </span>
-            {/* period sits to the left of the line on larger screens */}
-            <p className="hud-label tabular mb-1 text-[0.65rem] sm:absolute sm:-left-[8.5rem] sm:top-1 sm:w-28 sm:text-right">
-              T · {e.period}
-            </p>
-            <div className="neon-panel p-5">
+          <li key={`${e.org}-${i}`} className="relative pb-12 pl-8 last:pb-0 sm:pl-10">
+            <span aria-hidden="true" className="absolute -left-[7px] top-2 h-3.5 w-3.5 rounded-full border-2 border-ink bg-hl" />
+            <p className="hud-label tabular mb-1 sm:absolute sm:-left-[9rem] sm:top-1.5 sm:w-28 sm:text-right">{e.period}</p>
+            <div className={`card lift p-5 ${i % 2 ? "tilt-r" : "tilt-l"}`}>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-display text-xl">{e.role}</h3>
-                <span className="hud-label text-[0.62rem]">{e.location}</span>
+                <h3 className="font-serif text-xl font-semibold">{e.role}</h3>
+                <span className="hud-label">{e.location}</span>
               </div>
-              <p className="text-accent">{e.org}</p>
+              <p className="font-medium text-blue">{e.org}</p>
               <ul className="mt-3 space-y-2">
                 {e.bullets.map((b) => (
-                  <li key={b} className="flex gap-3 text-sm leading-relaxed text-muted">
-                    <span aria-hidden="true" className="mt-2 h-1 w-3 shrink-0 bg-line-strong" />
+                  <li key={b} className="flex gap-3 text-muted">
+                    <span aria-hidden="true" className="text-red">✦</span>
                     {b}
                   </li>
                 ))}

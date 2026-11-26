@@ -1,7 +1,7 @@
-// One glowing arcade button for the whole site. Pass `href` for a link, otherwise a <button>.
-// variant: "primary" (magenta, filled) | "ghost" (cyan outline)
+// One ink-pen button style for the whole site. Pass `href` for a link, otherwise a <button>.
+// variant: "primary" (blue ink) | "ghost" (paper)
 export default function Button({ href, variant = "primary", icon, children, className = "", ...rest }) {
-  const cls = `neon-btn ${variant === "primary" ? "neon-btn-primary" : "neon-btn-ghost"} ${className}`;
+  const cls = `btn ${variant === "primary" ? "btn-primary" : "btn-ghost"} ${className}`;
   const inner = (
     <>
       {icon && <span aria-hidden="true">{icon}</span>}

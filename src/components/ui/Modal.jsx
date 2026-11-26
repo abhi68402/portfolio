@@ -55,7 +55,7 @@ export default function Modal({ onClose, labelledBy, children, className = "" })
         animate={{ y: 0, scale: 1 }}
         exit={{ y: 16, scale: 0.98 }}
         transition={{ type: "spring", stiffness: 320, damping: 30 }}
-        className={`relative max-h-[92vh] w-full overflow-auto rounded-xl border border-line-strong bg-panel shadow-2xl ${className}`}
+        className={`relative max-h-[92vh] w-full overflow-auto rounded-xl border border-line-strong bg-card shadow-2xl ${className}`}
       >
         {children}
       </m.div>
@@ -69,7 +69,7 @@ export function CloseButton({ onClick, label = "Close" }) {
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="inline-flex h-9 items-center gap-2 rounded-md border border-line-strong px-3 font-mono text-xs uppercase tracking-widest text-muted transition hover:border-accent hover:text-accent"
+      className="inline-flex h-9 items-center gap-2 rounded-md border border-line-strong px-3 font-mono text-xs uppercase tracking-widest text-muted transition hover:border-ink hover:text-ink"
     >
       <span aria-hidden="true">✕</span> Esc
     </button>

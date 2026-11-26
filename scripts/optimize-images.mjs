@@ -37,29 +37,29 @@ const svg = `
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#2C1F4A" stroke-width="1"/>
+      <path d="M40 0H0V40" fill="none" stroke="#E4DCCB" stroke-width="1"/>
     </pattern>
   </defs>
-  <rect width="1200" height="630" fill="#07040F"/>
+  <rect width="1200" height="630" fill="#F8F5EE"/>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <g font-family="Menlo, monospace" fill="#22E6FF" font-size="20" letter-spacing="3">
-    <text x="64" y="92">STAGE 01 · INSERT COIN</text>
+  <g font-family="Menlo, monospace" fill="#586174" font-size="20" letter-spacing="3">
+    <text x="64" y="92">MISSION LOG · PAGE 01</text>
     <text x="64" y="560">AI · FULL STACK · SYSTEMS · IOT</text>
   </g>
-  <circle cx="72" cy="140" r="7" fill="#FF2BD6"/>
-  <text x="92" y="147" font-family="Menlo, monospace" font-size="20" fill="#FF2BD6" letter-spacing="3">PLAYER 1 READY</text>
-  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" fill="#FFFFFF">
+  <circle cx="72" cy="140" r="7" fill="#2448B8"/>
+  <text x="92" y="147" font-family="Menlo, monospace" font-size="20" fill="#2448B8" letter-spacing="3">OPEN TO ROLES · 2026</text>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" fill="#1B2232">
     <text x="60" y="290" font-size="96" letter-spacing="-3">Harshit</text>
     <text x="60" y="390" font-size="96" letter-spacing="-3">Abhinav</text>
   </g>
-  <text x="64" y="460" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" fill="#D9CCFF">I build models, systems &amp; the web.</text>
-  <path d="M60 520H640" stroke="#FF2BD6" stroke-width="2"/>
+  <text x="64" y="460" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" fill="#1B2232">I build models, systems &amp; the web.</text>
+  <path d="M60 520H640" stroke="#2448B8" stroke-width="2"/>
 </svg>`;
 
 // Viewfinder corner brackets drawn on top of the photo.
 const brackets = `
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
-  <path d="M708 28h32M708 28v32M1172 28h-32M1172 28v32M708 602h32M708 602v-32M1172 602h-32M1172 602v-32" stroke="#FF2BD6" stroke-width="3" fill="none"/>
+  <path d="M708 28h32M708 28v32M1172 28h-32M1172 28v32M708 602h32M708 602v-32M1172 602h-32M1172 602v-32" stroke="#2448B8" stroke-width="3" fill="none"/>
 </svg>`;
 
 await sharp(Buffer.from(svg))

@@ -1,88 +1,84 @@
+import { useState } from "react";
 import { about, profile } from "../../data/content";
+import { safeGet, safeSet } from "../../hooks/storage";
 import SectionFrame from "../layout/SectionFrame";
+import MarginNote from "../notebook/MarginNote";
 import Photo from "../ui/Photo";
 
-// STAGE 02 · Player 1. Left: a player-select card. Middle: who I am.
-// Right: side quests (hobbies) with the monsoon photo.
+// LOG ENTRY 02 · Crew profile. Left: who I am (readable, plain text).
+// Right: the dog photo as a pettable card, plus side quests (hobbies).
 export default function About() {
   return (
-    <SectionFrame id="about" title="Player profile">
-      <div className="grid items-start gap-6 lg:grid-cols-[0.85fr_1.3fr_1fr]">
-        <PlayerCard />
-
-        <div className="neon-panel flex flex-col items-center gap-5 px-6 py-8 text-center">
-          <p className="font-display text-2xl leading-snug sm:text-[1.7rem]" data-chewable>{about.lines[0]}</p>
-          {about.lines.slice(1).map((line) => (
-            <p key={line} className="max-w-lg leading-relaxed text-muted">{line}</p>
-          ))}
-          <span aria-hidden="true" className="neon-cyan font-mono text-xs uppercase tracking-[0.3em]">— press start to continue —</span>
+    <SectionFrame id="about" title="Crew profile" doodle="moon">
+      <div className="grid items-start gap-10 lg:grid-cols-[1.35fr_1fr]">
+        <div className="card p-6 sm:p-8">
+          <p className="font-serif text-2xl font-medium leading-snug sm:text-[1.75rem]">{about.lines[0]}</p>
+          <div className="mt-5 space-y-4 text-lg leading-relaxed text-muted">
+            {about.lines.slice(1).map((line) => <p key={line}>{line}</p>)}
+          </div>
+          <dl className="mt-6 grid grid-cols-2 gap-3 border-t border-dashed border-line-strong pt-5 text-sm sm:grid-cols-3">
+            <Fact k="Degree" v="B.Tech CSE" />
+            <Fact k="University" v={profile.education.school} />
+            <Fact k="Graduating" v={profile.education.year} />
+          </dl>
         </div>
 
-        <SideQuests />
+        <div className="space-y-8">
+          <PetTheDog />
+          <ul className="card tape tilt-r space-y-3 p-5" aria-label="Side quests">
+            <li className="hud-label">Side quests</li>
+            {about.hobbies.map((h) => (
+              <li key={h.label} className="flex items-start gap-3">
+                <span aria-hidden="true" className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-card-2 text-lg">{h.icon}</span>
+                <span className="leading-tight">
+                  {h.label}
+                  <span className="block text-sm text-muted">{h.note}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </SectionFrame>
   );
 }
 
-// "Player select" card: duotone photo + joke stat bars
-function PlayerCard() {
-  const stats = [
-    ["Build", 92],
-    ["Curiosity", 98],
-    ["Debugging", 86],
-    ["Dog petting", 100],
-  ];
+function Fact({ k, v }) {
   return (
-    <article className="neon-panel neon-panel-hot mx-auto w-full max-w-xs p-4">
-      <div className="mb-3 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em]">
-        <span className="text-muted">Player select</span>
-        <span className="neon-mag">LV {profile.education.year.slice(2)}</span>
-      </div>
-      <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
-        <div className="h-full contrast-125 grayscale">
-          <Photo name="hero" alt="Harshit Abhinav, duotone portrait" sizes="(min-width: 1024px) 300px, 80vw" />
-        </div>
-        {/* neon duotone: magenta in the shadows, cyan in the highlights */}
-        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(160deg,#ff2bd6,#3b0f5c_55%,#22e6ff)] mix-blend-color" />
-        <div aria-hidden="true" className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.18)_0_1px,transparent_1px_3px)]" />
-        <span aria-hidden="true" className="absolute bottom-2 left-2 font-display text-sm text-white drop-shadow-[0_0_6px_#ff2bd6]">P1</span>
-      </div>
-      <p className="mt-3 font-display text-lg leading-tight">{profile.name}</p>
-      <p className="text-xs text-muted">{profile.education.degree} · {profile.education.school} · {profile.education.year}</p>
-      <dl className="mt-3 space-y-1.5">
-        {stats.map(([k, v]) => (
-          <div key={k} className="flex items-center gap-2">
-            <dt className="w-24 shrink-0 font-mono text-[0.68rem] uppercase tracking-wider text-muted">{k}</dt>
-            <dd className="h-2 flex-1 overflow-hidden rounded-full bg-panel-2">
-              <span className="sr-only">{v} out of 100</span>
-              <span aria-hidden="true" className="block h-full rounded-full bg-[linear-gradient(90deg,#22e6ff,#ff2bd6)]" style={{ width: `${v}%` }} />
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </article>
+    <div>
+      <dt className="hud-label">{k}</dt>
+      <dd className="mt-0.5 font-medium">{v}</dd>
+    </div>
   );
 }
 
-function SideQuests() {
+// Click the dog photo: hearts float up and a pet counter goes up.
+function PetTheDog() {
+  const [pets, setPets] = useState(() => Number(safeGet("pets", 0)) || 0);
+  const [hearts, setHearts] = useState([]);
+  const pet = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX || r.left + r.width / 2) - r.left, y = (e.clientY || r.top + r.height / 2) - r.top;
+    const id = Math.random();
+    setHearts((h) => [...h.slice(-6), { id, x, y }]);
+    setTimeout(() => setHearts((h) => h.filter((q) => q.id !== id)), 1100);
+    setPets((c) => { safeSet("pets", String(c + 1)); return c + 1; });
+  };
   return (
-    <article className="neon-panel p-4">
-      <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-muted">Side quests</h3>
-      <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
-        <Photo name="fun" alt="Harshit crouching under a red umbrella in the rain, petting a street dog" sizes="(min-width: 1024px) 320px, 90vw" />
-        <span className="absolute bottom-2 left-2 rounded-md bg-black/65 px-2 py-0.5 font-mono text-xs uppercase tracking-widest text-white">Monsoon patrol</span>
-      </div>
-      <ul className="mt-4 space-y-2.5">
-        {about.hobbies.map((h) => (
-          <li key={h.label} className="flex items-start gap-3">
-            <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line-strong bg-panel-2 text-sm">{h.icon}</span>
-            <span className="text-sm leading-tight">
-              {h.label}
-              <span className="block text-xs text-muted">{h.note}</span>
-            </span>
-          </li>
+    <figure className="card relative rotate-1 p-3">
+      <button type="button" onClick={pet} aria-label="Pet the dog" className="relative block w-full cursor-pointer overflow-hidden rounded-md">
+        <div className="aspect-[4/5]">
+          <Photo name="fun" alt="Harshit crouching under a red umbrella in the rain, petting a street dog" sizes="(min-width: 1024px) 400px, 90vw" />
+        </div>
+        {hearts.map((h) => (
+          <span key={h.id} aria-hidden="true" className="float-up pointer-events-none absolute text-2xl" style={{ left: h.x - 12, top: h.y - 16 }}>❤️</span>
         ))}
-      </ul>
-    </article>
+      </button>
+      <figcaption className="mt-3 flex items-center justify-between gap-3">
+        <span className="font-hand text-2xl">monsoon patrol</span>
+        <span className="text-sm text-muted" aria-live="polite">{pets ? `pets given: ${pets}` : "tap to pet 🐾"}</span>
+      </figcaption>
+      <MarginNote arrow="down" className="absolute -top-12 right-6">good boy!</MarginNote>
+    </figure>
   );
 }

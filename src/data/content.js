@@ -67,16 +67,41 @@ export const skillGroups = [
   ] },
 ];
 
-// Glitch, the chaos bug. Change what it says here.
-export const glitch = {
-  name: "Glitch",
-  taunts: ["catch me if you can!", "nom nom nom", "too slow!", "404: bug not found", "it's not a bug, it's a feature", "*crunch*", "you'll never patch me"],
-  onSquash: ["ow!", "rude.", "I'll be back.", "segfault!", "respawning…"],
-  onSteal: ["yoink! 🖱️", "mine now", "borrowing this"],
-  onBreed: ["I brought a friend", "we multiply when ignored", "the backlog grows…"],
+// Bolt, the tiny robot co-pilot in the corner. Change what it says here.
+export const robot = {
+  name: "Bolt",
+  hello: "Hi! I'm Bolt, Harshit's co-pilot. Click me for tips.",
+  // said once per visit when each section comes into view
+  lines: {
+    about: "That's my engineer. He shares his umbrella with street dogs.",
+    skills: "Hover a constellation to light up a skill group.",
+    projects: "Sigrun is a whole operating system. I run on it. (Not really.)",
+    experience: "Flight record: where he's been on missions so far.",
+    certifications: "Badges earned. Shiny.",
+    contact: "Send a message and watch it fly. ✈️",
+  },
+  tips: [
+    "His resume is one click away, top of the page.",
+    "Psst: press ` (backtick) for a secret terminal.",
+    "Try the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
+    "Vyu is live. Go pick a cinema seat in 3D!",
+    "Pet the dog in the About section. Trust me.",
+    "Type 'sudo hire harshit' in the terminal.",
+  ],
 };
 
-// Short skill names (used in the ball pit and the terminal).
+// The "now building" tile in the hero. Update it whenever you like.
+export const nowBuilding = { title: "Sigrun", what: "consent faults for a RISC-V kernel", progress: 62 };
+
+// The little quiz tile: one question, a few answers, one correct.
+export const quiz = {
+  question: "Guess my favourite stack to build with",
+  options: ["React + Tailwind", "Python + Keras", "C on bare metal", "All of the above"],
+  answer: 3,
+  reveal: "All of the above! Web, ML and bare-metal C, depending on the mission.",
+};
+
+// Short skill names (used in the terminal).
 export const gameSkills = ["Python", "React", "Java", "JS", "SQL", "C", "Keras", "PyTorch", "ESP32", "Git", "MongoDB", "Tailwind", "three.js", "Pandas", "Linux"];
 
 export const projectFilters = [
@@ -91,7 +116,7 @@ export const projectFilters = [
 export const projects = [
   {
     id: "vyu",
-    quip: "Vyu: see your cinema seat in 3D. I'd sit in row Z and crunch popcorn.", // a one-liner Glitch says when it chews this card
+    note: "live! go try it →", // handwritten margin note on the card
     title: "Vyu",
     subtitle: "See your cinema seat in 3D before you book it",
     category: ["web"],
@@ -111,7 +136,7 @@ export const projects = [
   },
   {
     id: "sigrun",
-    quip: "An OS that freezes programs before they touch things? That's bug discrimination.", // a one-liner Glitch says when it chews this card
+    note: "wrote an OS from scratch!", // handwritten margin note on the card
     title: "Sigrun",
     subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
     category: ["systems"],
@@ -131,7 +156,7 @@ export const projects = [
   },
   {
     id: "nasa-rul",
-    quip: "Predicts jet-engine failures. Couldn't predict ME though.", // a one-liner Glitch says when it chews this card
+    note: "predicts engine failures", // handwritten margin note on the card
     title: "Jet Engine RUL Prediction",
     subtitle: "NASA C-MAPSS predictive maintenance",
     category: ["ai"],
@@ -151,7 +176,7 @@ export const projects = [
   },
   {
     id: "hyd-days",
-    quip: "A whole pixel Hyderabad. So many places to hide.", // a one-liner Glitch says when it chews this card
+    note: "real OpenStreetMap data", // handwritten margin note on the card
     title: "8bitHyd",
     subtitle: "A living pixel-art city on real map data",
     category: ["web"],
@@ -170,7 +195,7 @@ export const projects = [
   },
   {
     id: "clearsight",
-    quip: "Sharpens blurry video. Now everyone can see me clearly. Great.", // a one-liner Glitch says when it chews this card
+    note: "led the team ★", // handwritten margin note on the card
     title: "Project ClearSight",
     subtitle: "Real-time image sharpening via knowledge distillation",
     category: ["ai"],
@@ -189,7 +214,7 @@ export const projects = [
   },
   {
     id: "ecobin",
-    quip: "Smart bins. I used to live in one.", // a one-liner Glitch says when it chews this card
+    note: "real sensors, real campus", // handwritten margin note on the card
     title: "EcoBin Smart Dustbins",
     subtitle: "IoT fill-level monitoring for a whole campus",
     category: ["iot", "web"],
@@ -208,7 +233,7 @@ export const projects = [
   },
   {
     id: "fer",
-    quip: "Reads 7 emotions. Mine is always 'chaotic'.", // a one-liner Glitch says when it chews this card
+    note: "reads 7 emotions", // handwritten margin note on the card
     title: "Facial Emotion Recognition",
     subtitle: "CNN that reads 7 emotions from a face",
     category: ["ai"],
@@ -257,13 +282,13 @@ export const certifications = [
   { name: "Certification name", issuer: "Issuer", year: "2024", url: "" }, // TODO
 ];
 
-// Navbar + section order. Each section is a "stage" in the arcade.
+// Navbar + section order. Each section is a "log entry" in the mission notebook.
 export const sections = [
-  { id: "hero", code: "01", label: "Home", codename: "Insert coin" },
-  { id: "about", code: "02", label: "About", codename: "Player 1" },
-  { id: "skills", code: "03", label: "Skills", codename: "Skill tree" },
-  { id: "projects", code: "04", label: "Projects", codename: "Quest log" },
-  { id: "experience", code: "05", label: "Experience", codename: "High scores" },
-  { id: "certifications", code: "06", label: "Certs", codename: "Trophies" },
-  { id: "contact", code: "07", label: "Contact", codename: "Continue?" },
+  { id: "hero", code: "01", label: "Home", codename: "Mission brief" },
+  { id: "about", code: "02", label: "About", codename: "Crew profile" },
+  { id: "skills", code: "03", label: "Skills", codename: "Star chart" },
+  { id: "projects", code: "04", label: "Projects", codename: "Missions flown" },
+  { id: "experience", code: "05", label: "Experience", codename: "Flight record" },
+  { id: "certifications", code: "06", label: "Certs", codename: "Badges" },
+  { id: "contact", code: "07", label: "Contact", codename: "Radio" },
 ];

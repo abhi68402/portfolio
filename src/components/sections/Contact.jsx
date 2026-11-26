@@ -1,25 +1,20 @@
 import { useState } from "react";
 import { profile } from "../../data/content";
 import SectionFrame from "../layout/SectionFrame";
+import MarginNote from "../notebook/MarginNote";
 
-// MOD 07 · Open Channel. Direct links on the left (fastest for recruiters),
-// a message form on the right. The form sends through Formspree if you set
-// profile.formspreeId in content.js; otherwise it opens the visitor's email app.
+// LOG ENTRY 07 · Radio. Direct links on the left (fastest for recruiters),
+// a message form on the right. Sending folds the note into a paper plane.
+// The form uses Formspree if profile.formspreeId is set in content.js;
+// otherwise it opens the visitor's email app.
 export default function Contact() {
   return (
-    <SectionFrame id="contact" title="Continue?" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The channel is open.">
+    <SectionFrame id="contact" title="Let's talk" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The radio is on." doodle="comet">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
-        <div className="flex flex-col gap-6">
-          <div className="neon-panel flex items-center gap-4 p-4">
-            <span aria-hidden="true" className="grid h-16 w-16 shrink-0 place-items-center rounded-xl border border-line-strong bg-panel-2 text-3xl">🕹️</span>
-            <div>
-              <p className="hud-label flex items-center gap-2 text-[0.62rem] text-accent">
-                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-accent-fill" /> Player 2 wanted
-              </p>
-              <p className="mt-1 text-sm text-muted">Usually replies within a day. {profile.status}.</p>
-            </div>
-          </div>
-
+        <div className="flex flex-col gap-5">
+          <p className="flex items-center gap-2 text-sm text-muted">
+            <span className="pulse-dot h-2 w-2 rounded-full bg-blue" /> Usually replies within a day · {profile.status}
+          </p>
           <ChannelLink label="Email" value={profile.email} href={`mailto:${profile.email}`} copy={profile.email} />
           <ChannelLink label="LinkedIn" value="in/harshit-abhinav" href={profile.links.linkedin} external />
           <ChannelLink label="GitHub" value="github.com/abhi68402" href={profile.links.github} external />
@@ -43,20 +38,20 @@ function ChannelLink({ label, value, href, external, download, copy }) {
     } catch { /* clipboard blocked: the link still works */ }
   };
   return (
-    <div className="neon-panel group flex items-center gap-3 transition-transform hover:-translate-x-1">
+    <div className="card lift group flex items-center gap-3">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
         {...(download ? { download: true } : {})}
         className="flex min-w-0 flex-1 items-baseline gap-4 px-4 py-4"
       >
-        <span className="hud-label w-16 shrink-0 text-[0.62rem] sm:w-20">{label}</span>
-        <span className="truncate text-base font-medium sm:text-lg transition group-hover:text-accent">{value}</span>
-        <span aria-hidden="true" className="ml-auto text-muted transition group-hover:translate-x-1 group-hover:text-accent">{download ? "↓" : "↗"}</span>
+        <span className="hud-label w-16 shrink-0 sm:w-20">{label}</span>
+        <span className="truncate text-base font-medium transition group-hover:text-blue sm:text-lg">{value}</span>
+        <span aria-hidden="true" className="ml-auto text-muted transition group-hover:translate-x-1 group-hover:text-blue">{download ? "↓" : "↗"}</span>
       </a>
       {copy && (
-        <button type="button" onClick={doCopy} className="mr-3 border-2 border-line-strong px-2 py-1 font-display text-xs uppercase text-muted hover:text-accent">
-          <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
+        <button type="button" onClick={doCopy} className="mr-3 rounded-md border-2 border-line-strong px-2 py-1 text-xs font-semibold text-muted hover:border-ink hover:text-ink">
+          <span aria-live="polite">{copied ? "Copied!" : "Copy"}</span>
         </button>
       )}
     </div>
@@ -65,17 +60,20 @@ function ChannelLink({ label, value, href, external, download, copy }) {
 
 function ContactForm() {
   const [state, setState] = useState("idle"); // idle | sending | sent | error
+  const [plane, setPlane] = useState(0);
 
   async function onSubmit(e) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
+    setPlane((p) => p + 1); // fold it into a paper plane and send it off
 
     if (!profile.formspreeId) {
       // No Formspree set up: hand off to the visitor's email app instead.
       const body = `${data.message}\n\n— ${data.name} (${data.email})`;
-      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "✉️", text: "Opening your email app…" } }));
-      window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(`Portfolio: message from ${data.name}`)}&body=${encodeURIComponent(body)}`;
+      setTimeout(() => {
+        window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(`Portfolio: message from ${data.name}`)}&body=${encodeURIComponent(body)}`;
+      }, 700);
       setState("sent");
       return;
     }
@@ -90,44 +88,44 @@ function ContactForm() {
       if (!res.ok) throw new Error();
       form.reset();
       setState("sent");
-      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "🏆", text: "Message delivered! Achievement unlocked: Networking." } }));
+      window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "✈️", text: "Message delivered! Talk soon." } }));
     } catch {
       setState("error");
     }
   }
 
-  const field = "mt-1.5 w-full border-2 border-line-strong bg-bg px-3 py-2.5 text-text placeholder:text-muted/70 focus:border-accent focus:outline-none";
+  const field = "mt-1.5 w-full rounded-lg border-2 border-line-strong bg-paper px-3 py-2.5 text-ink placeholder:text-muted/70 focus:border-blue focus:outline-none";
 
   return (
-    <form id="contact-form" onSubmit={onSubmit} className="neon-panel p-5 sm:p-6">
-      <p className="hud-label mb-5 text-[0.62rem]">Transmit message</p>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm">
-          Name
+    <form onSubmit={onSubmit} className="card tape relative p-5 sm:p-6">
+      <p className="font-hand text-2xl text-blue">Dear Harshit,</p>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+        <label className="block text-sm font-medium">
+          Your name
           <input name="name" required autoComplete="name" className={field} placeholder="Ada Lovelace" />
         </label>
-        <label className="block text-sm">
-          Email
+        <label className="block text-sm font-medium">
+          Your email
           <input name="email" type="email" required autoComplete="email" className={field} placeholder="ada@company.com" />
         </label>
       </div>
-      <label className="mt-4 block text-sm">
+      <label className="mt-4 block text-sm font-medium">
         Message
         <textarea name="message" required rows={5} className={`${field} resize-y`} placeholder="We'd love to talk about a role on our team…" />
       </label>
       <div className="mt-5 flex flex-wrap items-center gap-4">
-        <button
-          type="submit"
-          disabled={state === "sending"}
-          className="neon-btn neon-btn-primary disabled:opacity-60"
-        >
-          {state === "sending" ? "Transmitting…" : "Send message ↗"}
+        <button type="submit" disabled={state === "sending"} className="btn btn-primary disabled:opacity-60">
+          {state === "sending" ? "Sending…" : "Send it ✈"}
         </button>
         <p role="status" className="text-sm text-muted">
           {state === "sent" && (profile.formspreeId ? "Message received. Talk soon!" : "Opening your email app…")}
-          {state === "error" && <span className="text-accent">Signal lost. Please email me directly instead.</span>}
+          {state === "error" && <span className="text-red">Couldn't send. Please email me directly instead.</span>}
         </p>
       </div>
+      {plane > 0 && (
+        <span key={plane} aria-hidden="true" className="plane pointer-events-none absolute bottom-16 left-24 text-4xl">✈️</span>
+      )}
+      <MarginNote arrow="down" className="absolute -top-14 right-6 hidden sm:inline-flex">I read every one!</MarginNote>
     </form>
   );
 }

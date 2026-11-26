@@ -1,228 +1,193 @@
 @import "tailwindcss";
 
-/* ── Theme tokens ────────────────────────────────────────────────────────────
-   Neon arcade. Two neons (hot magenta + electric cyan) on near-black violet.
-   Light mode = "arcade by day": pale lilac, the same neons darkened for
-   readable contrast, no glow. <html data-theme="dark|light"> picks the set. */
-:root,
-[data-theme="dark"] {
-  --bg: #07040f;
-  --panel: rgb(16 9 32 / 0.86);
-  --panel-solid: #120a24;
-  --panel-2: #1d1236;
-  --line: #2c1f4a;
-  --line-strong: #46336f;
-  --text: #f4efff;
-  --muted: #b2a6d1;
-  --mag: #ff2bd6;
-  --cyan: #22e6ff;
-  --accent: #22e6ff;          /* text links / labels */
-  --accent-fill: #ff2bd6;     /* primary buttons */
-  --accent-ink: #14041f;      /* text on the filled buttons */
-  --accent-soft: rgb(255 43 214 / 0.14);
-  --glow: 1;
-  color-scheme: dark;
-}
+/* Self-hosted fonts (files in public/fonts, preloaded from index.html so the
+   page doesn't jump when they arrive). Latin characters only, to stay small. */
+@font-face { font-family: "Geist Variable"; src: url("/fonts/geist.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Fraunces Variable"; src: url("/fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Caveat"; src: url("/fonts/caveat.woff2") format("woff2"); font-weight: 400 700; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
+/* ── Theme: the space notebook ───────────────────────────────────────────────
+   Light = a dot-grid engineer's notebook on warm paper.
+   Dark  = the same notebook at night (navy paper, chalky ink).
+   <html data-theme="light|dark"> picks the set. Everything reads on solid
+   paper/card colours; the doodles are decoration in the margins.           */
+:root,
 [data-theme="light"] {
-  --bg: #f4eefc;
-  --panel: rgb(255 255 255 / 0.9);
-  --panel-solid: #ffffff;
-  --panel-2: #f1e9fb;
-  --line: #e1d3f2;
-  --line-strong: #c4abe3;
-  --text: #170b2b;
-  --muted: #5a4a76;
-  --mag: #c2009e;
-  --cyan: #00748f;
-  --accent: #00748f;
-  --accent-fill: #ff2bd6;
-  --accent-ink: #14041f;
-  --accent-soft: rgb(194 0 158 / 0.1);
-  --glow: 0;
+  --paper: #f8f5ee;
+  --dot: rgb(36 72 184 / 0.17);
+  --card: #fffdf8;
+  --card-2: #f3eee2;
+  --line: #e4dccb;
+  --line-strong: #cfc3aa;
+  --ink: #1b2232;          /* main text */
+  --muted: #586174;
+  --blue: #2448b8;         /* ink-pen blue: links, accents */
+  --red: #b8322b;          /* red pen: margin notes (AA on paper) */
+  --hl: #ffe066;           /* highlighter */
+  --tape: rgb(255 214 102 / 0.75);
+  --tape-2: rgb(143 176 255 / 0.6);
+  --shadow: 20 30 60;
+  --margin-line: rgb(212 71 63 / 0.28);
   color-scheme: light;
 }
 
+[data-theme="dark"] {
+  --paper: #121725;
+  --dot: rgb(255 255 255 / 0.09);
+  --card: #1a2032;
+  --card-2: #222a3f;
+  --line: #2b3450;
+  --line-strong: #3b4668;
+  --ink: #e9edf6;
+  --muted: #a6b0c4;
+  --blue: #93b3ff;
+  --red: #ff9a8b;
+  --hl: rgb(255 214 80 / 0.3);
+  --tape: rgb(255 214 102 / 0.4);
+  --tape-2: rgb(143 176 255 / 0.35);
+  --shadow: 0 0 0;
+  --margin-line: rgb(255 138 122 / 0.18);
+  color-scheme: dark;
+}
+
 @theme inline {
-  --color-bg: var(--bg);
-  --color-panel: var(--panel);
-  --color-panel-2: var(--panel-2);
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-card-2: var(--card-2);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
-  --color-text: var(--text);
+  --color-ink: var(--ink);
+  --color-text: var(--ink);
   --color-muted: var(--muted);
-  --color-mag: var(--mag);
-  --color-cyan: var(--cyan);
-  --color-accent: var(--accent);
-  --color-accent-fill: var(--accent-fill);
-  --color-accent-ink: var(--accent-ink);
-  --color-accent-soft: var(--accent-soft);
+  --color-blue: var(--blue);
+  --color-red: var(--red);
+  --color-accent: var(--blue);
+  --color-hl: var(--hl);
+  --color-bg: var(--paper);
+  --color-panel: var(--card);
+  --color-panel-2: var(--card-2);
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, Menlo, monospace;
-  --font-display: "Bungee", "Geist Variable", system-ui, sans-serif;
+  --font-serif: "Fraunces Variable", Georgia, serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--paper); }
 
-html { background: #07040f; }
-[data-theme="light"] { background: #f4eefc; }
-body::before {
-  /* shows instantly; the animated neon grid fades in over it */
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -20;
-  pointer-events: none;
-  background: radial-gradient(120% 70% at 50% 100%, #3b0f5c 0%, #12062a 45%, #07040f 80%);
-}
 body {
-  color: var(--text);
+  overflow-x: clip; /* doodles may peek past the edge, but never cause sideways scrolling */
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px);
+  background-size: 24px 24px;
+  transition: background-color 0.3s, color 0.3s;
 }
-[data-theme="light"] body::before { background: radial-gradient(120% 70% at 50% 100%, #ffd1f3 0%, #efe6ff 50%, #f4eefc 85%); }
+/* the red margin line of a notebook page (wide screens only) */
+@media (min-width: 1280px) {
+  body::before { content: ""; position: fixed; top: 0; bottom: 0; left: 56px; width: 1.5px; background: var(--margin-line); pointer-events: none; }
+}
 
-.font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.01em; }
-.hud-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.font-hand { font-family: var(--font-hand); font-weight: 500; }
+.font-serif { font-family: var(--font-serif); font-optical-sizing: auto; }
+.hud-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .tabular { font-variant-numeric: tabular-nums; }
 
-/* neon text */
-.neon-mag { color: var(--mag); text-shadow: 0 0 calc(var(--glow) * 6px) rgb(255 43 214 / 0.9), 0 0 calc(var(--glow) * 22px) rgb(255 43 214 / 0.55); }
-.neon-cyan { color: var(--cyan); text-shadow: 0 0 calc(var(--glow) * 6px) rgb(34 230 255 / 0.9), 0 0 calc(var(--glow) * 22px) rgb(34 230 255 / 0.5); }
-
 @layer components {
-/* ── Neon panels: glass card, thin neon edge, glow, and a spotlight that
-   follows the cursor (--mx/--my are set by a small script in App.jsx) ── */
-.neon-panel {
-  position: relative;
-  background: var(--panel);
-  border: 1px solid color-mix(in srgb, var(--cyan) 38%, transparent);
-  border-radius: 16px;
-  box-shadow:
-    0 0 calc(var(--glow) * 26px) -8px color-mix(in srgb, var(--cyan) 60%, transparent),
-    inset 0 0 calc(var(--glow) * 34px) -14px color-mix(in srgb, var(--mag) 55%, transparent),
-    0 12px 30px -18px rgb(0 0 0 / 0.6);
-  isolation: isolate;
-}
-.neon-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.25s;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--mag) 18%, transparent), transparent 65%);
-}
-.neon-panel:hover::before { opacity: 1; }
-.neon-panel-hot { border-color: color-mix(in srgb, var(--mag) 70%, transparent); box-shadow: 0 0 calc(var(--glow) * 30px) -6px color-mix(in srgb, var(--mag) 70%, transparent), 0 12px 30px -18px rgb(0 0 0 / 0.6); }
+  /* Index card: solid paper with a soft shadow; optional tape and a slight tilt */
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 1px 0 rgb(var(--shadow) / 0.05), 0 14px 30px -18px rgb(var(--shadow) / 0.35);
+  }
+  .tape::before {
+    content: "";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 86px;
+    height: 22px;
+    transform: translateX(-50%) rotate(-3deg);
+    background: var(--tape);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+  .tape-blue::before { background: var(--tape-2); transform: translateX(-50%) rotate(2deg); }
+  .tilt-l { transform: rotate(-0.7deg); }
+  .tilt-r { transform: rotate(0.7deg); }
+  .lift { transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s; }
+  .lift:hover { transform: translateY(-4px) rotate(0deg); box-shadow: 0 2px 0 rgb(var(--shadow) / 0.05), 0 22px 36px -18px rgb(var(--shadow) / 0.45); }
 
-/* ── Arcade buttons ── */
-.neon-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.78rem 1.15rem;
-  border-radius: 12px;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  line-height: 1;
-  cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
-}
-.neon-btn:active { transform: translateY(2px) scale(0.98); }
-.neon-btn-primary {
-  background: var(--accent-fill);
-  color: var(--accent-ink);
-  box-shadow: 0 0 calc(var(--glow) * 22px) rgb(255 43 214 / 0.7), inset 0 -3px 0 rgb(0 0 0 / 0.25);
-}
-.neon-btn-primary:hover { animation: flicker 0.6s steps(2) 1; box-shadow: 0 0 calc(var(--glow) * 34px) rgb(255 43 214 / 0.95), inset 0 -3px 0 rgb(0 0 0 / 0.25); }
-.neon-btn-ghost {
-  background: transparent;
-  color: var(--cyan);
-  border: 2px solid var(--cyan);
-  box-shadow: 0 0 calc(var(--glow) * 16px) -2px rgb(34 230 255 / 0.6), inset 0 0 calc(var(--glow) * 14px) -4px rgb(34 230 255 / 0.5);
-}
-.neon-btn-ghost:hover { background: color-mix(in srgb, var(--cyan) 14%, transparent); }
-
+  /* Buttons: ink-pen style with an offset "sketch" shadow that squishes on click */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.72rem 1.1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.12s, box-shadow 0.12s, background-color 0.2s;
+  }
+  .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn-primary { background: var(--blue); color: #fff; }
+  [data-theme="dark"] .btn-primary { color: #0e1424; }
+  .btn-ghost { background: var(--card); color: var(--ink); }
 }
 
-@keyframes flicker { 0% { opacity: 1; } 30% { opacity: 0.55; } 60% { opacity: 1; } 80% { opacity: 0.8; } 100% { opacity: 1; } }
-
-/* Neon sign that "switches on" with a stutter when it scrolls in */
-@keyframes sign-on {
-  0%, 8% { opacity: 0.08; text-shadow: none; }
-  10% { opacity: 1; }
-  14% { opacity: 0.15; }
-  20%, 100% { opacity: 1; }
+/* Highlighter that swipes across words when they scroll into view */
+.hl {
+  background-image: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 92%, transparent 92%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.9s cubic-bezier(.65,0,.35,1);
+  padding: 0 0.08em;
 }
-.sign-on { animation: sign-on 1.1s linear both; }
+.hl.on { background-size: 100% 100%; }
 
-/* Hero name letters (kinetic) */
-.kinetic-letter {
-  display: inline-block;
-  will-change: transform;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
+/* Hand-drawn doodles draw themselves in (paths use pathLength="1") */
+.sketch path, .sketch circle, .sketch ellipse, .sketch line, .sketch polyline {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.8s cubic-bezier(.65,0,.35,1);
 }
-.kinetic-letter:active { cursor: grabbing; }
+.sketch.on path, .sketch.on circle, .sketch.on ellipse, .sketch.on line, .sketch.on polyline { stroke-dashoffset: 0; }
 
-/* CRT scanlines + vignette over everything (decorative, never clickable) */
-.crt {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  background:
-    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.09) 0 1px, transparent 1px 3px),
-    radial-gradient(130% 100% at 50% 50%, transparent 62%, rgb(0 0 0 / 0.28) 100%);
-}
-[data-theme="light"] .crt { opacity: 0.35; }
-[data-chaos="off"] .crt { display: none; }
+/* Playful link underline */
+.squiggle { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--blue) 45%, transparent); text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.squiggle:hover { text-decoration-style: wavy; text-decoration-color: var(--blue); }
 
-/* Glitch "chewing" a heading: RGB split + sliced jitter (text itself is untouched) */
-@keyframes chew {
-  0%, 100% { transform: none; clip-path: none; }
-  20% { transform: translate(-2px, 1px); clip-path: inset(10% 0 55% 0); }
-  40% { transform: translate(2px, -1px); clip-path: inset(50% 0 10% 0); }
-  60% { transform: translate(-1px, 0); clip-path: inset(30% 0 30% 0); }
-}
-.chewed { animation: chew 0.22s steps(2) infinite; text-shadow: -3px 0 var(--mag), 3px 0 var(--cyan) !important; }
-
-/* Window-shake "earthquake" */
-@keyframes quake { 0%, 100% { transform: none; } 20% { transform: translate(-6px, 3px) rotate(-0.6deg); } 40% { transform: translate(5px, -4px) rotate(0.5deg); } 60% { transform: translate(-4px, 2px); } 80% { transform: translate(3px, -2px) rotate(0.3deg); } }
-.quake #main { animation: quake 0.45s linear 2; }
-
-/* Click sparks */
-@keyframes spark { from { transform: translate(0, 0) scale(1); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; } }
-.spark { position: fixed; width: 5px; height: 5px; border-radius: 2px; pointer-events: none; z-index: 80; animation: spark 520ms ease-out forwards; box-shadow: 0 0 8px currentColor; }
-
-/* Toasts */
-@keyframes toast-in { from { transform: translateY(14px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
-.toast-in { animation: toast-in 0.25s ease-out both; }
-
-/* Squash splat */
-@keyframes splat { from { transform: scale(0.4); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
-.splat { animation: splat 0.5s ease-out forwards; }
-
+@keyframes float-up { from { transform: translateY(0) scale(0.7); opacity: 1; } to { transform: translateY(-70px) scale(1.2); opacity: 0; } }
+.float-up { animation: float-up 1.1s ease-out forwards; }
+@keyframes pop-in { from { transform: translateY(10px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.pop-in { animation: pop-in 0.25s ease-out both; }
 @keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .caret { animation: caret 1s step-end infinite; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
+@keyframes blink-light { 0%, 92%, 100% { opacity: 1; } 95% { opacity: 0.2; } }
+.antenna { animation: blink-light 3s infinite; }
 
-:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; border-radius: 6px; }
-::selection { background: var(--mag); color: #14041f; }
+/* Konami rocket */
+@keyframes launch { 0% { transform: translate(-10vw, 10vh) rotate(45deg); } 100% { transform: translate(110vw, -110vh) rotate(45deg); } }
+.launch { animation: launch 2.4s cubic-bezier(.5,0,.6,1) forwards; }
+/* Paper plane (contact form) */
+@keyframes plane { 0% { transform: translate(0, 0) rotate(0); opacity: 1; } 60% { opacity: 1; } 100% { transform: translate(60vw, -50vh) rotate(-18deg); opacity: 0; } }
+.plane { animation: plane 1.6s ease-in forwards; }
+
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--hl); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .crt { display: none; }
+  .hl { background-size: 100% 100%; }
+  .sketch path, .sketch circle, .sketch ellipse, .sketch line, .sketch polyline { stroke-dashoffset: 0; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* Glitch stole your cursor / you're aiming at a bug */
-.cursor-stolen, .cursor-stolen * { cursor: none !important; }
-.bug-hover, .bug-hover * { cursor: crosshair !important; }
+/* Wave hello */
+@keyframes wave { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-18deg); } 40% { transform: rotate(14deg); } 60% { transform: rotate(-10deg); } 80% { transform: rotate(8deg); } }
+@keyframes robot-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 70% { transform: translateY(2px); } }

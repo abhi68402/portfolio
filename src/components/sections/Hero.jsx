@@ -1,70 +1,61 @@
 import { useEffect, useState } from "react";
 import { m, useReducedMotion } from "motion/react";
-import { profile, projects } from "../../data/content";
+import { profile } from "../../data/content";
 import { scrollToSection } from "../../hooks/scrollTo";
-import KineticName from "../physics/KineticName";
+import Highlight from "../notebook/Highlight";
+import MarginNote from "../notebook/MarginNote";
+import Sketch from "../notebook/Sketch";
 import Button from "../ui/Button";
 import Photo from "../ui/Photo";
+import HeroTiles from "./HeroTiles";
 
-// STAGE 01 · Insert coin. Everything a recruiter needs is on this first screen:
-// name, roles, one-liner, resume, projects. The name letters can be flung around.
-export default function Hero({ onPlay }) {
+// LOG ENTRY 01 · Mission brief. Everything a recruiter needs is on this first
+// screen: name, roles, one-liner, resume, projects. Then three small toys.
+export default function Hero() {
   return (
-    <section id="hero" aria-labelledby="hero-name" className="relative">
-      <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-14 px-4 py-14 sm:px-6 lg:grid-cols-[1.25fr_1fr] lg:py-10">
+    <section id="hero" aria-labelledby="hero-title" className="relative">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-10 pt-14 sm:px-6 lg:min-h-[calc(100svh-9rem)] lg:grid-cols-[1.3fr_1fr] lg:pt-10">
         <div>
           <Greeting />
 
-          <div id="hero-name" className="mt-6">
-            <KineticName
-              lines={[profile.firstName.toUpperCase(), profile.lastName.toUpperCase()]}
-              lineClassNames={["neon-mag", "neon-cyan"]}
-              className="font-display text-[clamp(3rem,10.5vw,7.2rem)] leading-[0.92]"
-            />
-          </div>
-          <p className="mt-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">↑ go on, grab a letter</p>
+          <h1 id="hero-title" className="mt-5 font-serif text-[clamp(3rem,8.5vw,6.2rem)] font-semibold leading-[0.98] tracking-tight">
+            {profile.firstName} <Highlight>{profile.lastName}</Highlight>
+          </h1>
 
-          <div className="neon-panel mt-8 max-w-xl px-5 py-4">
-            <RoleLine />
-            <p className="mt-2 text-lg leading-relaxed text-muted">{profile.tagline}</p>
-          </div>
+          <RoleLine />
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">{profile.tagline}</p>
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Button href={profile.resume} download icon="↓">Download resume</Button>
             <Button variant="ghost" href="#projects" icon="→" onClick={(e) => { e.preventDefault(); scrollToSection("projects"); }}>
-              View projects
+              See projects
             </Button>
-            <Button variant="ghost" icon="👾" onClick={onPlay}>Bug blitz</Button>
+            <Button variant="ghost" href="#contact" icon="✉" onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}>
+              Say hi
+            </Button>
           </div>
-
-          <dl className="neon-panel mt-10 grid max-w-xl grid-cols-3 divide-x divide-line">
-            <Readout label="Class" value={`B.Tech CSE '${profile.education.year.slice(2)}`} />
-            <Readout label="Projects" value={`${projects.length} shipped`} />
-            <Readout label="Status" value="Open to roles" hot />
-          </dl>
         </div>
 
-        <Cabinet />
+        <Polaroid />
       </div>
+
+      <HeroTiles />
     </section>
   );
 }
 
-// Greets the visitor based on their local time
 function Greeting() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const h = now.getHours();
-  const [hello, emoji] = h < 5 ? ["Up late, night owl", "🦉"] : h < 12 ? ["Good morning", "☀️"] : h < 17 ? ["Good afternoon", "🌤️"] : h < 21 ? ["Good evening", "🌆"] : ["Hey there, night owl", "🌙"];
+  const [h] = useState(() => new Date().getHours());
+  const hello = h < 5 ? "Up late? Me too" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 21 ? "Good evening" : "Hello, night owl";
   return (
-    <p className="neon-panel inline-flex items-center gap-3 px-4 py-2 font-mono text-xs uppercase tracking-[0.2em]">
-      <span className="pulse-dot h-2 w-2 rounded-full bg-[var(--cyan)] shadow-[0_0_8px_var(--cyan)]" />
-      <span><span aria-hidden="true">{emoji} </span>{hello}, player 1</span>
+    <p className="hud-label flex flex-wrap items-center gap-x-3 gap-y-1">
+      <span className="flex items-center gap-1.5 text-blue"><span className="pulse-dot h-2 w-2 rounded-full bg-blue" /> Mission log · page 01</span>
+      <span>{hello} 👋</span>
     </p>
   );
 }
 
-// Types out each role, then erases it and moves on
+// Types out each role in a monospace "currently:" line
 function RoleLine() {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
@@ -88,53 +79,37 @@ function RoleLine() {
     return () => clearTimeout(id);
   }, [text, phase, i, reduce]);
   return (
-    <p className="font-display text-2xl sm:text-3xl">
-      <span className="text-muted">&gt; </span>
+    <p className="mt-6 font-mono text-base sm:text-lg">
+      <span className="text-muted">currently: </span>
       <span className="sr-only">{profile.roles.join(", ")}</span>
-      <span aria-hidden="true" className="neon-cyan">
+      <span aria-hidden="true" className="font-semibold text-blue">
         {text}
-        <span className="caret">_</span>
+        <span className="caret">▍</span>
       </span>
     </p>
   );
 }
 
-function Readout({ label, value, hot }) {
+// The photo as a taped polaroid, with space doodles and a margin note around it
+function Polaroid() {
   return (
-    <div className="px-4 py-3">
-      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted">{label}</dt>
-      <dd className={`mt-1 text-sm font-semibold ${hot ? "neon-mag" : ""}`}>{value}</dd>
+    <div className="relative mx-auto w-full max-w-[380px]">
+      <Sketch kind="planet" className="absolute -right-2 -top-10 h-24 w-24 text-blue/70" />
+      <Sketch kind="star" className="absolute -left-8 top-10 h-8 w-8 text-red/70" />
+      <Sketch kind="orbit" className="absolute -bottom-10 -left-12 hidden h-24 w-32 text-blue/50 sm:block" />
+      <m.figure
+        initial={{ opacity: 0, y: 24, rotate: 4 }}
+        animate={{ opacity: 1, y: 0, rotate: 2 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ rotate: 0, y: -4 }}
+        className="card tape relative bg-card p-3 pb-4"
+      >
+        <div className="aspect-[4/5] overflow-hidden rounded-md">
+          <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 380px, 85vw" />
+        </div>
+        <figcaption className="mt-3 text-center font-hand text-2xl text-ink">campus · probably thinking about kernels</figcaption>
+      </m.figure>
+      <MarginNote arrow="left" className="absolute -bottom-12 right-2 text-2xl">that's me!</MarginNote>
     </div>
-  );
-}
-
-// The photo on an arcade-cabinet "screen" with a marquee on top
-function Cabinet() {
-  return (
-    <m.figure
-      initial={{ opacity: 0, y: 30, rotate: -2 }}
-      animate={{ opacity: 1, y: 0, rotate: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="relative mx-auto w-full max-w-[400px]"
-    >
-      <div className="neon-panel neon-panel-hot p-3">
-        <div className="mb-3 rounded-lg bg-[#ff2bd6] px-3 py-1.5 text-center font-display text-sm uppercase text-[#14041f]">
-          ★ Player 1 · Harshit ★
-        </div>
-        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-panel-2">
-          <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 400px, 85vw" />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.12)_0_1px,transparent_1px_3px)]" />
-          <span aria-hidden="true" className="absolute left-2 top-2 rounded-md bg-black/65 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-widest text-[#22e6ff]">HP ████████ 100</span>
-          <span aria-hidden="true" className="absolute bottom-2 right-2 rounded-md bg-[#ff2bd6] px-2 py-0.5 font-display text-[0.7rem] uppercase text-[#14041f]">Hire-ready</span>
-        </div>
-        <div className="mt-3 flex items-center justify-between px-1" aria-hidden="true">
-          <span className="flex gap-2">
-            <span className="h-4 w-4 rounded-full bg-[#ff2bd6] shadow-[0_0_10px_#ff2bd6]" />
-            <span className="h-4 w-4 rounded-full bg-[#22e6ff] shadow-[0_0_10px_#22e6ff]" />
-          </span>
-          <span className="font-mono text-[0.62rem] uppercase tracking-[0.25em] text-muted">Insert coin</span>
-        </div>
-      </div>
-    </m.figure>
   );
 }
