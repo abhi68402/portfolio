@@ -72,6 +72,13 @@ export const skillGroups = [
 ];
 
 // Shown in the Skills section as "currently learning". TODO: edit to match what you're actually exploring.
+// "How I work" card in the Skills section. Three principles in my own words.
+export const principles = [
+  { title: "Measure before I claim it", text: "Jet Engine RUL is judged with RMSE and NASA's late-prediction penalty, not a nice-looking plot." },
+  { title: "Fast enough to actually use", text: "ClearSight had to sharpen video at 30–60 FPS, so I distilled a heavy model into a tiny one." },
+  { title: "Build the whole thing", text: "From a RISC-V kernel to a 3D web app: I like owning a problem end to end." },
+];
+
 export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
 
 // Bolt, the tiny robot co-pilot in the corner. Change what it says here.

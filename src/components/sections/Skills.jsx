@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { learning, profile, projects, skillGroups } from "../../data/content";
+import { learning, principles, profile, projects, skillGroups } from "../../data/content";
 import { proof } from "../../data/proof";
 import { scrollToSection } from "../../hooks/scrollTo";
 import SectionFrame from "../layout/SectionFrame";
 import MarginNote from "../notebook/MarginNote";
-import GitHubLatest from "../skills/GitHubLatest";
 
 // LOG ENTRY 03 · Toolkit. Every skill, grouped, as plain text a recruiter can
 // scan. Skills with a receipt are clickable: the card on the right shows the
@@ -20,7 +19,7 @@ export default function Skills() {
 
   return (
     <SectionFrame id="skills" title="Toolkit" kicker="Every skill comes with receipts. Click one to see the project where I used it." doodle="satellite">
-      <div className="grid items-start gap-8 lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0">
+      <div className="grid items-stretch gap-8 lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0">
         {/* all skills, grouped: label left, chips right */}
         <div className="card relative p-5 sm:p-7">
           <dl className="divide-y divide-dashed divide-line-strong">
@@ -65,7 +64,7 @@ export default function Skills() {
         </div>
 
         {/* receipts for the chosen skill */}
-        <div className="space-y-6 lg:sticky lg:top-24">
+        <div className="flex flex-col gap-6">
           <div className="card tape p-5 sm:p-6" aria-live="polite">
             <p className="hud-label">Receipt</p>
             <h3 className="mt-1 font-serif text-2xl font-semibold">{skill}</h3>
@@ -94,7 +93,7 @@ export default function Skills() {
             </AnimatePresence>
           </div>
 
-          <div className="card tilt-r p-5">
+          <div className="card p-5">
             <p className="hud-label">Currently learning</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {learning.map((l) => (
@@ -103,7 +102,21 @@ export default function Skills() {
             </ul>
           </div>
 
-          <GitHubLatest />
+          {/* How I work: grows so this column ends level with the skills list */}
+          <div className="card flex flex-1 flex-col p-5 sm:p-6">
+            <p className="hud-label">How I work</p>
+            <ol className="mt-3 flex flex-1 flex-col justify-around gap-4">
+              {principles.map((pr, i) => (
+                <li key={pr.title} className="flex gap-3">
+                  <span aria-hidden="true" className="font-hand text-2xl leading-none text-red">{i + 1}.</span>
+                  <span>
+                    <span className="block font-serif text-lg font-semibold leading-snug">{pr.title}</span>
+                    <span className="mt-0.5 block text-sm text-muted">{pr.text}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </SectionFrame>
