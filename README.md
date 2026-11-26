@@ -44,7 +44,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | Hero "By the numbers" figures | `stats` |
-| "How I work" principles in the Skills section | `principles` |
+| "Strengths" (personal skills) in the Skills section | `strengths` |
 | Which project proves each skill (receipts) | `src/data/proof.js` |
 | Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble; `photo` is the image name for the About photo stack) | `projects` |
 | Internships and jobs | `experience` |

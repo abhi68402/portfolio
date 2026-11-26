@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { learning, principles, profile, projects, skillGroups } from "../../data/content";
+import { learning, profile, strengths, projects, skillGroups } from "../../data/content";
 import { proof } from "../../data/proof";
 import { scrollToSection } from "../../hooks/scrollTo";
 import SectionFrame from "../layout/SectionFrame";
@@ -102,20 +102,18 @@ export default function Skills() {
             </ul>
           </div>
 
-          {/* How I work: grows so this column ends level with the skills list */}
+          {/* Strengths: grows so this column ends level with the skills list */}
           <div className="card flex flex-1 flex-col p-5 sm:p-6">
-            <p className="hud-label">How I work</p>
-            <ol className="mt-3 flex flex-1 flex-col justify-around gap-4">
-              {principles.map((pr, i) => (
-                <li key={pr.title} className="flex gap-3">
-                  <span aria-hidden="true" className="font-hand text-2xl leading-none text-red">{i + 1}.</span>
-                  <span>
-                    <span className="block font-serif text-lg font-semibold leading-snug">{pr.title}</span>
-                    <span className="mt-0.5 block text-sm text-muted">{pr.text}</span>
-                  </span>
+            <p className="hud-label">Strengths</p>
+            <p className="mt-1 font-hand text-xl text-red">what projects taught me</p>
+            <ul className="mt-4 space-y-4">
+              {strengths.map((st) => (
+                <li key={st.title} className="border-l-2 border-hl pl-3">
+                  <span className="block font-serif text-lg font-semibold leading-snug">{st.title}</span>
+                  <span className="mt-0.5 block text-sm text-muted">{st.text}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import HeroTiles from "./HeroTiles";
 export default function Hero() {
   return (
     <section id="hero" aria-labelledby="hero-title" className="relative">
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-8 pt-12 sm:px-6 lg:min-h-[calc(100svh-14rem)] lg:grid-cols-[1.3fr_1fr] lg:pt-8">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-8 pt-16 sm:px-6 sm:pt-20 lg:min-h-[calc(100svh-12rem)] lg:grid-cols-[1.3fr_1fr] lg:pt-16">
         <div>
           <Greeting />
 

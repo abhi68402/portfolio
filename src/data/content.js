@@ -72,11 +72,14 @@ export const skillGroups = [
 ];
 
 // Shown in the Skills section as "currently learning". TODO: edit to match what you're actually exploring.
-// "How I work" card in the Skills section. Three principles in my own words.
-export const principles = [
-  { title: "Measure before I claim it", text: "Jet Engine RUL is judged with RMSE and NASA's late-prediction penalty, not a nice-looking plot." },
-  { title: "Fast enough to actually use", text: "ClearSight had to sharpen video at 30–60 FPS, so I distilled a heavy model into a tiny one." },
-  { title: "Build the whole thing", text: "From a RISC-V kernel to a 3D web app: I like owning a problem end to end." },
+// "Strengths" card in the Skills section: how I work on projects and what
+// they taught me. Personal skills, in my own words.
+export const strengths = [
+  { title: "Leading small teams", text: "On ClearSight I split the work across three people, kept us in sync and merged it into one system." },
+  { title: "Learning fast, from scratch", text: "Sigrun meant teaching myself RISC-V, OpenSBI and QEMU with no tutorial to follow." },
+  { title: "Owning it end to end", text: "I'm comfortable going from wiring a sensor to shipping the dashboard people actually use." },
+  { title: "Patient, methodical debugging", text: "Kernel bugs that freeze the whole machine taught me to slow down, isolate, and test one idea at a time." },
+  { title: "Thinking about the user", text: "Vyu started from a real frustration with seat maps, and accessibility was a goal from day one." },
 ];
 
 export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
