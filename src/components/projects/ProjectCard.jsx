@@ -61,7 +61,7 @@ export function IconLink({ href, label, children, accent }) {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className={`rounded-lg border-2 px-2.5 py-1 text-xs font-semibold transition ${accent ? "btn-primary border-blue hover:brightness-110" : "border-line-strong text-muted hover:border-ink hover:text-ink"}`}
+      className={`rounded-lg border-2 px-2.5 py-1 text-xs font-semibold transition ${accent ? "btn-primary border-blue hover:brightness-110" : "border-blue text-blue hover:bg-blue/10"}`}
     >
       {children}
     </a>

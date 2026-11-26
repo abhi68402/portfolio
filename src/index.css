@@ -236,3 +236,22 @@ body {
 }
 /* html carries the paper colour; let the fixed starfield show through body */
 [data-theme="dark"] body { background-color: transparent; }
+
+/* About: pile of taped project polaroids. Hover or keyboard focus fans them out. */
+@layer components {
+  .pstack { --cw: 62%; position: relative; height: 19.5rem; }
+  @media (min-width: 640px) { .pstack { --cw: 46%; height: 22rem; } }
+  @media (min-width: 1024px) { .pstack { --cw: 54%; height: auto; flex: 1 1 0; min-height: 24rem; } }
+  .pstack-card {
+    position: absolute; top: 0.5rem; left: calc(50% - var(--cw) / 2); width: var(--cw);
+    padding: 0.6rem 0.6rem 0.5rem; cursor: pointer; text-align: left;
+    transform: translate(var(--x), var(--y)) rotate(var(--r));
+    transition: transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s;
+  }
+  .pstack-card:hover, .pstack-card:focus-visible { box-shadow: 0 2px 0 rgb(var(--shadow) / 0.05), 0 22px 36px -18px rgb(var(--shadow) / 0.45); }
+  @media (hover: hover) {
+    .pstack:hover .pstack-card { transform: translate(var(--fx), var(--y)) rotate(var(--fr)); }
+  }
+  .pstack:focus-within .pstack-card { transform: translate(var(--fx), var(--y)) rotate(var(--fr)); }
+  @media (prefers-reduced-motion: reduce) { .pstack-card { transition: none; } }
+}

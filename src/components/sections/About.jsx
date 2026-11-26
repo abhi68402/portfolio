@@ -4,13 +4,15 @@ import { safeGet, safeSet } from "../../hooks/storage";
 import SectionFrame from "../layout/SectionFrame";
 import MarginNote from "../notebook/MarginNote";
 import Photo from "../ui/Photo";
+import ProjectStack from "../projects/ProjectStack";
 
 // LOG ENTRY 02 · Crew profile. Left: who I am (readable, plain text).
-// Right: the dog photo as a pettable card, plus side quests (hobbies).
+// Under it: a pile of project snapshots. Right: the dog photo as a pettable card, plus side quests (hobbies).
 export default function About() {
   return (
     <SectionFrame id="about" title="Crew profile" doodle="moon">
-      <div className="grid items-start gap-10 lg:grid-cols-[1.35fr_1fr]">
+      <div className="grid items-stretch gap-10 lg:grid-cols-[1.35fr_1fr]">
+        <div className="flex flex-col gap-8">
         <div className="card p-6 sm:p-8">
           <p className="font-serif text-2xl font-medium leading-snug sm:text-[1.75rem]">{about.lines[0]}</p>
           <div className="mt-5 space-y-4 text-lg leading-relaxed text-muted">
@@ -21,6 +23,8 @@ export default function About() {
             <Fact k="University" v={profile.education.school} />
             <Fact k="Graduating" v={profile.education.year} />
           </dl>
+        </div>
+        <ProjectStack />
         </div>
 
         <div className="space-y-8">

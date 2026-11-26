@@ -44,7 +44,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | Dad jokes for the hero tile (`mild` / `spicy`, each `{ setup, punch }`) | `dadJokes` |
-| Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble) | `projects` |
+| Projects (add, remove, reorder; `featured: true` gets tape; `note` is the red-pen scribble; `photo` is the image name for the About photo stack) | `projects` |
 | Internships and jobs | `experience` |
 | Certifications (set to `[]` to hide the section) | `certifications` |
 | Navbar labels and stage names | `sections` |
@@ -54,6 +54,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 - **Resume:** put your PDF at `public/resume/Harshit_Abhinav_Resume.pdf` (same name, overwrite the placeholder).
 - **Contact form:** by default it opens the visitor's email app. To receive messages directly, make a free form at [formspree.io](https://formspree.io), copy the ID (the part after `/f/`), and paste it into `profile.formspreeId`.
 - **Photos:** originals live in `assets-src/photos/` (`hero`, `fun`). Replace one with the same name, then run `npm run images` to rebuild the compressed versions and the link-preview image.
+- **Project photos (About stack):** `assets-src/projects/vyu.png` is a real screenshot of cinevyu.site; the other projects use generated covers (drawn in `scripts/optimize-images.mjs`, labelled "Project cover"). To use your own screenshot, save it as `assets-src/projects/<project id>.png` (it replaces the cover automatically), then run `npm run images`. Each project's `photo` field in `content.js` names the output (`proj-<id>`).
 - **Your URL:** after deploying, replace `harshit-abhinav.vercel.app` in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ---

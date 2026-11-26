@@ -33,7 +33,7 @@ export const profile = {
 export const about = {
   lines: [
     "I'm a CSE student at GITAM who builds AI that leaves the notebook and runs in the real world.",
-    "I've predicted jet-engine failures with BiLSTMs, distilled a SwinIR model into a real-time sharpener, and taught a CNN to read emotions. Around the models I build the rest: web apps, IoT sensors, even a RISC-V kernel.",
+    "I've predicted jet-engine failures with BiLSTMs, distilled a SwinIR model into a real-time sharpener, and built a campus-wide smart-bin network. Around the models I build the rest: web apps, IoT sensors, even a RISC-V kernel.",
     "I care about models that are fast enough to use, measured honestly, and wrapped in software people actually open.",
     "Right now I'm looking for an AI / ML or software team where I can ship, learn fast and own real problems.",
   ],
@@ -147,9 +147,12 @@ export const projectFilters = [
 ];
 
 // status: "LIVE" | "SHIPPED" | "R&D"   ·   featured: shown larger at the top
+// `photo` is the image name in public/photos (built by `npm run images`): vyu is a real screenshot,
+// the rest are generated covers. TODO: swap in your own screenshots (see scripts/optimize-images.mjs).
 export const projects = [
   {
     id: "vyu",
+    photo: "proj-vyu",
     note: "live! go try it →", // handwritten margin note on the card
     title: "Vyu",
     subtitle: "See your cinema seat in 3D before you book it",
@@ -170,6 +173,7 @@ export const projects = [
   },
   {
     id: "sigrun",
+    photo: "proj-sigrun",
     note: "wrote an OS from scratch!", // handwritten margin note on the card
     title: "Sigrun",
     subtitle: "A RISC-V OS where the CPU asks before anything touches something new",
@@ -190,6 +194,7 @@ export const projects = [
   },
   {
     id: "nasa-rul",
+    photo: "proj-nasa-rul",
     note: "predicts engine failures", // handwritten margin note on the card
     title: "Jet Engine RUL Prediction",
     subtitle: "NASA C-MAPSS predictive maintenance",
@@ -210,6 +215,7 @@ export const projects = [
   },
   {
     id: "hyd-days",
+    photo: "proj-hyd-days",
     note: "real OpenStreetMap data", // handwritten margin note on the card
     title: "8bitHyd",
     subtitle: "A living pixel-art city on real map data",
@@ -229,6 +235,7 @@ export const projects = [
   },
   {
     id: "clearsight",
+    photo: "proj-clearsight",
     note: "led the team ★", // handwritten margin note on the card
     title: "Project ClearSight",
     subtitle: "Real-time image sharpening via knowledge distillation",
@@ -248,6 +255,7 @@ export const projects = [
   },
   {
     id: "ecobin",
+    photo: "proj-ecobin",
     note: "real sensors, real campus", // handwritten margin note on the card
     title: "EcoBin Smart Dustbins",
     subtitle: "IoT fill-level monitoring for a whole campus",
@@ -263,24 +271,6 @@ export const projects = [
       "Custom sensor module installed inside each bin measures fill level ultrasonically.",
       "Readings go to ThingSpeak in real time; the web dashboard shows every bin on a campus map.",
       "Helps plan collection routes around bins that are actually full.",
-    ],
-  },
-  {
-    id: "fer",
-    note: "reads 7 emotions", // handwritten margin note on the card
-    title: "Facial Emotion Recognition",
-    subtitle: "CNN that reads 7 emotions from a face",
-    category: ["ai"],
-    status: "SHIPPED",
-    year: "2025",
-    problem: "Apps can't respond to how a person feels without understanding their expression.",
-    solution: "A convolutional network trained on FER-2013 classifies faces into seven emotions.",
-    tech: ["TensorFlow / Keras", "OpenCV", "scikit-learn"],
-    github: "https://github.com/abhi68402/Facial_emotion_recognition",
-    demo: "",
-    details: [
-      "48×48 grayscale faces, 7 classes: angry, disgust, fear, happy, sad, surprise, neutral.",
-      "Conv + pooling feature extractor, evaluated with confusion matrices and classification reports.",
     ],
   },
 ];
