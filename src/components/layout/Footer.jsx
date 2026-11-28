@@ -28,6 +28,9 @@ export default function Footer({ onTerminal, botOn, onToggleBot }) {
             </a>
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <button type="button" onClick={() => window.dispatchEvent(new Event("bolt-tour"))} className="squiggle text-sm font-medium text-blue">
+              Take the tour with Bolt
+            </button>
             <button type="button" onClick={() => onToggleBot(!botOn)} className="squiggle text-sm text-muted hover:text-ink">
               {botOn ? "Hide Bolt" : "Bring back Bolt"}
             </button>

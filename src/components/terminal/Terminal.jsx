@@ -52,6 +52,7 @@ export default function Terminal({ onClose, onGame }) {
     if (res.action === "game") setTimeout(onGame, 350);
     if (res.action === "resume") window.open(profile.resume, "_blank", "noopener");
     if (res.action === "theme") setGlobalTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+    if (res.action === "tour") setTimeout(() => { onClose(); setTimeout(() => window.dispatchEvent(new Event("bolt-tour")), 250); }, 400);
     if (res.action === "launch") setTimeout(() => { onClose(); setTimeout(() => window.dispatchEvent(new Event("launch-rocket")), 250); }, 500);
     if (res.action === "goto") setTimeout(() => { onClose(); setTimeout(() => scrollToSection(res.target), 200); }, 300);
   }

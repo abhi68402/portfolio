@@ -52,6 +52,7 @@ export const commands = {
     ],
   },
   launch: { desc: "launch a rocket", run: () => ({ lines: ["T-minus 3… 2… 1…", { text: "(watch the page!)", tone: "muted" }], action: "launch" }) },
+  tour: { desc: "guided tour with Bolt", run: () => ({ lines: ["Paging Bolt… tour starting."], action: "tour" }) },
   clear: { desc: "clear the screen", run: () => ({ lines: [], action: "clear" }) },
   exit: { desc: "close the terminal", run: () => ({ lines: ["Goodbye, commander."], action: "exit" }) },
 
@@ -84,6 +85,7 @@ export const commands = {
       "  battery   97%",
       "  hobbies   blinking, waving, giving tips",
       "  location  bottom-right corner (it likes the view)",
+      "  hobby #4  giving tours (type 'tour')",
     ],
   },
   hello: { hidden: true, run: () => ["General Kenobi!"] },

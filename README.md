@@ -41,7 +41,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
 | Skill groups and levels (0–100); listed in the Toolkit section | `skillGroups` |
-| What Bolt the robot says (hello, per-section lines, tips) | `robot` |
+| What Bolt the robot says (hello, per-section lines, tips, and the guided `tour` text per section) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | "Right now" card in About: what you're doing, what you're looking for, where you're based | `rightNow` |
 | Hero "By the numbers" figures | `stats` |
@@ -92,7 +92,7 @@ src/
 - **Theme:** light notebook by default; the moon button switches to a night-sky mode with a starfield (`notebook/Starfield.jsx`). The choice is remembered. Every colour is a token at the top of `index.css`.
 - **Doodles** (`notebook/Sketch.jsx`) are small SVG drawings. Each path has `pathLength="1"`, so CSS can animate the stroke from hidden to drawn when it scrolls into view.
 - **The highlighter** (`Highlight.jsx`) is a yellow background that grows from 0% to 100% width the first time the words are seen.
-- **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It never moves around or covers content; the × or the footer hides it.
+- **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It stays in its corner, except during the **guided tour**: Bolt offers it in the hello bubble (also the footer link and the terminal command `tour`), then flies to each section heading with a Back / Next / End card, and flies home at the end. Keyboard: ← / → to move, Esc to end. The × or the footer hides it.
 
 ### Fun bits
 

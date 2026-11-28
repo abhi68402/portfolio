@@ -27,6 +27,7 @@ export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [botOn, setBotOn] = useState(() => safeGet("bolt", "on") !== "off");
+  const [tourRequest, setTourRequest] = useState(0);
 
   useEffect(() => {
     const ric = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
@@ -37,6 +38,13 @@ export default function App() {
 
   const toggleBot = useCallback((on) => { setBotOn(on); safeSet("bolt", on ? "on" : "off"); }, []);
   const openTerminal = useCallback(() => setTerminalOpen(true), []);
+
+  // "bolt-tour" (footer link, terminal) brings Bolt back if hidden and starts the tour
+  useEffect(() => {
+    const onTour = () => { toggleBot(true); setReady(true); setTourRequest((n) => n + 1); };
+    window.addEventListener("bolt-tour", onTour);
+    return () => window.removeEventListener("bolt-tour", onTour);
+  }, [toggleBot]);
   const closeTerminal = useCallback(() => setTerminalOpen(false), []);
 
   // Backtick (`) toggles the secret terminal, unless you're typing in a form field.
@@ -74,7 +82,7 @@ export default function App() {
         <Toasts />
         <Rocket />
         <Suspense fallback={null}>
-          {ready && botOn && <Robot onHide={() => toggleBot(false)} />}
+          {ready && botOn && <Robot onHide={() => toggleBot(false)} tourRequest={tourRequest} />}
           <AnimatePresence>
             {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={() => {}} />}
           </AnimatePresence>
