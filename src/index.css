@@ -252,3 +252,26 @@ body {
 [data-theme="dark"] .lamp { background: radial-gradient(560px circle at var(--lx, -999px) var(--ly, -999px), rgb(154 184 255 / 0.07), transparent 70%); }
 @media (hover: none), (prefers-reduced-motion: reduce) { .lamp { display: none; } }
 
+
+/* About: pile of taped project polaroids. Hover or keyboard focus fans them out. */
+@layer components {
+  /* --cw: card width at rest. --fs: scale when fanned, so four cards fit side
+     by side inside the column (each ~34% wide, centred at 20/40/60/80%). */
+  .pstack { --cw: 64%; --fs: 0.53; position: relative; height: 20rem; }
+  @media (min-width: 640px) { .pstack { --cw: 50%; --fs: 0.68; height: 24rem; } }
+  @media (min-width: 1024px) { .pstack { --cw: 62%; --fs: 0.55; height: auto; flex: 1 1 0; min-height: 27rem; } }
+  .pstack-card {
+    position: absolute; top: 0.5rem; left: calc(50% - var(--cw) / 2); width: var(--cw);
+    padding: 0.6rem 0.6rem 0.5rem; cursor: pointer; text-align: left;
+    transform: translate(var(--x), var(--y)) rotate(var(--r));
+    transition: left 0.45s cubic-bezier(.2,.8,.2,1), transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s;
+  }
+  .pstack-card:hover, .pstack-card:focus-visible { box-shadow: 0 2px 0 rgb(var(--shadow) / 0.05), 0 22px 36px -18px rgb(var(--shadow) / 0.45); }
+  @media (hover: hover) {
+    .pstack:hover .pstack-card { left: calc(var(--fc) - var(--cw) / 2); transform: translateY(var(--fy)) rotate(var(--fr)) scale(var(--fs)); }
+    .pstack:hover .pstack-card:hover { transform: translateY(calc(var(--fy) - 0.6rem)) rotate(0deg) scale(calc(var(--fs) + 0.04)); z-index: 20 !important; }
+  }
+  .pstack:focus-within .pstack-card { left: calc(var(--fc) - var(--cw) / 2); transform: translateY(var(--fy)) rotate(var(--fr)) scale(var(--fs)); }
+  @media (prefers-reduced-motion: reduce) { .pstack-card { transition: none; } }
+}
+

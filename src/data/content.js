@@ -86,11 +86,9 @@ export const strengths = [
 export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
 
 // The "now building" tile in the hero. Update it whenever you like.
-// "Right now" card in the About section: what I'm doing and what I'm looking for.
+// The "Graduated and open to work" line at the top of the About section.
 export const rightNow = {
   lookingFor: "Full-time roles in AI / ML or software engineering",
-  doing: "Building Sigrun and sharpening my ML fundamentals",
-  basedIn: "India", // TODO: city, and whether you're open to relocating or remote
 };
 
 export const nowBuilding = { title: "Sigrun", what: "a RISC-V kernel that makes AI agents ask before they act", progress: 62 };

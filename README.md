@@ -42,7 +42,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | About text and hobbies | `about` |
 | Skill groups and levels (0–100); listed in the Toolkit section | `skillGroups` |
 | The "now building" tile in the hero | `nowBuilding` |
-| "Right now" card in About: what you're doing, what you're looking for, where you're based | `rightNow` |
+| What you're looking for (under "Graduated and open to work" in About) | `rightNow` |
 | Hero "By the numbers" figures | `stats` |
 | "Strengths" (personal skills) in the Skills section | `strengths` |
 | Which project proves each skill (receipts) | `src/data/proof.js` |
@@ -56,7 +56,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 - **Resume:** put your PDF at `public/resume/Harshit_Abhinav_Resume.pdf` (same name, overwrite the placeholder).
 - **Contact form:** by default it opens the visitor's email app. To receive messages directly, make a free form at [formspree.io](https://formspree.io), copy the ID (the part after `/f/`), and paste it into `profile.formspreeId`.
 - **Photos:** originals live in `assets-src/photos/` (`hero`, `fun`). Replace one with the same name, then run `npm run images` to rebuild the compressed versions and the link-preview image.
-- **Project screenshots (currently unused):** `assets-src/projects/vyu.png` is a real screenshot of cinevyu.site; the other projects use generated covers (drawn in `scripts/optimize-images.mjs`, labelled "Project cover"). To use your own screenshot, save it as `assets-src/projects/<project id>.png` (it replaces the cover automatically), then run `npm run images`. Each project's `photo` field in `content.js` names the output (`proj-<id>`).
+- **Project photos:** these appear in the About section's project photo pile. `vyu` is a real screenshot of cinevyu.site; `clearsight` and `ecobin` are real images from their GitHub repos; `sigrun`, `nasa-rul` and `hyd-days` are illustrated covers drawn in `scripts/project-covers.mjs` (tagged "Illustration"). To replace any cover with your own image, save it as `assets-src/projects/<project id>.png` (it takes priority over a generated cover), then run `npm run images`. Each project's `photo` field in `content.js` names the output (`proj-<id>`).
 - **Your URL:** the site lives at `https://www.abhinavdev.site/` (Vercel; `abhinavdev.site` redirects to `www`). A copy is also published to GitHub Pages at `https://abhi68402.github.io/portfolio/` by `.github/workflows/deploy-pages.yml`; its canonical link points to the main domain. To change domains, replace the URL in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ---
