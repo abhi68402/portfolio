@@ -27,8 +27,11 @@ export const profile = {
   },
   resume: "/resume/Harshit_Abhinav_Resume.pdf", // drop your PDF at public/resume/
   status: "Graduated 2026 · open to full-time roles",
-  // Formspree form ID (the part after formspree.io/f/). Leave "" to use mailto instead.
-  formspreeId: "", // TODO: create a free form at formspree.io and paste the ID
+  // The contact form sends from the page. With formspreeId "" it uses FormSubmit
+  // (free, no signup): the FIRST message sends an "Activate form" email to the
+  // address above; click it once and every later message arrives normally.
+  // Prefer Formspree? Create a free form at formspree.io and paste its ID here.
+  formspreeId: "",
 };
 
 export const about = {

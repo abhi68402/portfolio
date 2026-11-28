@@ -6,8 +6,10 @@ import MarginNote from "../notebook/MarginNote";
 
 // LOG ENTRY 07 · Radio. Direct links on the left (fastest for recruiters),
 // a message form on the right. Sending folds the note into a paper plane.
-// The form uses Formspree if profile.formspreeId is set in content.js;
-// otherwise it opens the visitor's email app.
+// The form sends straight from the page (no email app): through Formspree if
+// profile.formspreeId is set in content.js, otherwise through FormSubmit,
+// which forwards it to profile.email. FormSubmit needs a one-time activation:
+// the first message triggers an "Activate form" email to that inbox.
 export default function Contact() {
   return (
     <SectionFrame id="contact" title="Let's talk" kicker="Hiring, collaborating, or just want to argue about the best Star Wars film? The radio is on." doodle="comet">
@@ -16,10 +18,13 @@ export default function Contact() {
           <p className="flex items-center gap-2 text-sm text-muted">
             <span className="pulse-dot h-2 w-2 rounded-full bg-blue" /> Usually replies within a day · {profile.status}
           </p>
-          <ChannelLink label="Email" value={profile.email} href={`mailto:${profile.email}`} copy={profile.email} />
-          <ChannelLink label="LinkedIn" value="in/harshit-abhinav" href={profile.links.linkedin} external />
-          <ChannelLink label="GitHub" value="github.com/abhi68402" href={profile.links.github} external />
-          <ChannelLink label="Resume" value="Download PDF" href={profile.resume} download />
+          {/* the four links share the column's height, so its bottom meets the form's */}
+          <div className="flex flex-col gap-5 lg:flex-1">
+            <ChannelLink label="Email" value={profile.email} href={`mailto:${profile.email}`} copy={profile.email} />
+            <ChannelLink label="LinkedIn" value="in/harshit-abhinav" href={profile.links.linkedin} external />
+            <ChannelLink label="GitHub" value="github.com/abhi68402" href={profile.links.github} external />
+            <ChannelLink label="Resume" value="Download PDF" href={profile.resume} download />
+          </div>
         </div>
 
         <ContactForm />
@@ -39,7 +44,7 @@ function ChannelLink({ label, value, href, external, download, copy }) {
     } catch { /* clipboard blocked: the link still works */ }
   };
   return (
-    <div className="card lift group flex items-center gap-3">
+    <div className="card lift group flex items-center gap-3 lg:flex-1">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
@@ -84,29 +89,31 @@ function ContactForm() {
   async function onSubmit(e) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
-    setPlane((p) => p + 1); // fold it into a paper plane and send it off
+    const { website, ...data } = Object.fromEntries(new FormData(form));
 
-    if (!profile.formspreeId) {
-      // No Formspree set up: hand off to the visitor's email app instead.
-      const body = `${data.message}\n\n— ${data.name} (${data.email})`;
-      setTimeout(() => {
-        window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(`Portfolio: message from ${data.name}`)}&body=${encodeURIComponent(body)}`;
-      }, 700);
-      setState("sent");
-      return;
-    }
+    // Honeypot: real people never see or fill the "website" field; bots do.
+    if (website) { form.reset(); setState("sent"); return; }
+
+    const subject = `Portfolio: message from ${data.name}`;
+    const endpoint = profile.formspreeId
+      ? `https://formspree.io/f/${profile.formspreeId}`
+      : `https://formsubmit.co/ajax/${profile.email}`;
+    const payload = profile.formspreeId
+      ? { ...data, _subject: subject }
+      : { ...data, _subject: subject, _template: "table", _captcha: "false" };
 
     setState("sending");
     try {
-      const res = await fetch(`https://formspree.io/f/${profile.formspreeId}`, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error();
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json.success === "false" || json.success === false) throw new Error(json.message);
       form.reset();
       setState("sent");
+      setPlane((p) => p + 1); // fold it into a paper plane and send it off
       window.dispatchEvent(new CustomEvent("toast", { detail: { icon: "✈️", text: "Message delivered! Talk soon." } }));
     } catch {
       setState("error");
@@ -128,6 +135,11 @@ function ContactForm() {
           <input name="email" type="email" required autoComplete="email" className={field} placeholder="ada@company.com" />
         </label>
       </div>
+      {/* honeypot for spam bots: hidden from people and screen readers */}
+      <label aria-hidden="true" className="absolute left-[-9999px] h-px w-px overflow-hidden">
+        Website
+        <input name="website" tabIndex={-1} autoComplete="off" />
+      </label>
       <label className="mt-4 block text-sm font-medium">
         Message
         <textarea name="message" required rows={5} className={`${field} resize-y`} placeholder="We'd love to talk about a role on our team…" />
@@ -137,8 +149,12 @@ function ContactForm() {
           {state === "sending" ? "Sending…" : "Send it ✈"}
         </button>
         <p role="status" className="text-sm text-muted">
-          {state === "sent" && (profile.formspreeId ? "Message received. Talk soon!" : "Opening your email app…")}
-          {state === "error" && <span className="text-red">Couldn't send. Please email me directly instead.</span>}
+          {state === "sent" && <span className="text-blue">Sent! It's in my inbox. Talk soon.</span>}
+          {state === "error" && (
+            <span className="text-red">
+              Couldn't send just now. Please email <a href={`mailto:${profile.email}`} className="underline">{profile.email}</a> instead.
+            </span>
+          )}
         </p>
       </div>
       {plane > 0 && (
