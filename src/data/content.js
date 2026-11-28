@@ -11,13 +11,14 @@ export const profile = {
   lastName: "Abhinav",
   // The hero cycles through these, so the page works for any role you apply to.
   roles: ["AI / ML Engineer", "Deep Learning Builder", "Computer Vision Engineer", "Full Stack Developer", "Systems Tinkerer"],
-  tagline: "I train models that see, predict and adapt, then ship them inside real software: a BiLSTM that forecasts jet-engine failure, a vision model distilled to run at 60 FPS, and the apps around them.",
+  tagline: "Computer Science graduate who trains models that see, predict and adapt, and builds the software around them. Now looking for my first full-time role.",
   location: "India", // TODO: e.g. "Visakhapatnam, IN"
   timezone: "Asia/Kolkata",
   education: {
     degree: "B.Tech, Computer Science & Engineering",
     school: "GITAM University",
     year: "2026",
+    cgpa: "8.33",
   },
   email: "gompaharshit7@gmail.com",
   links: {
@@ -25,22 +26,21 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/harshit-abhinav-29ba54232/",
   },
   resume: "/resume/Harshit_Abhinav_Resume.pdf", // drop your PDF at public/resume/
-  status: "Open to full-time roles · 2026",
+  status: "Graduated 2026 · open to full-time roles",
   // Formspree form ID (the part after formspree.io/f/). Leave "" to use mailto instead.
   formspreeId: "", // TODO: create a free form at formspree.io and paste the ID
 };
 
 export const about = {
   lines: [
-    "I'm a CSE student at GITAM who builds AI that leaves the notebook and runs in the real world.",
-    "I've predicted jet-engine failures with BiLSTMs, distilled a SwinIR model into a real-time sharpener, and built a campus-wide smart-bin network. Around the models I build the rest: web apps, IoT sensors, even a RISC-V kernel.",
-    "I care about models that are fast enough to use, measured honestly, and wrapped in software people actually open.",
-    "Right now I'm looking for an AI / ML or software team where I can ship, learn fast and own real problems.",
+    "I'm a Computer Science graduate from GITAM University who loves building AI that works outside the notebook.",
+    "I'm happiest where an idea meets real people: working out what actually needs solving, then learning whatever it takes to build it.",
+    "I do my best work in small teams that move fast, explain things plainly and care about the details.",
   ],
   hobbies: [
     { icon: "🐕", label: "Befriending every street dog", note: "rain or shine" },
     { icon: "🌌", label: "Star Wars & sci-fi", note: "can quote the original trilogy on demand" },
-    { icon: "🎮", label: "Gaming", note: "hence the minigame" },
+    { icon: "🎮", label: "Gaming", note: "hence the easter eggs on this site" },
     { icon: "📷", label: "Photography & travel", note: "mostly cities and skies" },
   ],
 };
@@ -107,6 +107,13 @@ export const robot = {
 };
 
 // The "now building" tile in the hero. Update it whenever you like.
+// "Right now" card in the About section: what I'm doing and what I'm looking for.
+export const rightNow = {
+  lookingFor: "Full-time roles in AI / ML or software engineering",
+  doing: "Building Sigrun and sharpening my ML fundamentals",
+  basedIn: "India", // TODO: city, and whether you're open to relocating or remote
+};
+
 export const nowBuilding = { title: "Sigrun", what: "a RISC-V kernel that makes AI agents ask before they act", progress: 62 };
 
 // "By the numbers" tile in the hero: real figures from the projects.

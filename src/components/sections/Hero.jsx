@@ -105,9 +105,9 @@ function Polaroid() {
         className="card tape relative bg-card p-3 pb-4"
       >
         <div className="aspect-[4/5] overflow-hidden rounded-md">
-          <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees on campus" sizes="(min-width: 1024px) 380px, 85vw" />
+          <Photo name="hero" priority alt="Harshit Abhinav in a white shirt, standing under trees" sizes="(min-width: 1024px) 380px, 85vw" />
         </div>
-        <figcaption className="mt-3 text-center font-hand text-2xl text-ink">campus · probably tuning a learning rate</figcaption>
+        <figcaption className="mt-3 text-center font-hand text-2xl text-ink">class of 2026 · ready for what's next</figcaption>
       </m.figure>
       <MarginNote arrow="left" className="absolute -bottom-12 right-2 text-2xl">that's me!</MarginNote>
     </div>
