@@ -290,4 +290,106 @@ const hydDays = await (async () => {
 </svg>`;
 })();
 
-export const covers = { sigrun, "nasa-rul": nasaRul, "hyd-days": hydDays };
+
+// ---------- shared card chrome for the RUL-style covers ----------
+const card = (title, sub, body, tagText) => `
+<svg width="1200" height="900" xmlns="http://www.w3.org/2000/svg">
+  ${dotted}
+  <rect x="40" y="40" width="1120" height="820" rx="10" fill="#fffdf8" stroke="${ink}" stroke-width="2.5"/>
+  <text x="112" y="104" font-family="${SERIF}" font-size="40" font-weight="700" fill="${ink}">${title}</text>
+  <text x="112" y="140" font-family="${MONO}" font-size="20" fill="${mute}">${sub}</text>
+  ${body}
+  ${tag(tagText, 112, 838)}
+</svg>`;
+const T = (x, y, t, size = 20, fill = ink, extra = "") => `<text x="${x}" y="${y}" font-family="${MONO}" font-size="${size}" fill="${fill}" ${extra}>${t}</text>`;
+const arrowDefs = `<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${blue}"/></marker>
+  <filter id="blur"><feGaussianBlur stdDeviation="7"/></filter></defs>`;
+
+// ---------- clearsight: teacher -> student distillation ----------
+const clearsight = (() => {
+  const stripes = (x, y, w, h, filt) => {
+    let s = `<g ${filt ? 'filter="url(#blur)"' : ""}><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#f3ead8"/>`;
+    for (let k = -4; k < 9; k++) s += `<path d="M${x + k * 34} ${y + h}l${h * 0.6} ${-h}" stroke="${ink}" stroke-width="13"/>`;
+    s += `<circle cx="${x + w * 0.62}" cy="${y + h * 0.4}" r="${w * 0.17}" fill="#e8622c"/></g>`;
+    return `<clipPath id="c${x}${filt ? "b" : "s"}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath><g clip-path="url(#c${x}${filt ? "b" : "s"})">${s}</g><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="${ink}" stroke-width="2"/>`;
+  };
+  const body = `${arrowDefs}
+  <rect x="112" y="190" width="400" height="200" rx="10" fill="#e8edfb" stroke="${blue}" stroke-width="3"/>
+  ${[0, 1, 2, 3, 4].map((k) => `<rect x="${140 + k * 72}" y="${232 + (k % 2) * 8}" width="56" height="${100 - (k % 2) * 16}" rx="6" fill="${blue}" fill-opacity="${0.25 + k * 0.1}" stroke="${blue}" stroke-width="2"/>`).join("")}
+  ${T(132, 366, "SwinIR · teacher (large)", 21, blue, 'font-weight="700"')}
+  <path d="M312 396V508" stroke="${blue}" stroke-width="4" marker-end="url(#ah)" stroke-dasharray="2 0"/>
+  <rect x="332" y="424" width="188" height="40" rx="4" fill="${hl}" fill-opacity="0.8"/>${T(344, 451, "distillation loss", 20)}
+  <rect x="212" y="520" width="200" height="110" rx="10" fill="#fdecea" stroke="${red}" stroke-width="3"/>
+  ${[0, 1, 2].map((k) => `<rect x="${232 + k * 56}" y="552" width="42" height="40" rx="5" fill="${red}" fill-opacity="${0.3 + k * 0.15}" stroke="${red}" stroke-width="2"/>`).join("")}
+  ${T(232, 614, "IMDN · student", 21, red, 'font-weight="700"')}
+  ${T(112, 690, "small model learns to mimic the big one", 19, mute)}
+  <!-- right panel -->
+  ${stripes(620, 190, 220, 220, true)}${stripes(880, 190, 220, 220, false)}
+  ${T(620, 440, "LR frame", 20)}${T(880, 440, "student output", 20)}
+  <path d="M846 300h28" stroke="${blue}" stroke-width="4" marker-end="url(#ah)"/>
+  <rect x="620" y="490" width="480" height="92" rx="8" fill="#fffdf8" stroke="${ink}" stroke-width="2"/>
+  ${T(644, 528, "target", 19, mute)}<rect x="640" y="540" width="436" height="30" fill="${hl}" fill-opacity="0.75"/>${T(650, 562, "30–60 FPS · real-time video", 22, ink, 'font-weight="700"')}
+  <rect x="620" y="612" width="480" height="92" rx="8" fill="#fffdf8" stroke="${line}" stroke-width="2"/>
+  ${T(644, 650, "measured on one sample image", 19, mute)}${T(644, 686, "SSIM 0.9115 · PSNR 31.99 dB", 24, ink, 'font-weight="700"')}`;
+  return card("Teacher → student distillation", "real-time sharpening for video · SwinIR → IMDN", body, "ILLUSTRATION · KNOWLEDGE DISTILLATION");
+})();
+
+// ---------- ecobin: fill level -> pickup route ----------
+const ecobin = (() => {
+  const rows = [["Main Gate", 0.92, "High", red], ["Cafeteria", 0.55, "Medium", "#b8860b"], ["Parking Area", 0.86, "High", red], ["Library", 0.3, "Low", "#2a8f5a"], ["Auditorium", 0.45, "Medium", "#b8860b"]];
+  const bx = 620, bw = 330;
+  const bars = rows.map(([n, v, lab, c], k) => {
+    const y = 196 + k * 88;
+    return `${T(bx, y, n, 21)}<rect x="${bx}" y="${y + 12}" width="${bw}" height="30" rx="4" fill="#f1ecdf" stroke="${ink}" stroke-width="2"/>
+      <rect x="${bx}" y="${y + 12}" width="${bw * v}" height="30" rx="4" fill="${c}" fill-opacity="0.8"/>
+      <rect x="${bx + bw + 20}" y="${y + 12}" width="110" height="30" rx="15" fill="none" stroke="${c}" stroke-width="2.5"/>${T(bx + bw + 75, y + 34, lab, 19, c, 'text-anchor="middle" font-weight="700"')}`;
+  }).join("");
+  const thr = bx + bw * 0.8;
+  const body = `${arrowDefs}
+  <!-- bin + sensor -->
+  <path d="M170 330L190 700H410L430 330z" fill="#eef2ee" stroke="${ink}" stroke-width="3"/>
+  <path d="M184 520H416L410 700H190z" fill="#8aa59a" fill-opacity="0.55"/><path d="M184 520H416" stroke="${ink}" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="150" y="310" width="300" height="22" rx="5" fill="${ink}"/>
+  <rect x="246" y="262" width="108" height="48" rx="6" fill="${blue}"/><circle cx="272" cy="286" r="14" fill="#fffdf8"/><circle cx="328" cy="286" r="14" fill="#fffdf8"/>
+  ${T(300, 250, "HC-SR04", 20, blue, 'text-anchor="middle" font-weight="700"')}
+  ${[34, 58, 82].map((r) => `<path d="M${300 - r} ${340 + r * 0.45}a${r} ${r} 0 0 0 ${2 * r} 0" fill="none" stroke="${blue}" stroke-width="2.5" stroke-opacity="${1 - r / 110}"/>`).join("")}
+  <path d="M300 336V516" stroke="${blue}" stroke-width="3" marker-start="url(#ah)" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+  <rect x="312" y="410" width="110" height="36" rx="4" fill="${hl}" fill-opacity="0.8"/>${T(322, 436, "echo → d", 20)}
+  ${T(112, 744, "fill % = (bin height − d) / bin height", 20, ink)}
+  ${T(112, 776, "ESP32 posts readings to ThingSpeak", 19, mute)}
+  ${bars}
+  <path d="M${thr} 176V620" stroke="${red}" stroke-width="2.5" stroke-dasharray="8 7"/>${T(thr, 168, "80%", 18, red, 'text-anchor="middle"')}
+  <rect x="${bx}" y="660" width="${bw + 130}" height="76" rx="8" fill="${hl}" fill-opacity="0.7" stroke="${ink}" stroke-width="2"/>${T(bx + 20, 706, "bins above 80% → pickup route", 23, ink, 'font-weight="700"')}`;
+  return card("Fill level → smarter pickup", "ultrasonic sensing · campus bins on one dashboard", body, "ILLUSTRATION · ESP32 + THINGSPEAK");
+})();
+
+// ---------- vyu: pick a seat -> see the view ----------
+const vyu = (() => {
+  const rowsN = 8, cols = 11, x0 = 156, dx = 46, y0 = 300, dy = 50, selR = 3, selC = 5;
+  let seats = "";
+  for (let r = 0; r < rowsN; r++) for (let c = 0; c < cols; c++) {
+    const x = x0 + c * dx, y = y0 + r * dy + (r >= 5 ? 24 : 0), sel = r === selR && c === selC, back = r >= 5;
+    seats += `<rect x="${x - 15}" y="${y - 14}" width="30" height="26" rx="7" fill="${sel ? blue : back ? "#e4ddcd" : "#efe9db"}" stroke="${sel ? ink : "#9a9484"}" stroke-width="${sel ? 3 : 1.8}"/>`;
+  }
+  const sx = x0 + selC * dx, sy = y0 + selR * dy;
+  const body = `${arrowDefs}
+  <path d="M170 230Q${x0 + (cols - 1) * dx / 2} 196 ${x0 + (cols - 1) * dx + 16} 230" fill="none" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>${T(x0 + (cols - 1) * dx / 2, 270, "SCREEN", 19, mute, 'text-anchor="middle" letter-spacing="6"')}
+  <polygon points="${sx},${sy} ${x0 + 1.2 * dx},236 ${x0 + 8.8 * dx},236" fill="${hl}" fill-opacity="0.5"/>
+  <path d="M${sx} ${sy}L${x0 + 1.2 * dx} 236M${sx} ${sy}L${x0 + 8.8 * dx} 236" stroke="${blue}" stroke-width="2.5" stroke-dasharray="8 6"/>
+  ${seats}
+  <rect x="${sx - 15}" y="${sy - 14}" width="30" height="26" rx="7" fill="${blue}" stroke="${ink}" stroke-width="3"/>
+  <path d="M134 ${y0 + 4 * dy + 30}H${x0 + (cols - 1) * dx + 34}" stroke="${ink}" stroke-width="5" stroke-dasharray="3 0"/>${T(134, y0 + 4 * dy + 54, "balcony overhang", 18, mute)}
+  ${T(112, 744, "pick a seat in the plan", 20, ink)}${T(112, 776, "50 Hyderabad cinemas · 3D views in three.js", 19, mute)}
+  <!-- inset: view from the seat -->
+  <rect x="716" y="190" width="392" height="300" rx="8" fill="#171c2a" stroke="${ink}" stroke-width="2.5"/>
+  <polygon points="780,240 1044,240 1070,370 754,370" fill="#dfe6f7"/><polygon points="780,240 1044,240 1070,370 754,370" fill="none" stroke="#9fb0d8" stroke-width="3"/>
+  <polygon points="716,300 780,240 754,370 716,430" fill="#232b40"/><polygon points="1108,300 1044,240 1070,370 1108,430" fill="#232b40"/>
+  <clipPath id="vyuInset"><rect x="716" y="190" width="392" height="300" rx="8"/></clipPath>
+  <g clip-path="url(#vyuInset)">${[0, 1, 2, 3, 4].map((k) => `<rect x="${730 + k * 76}" y="${430 + (k % 2) * 6}" width="66" height="60" rx="14" fill="#0c101b"/>`).join("")}</g>
+  <rect x="716" y="190" width="392" height="300" rx="8" fill="none" stroke="${ink}" stroke-width="2.5"/>
+  ${T(716, 524, "view from the highlighted seat", 20, ink)}
+  <rect x="716" y="560" width="392" height="86" rx="8" fill="#fffdf8" stroke="${line}" stroke-width="2"/>${T(738, 596, "check the sight-line", 19, mute)}${T(738, 630, "before you book", 24, ink, 'font-weight="700"')}`;
+  return card("Pick a seat → see the view", "cinema seat previews · plan, sight-line, perspective", body, "ILLUSTRATION · SEAT VIEW");
+})();
+
+export const covers = { sigrun, "nasa-rul": nasaRul, "hyd-days": hydDays, clearsight, ecobin, vyu };

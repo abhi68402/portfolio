@@ -265,11 +265,13 @@ export const experience = [
 ];
 
 // Leave this array empty ([]) to hide the section entirely.
+// From the GitHub profile README. Add `year` and a credential `url` when you have them
+// (the card hides the year if it's empty and becomes a link if `url` is set).
 export const certifications = [
-  { name: "Certification name", issuer: "Issuer", year: "2025", url: "" }, // TODO
-  { name: "Certification name", issuer: "Issuer", year: "2025", url: "" }, // TODO
-  { name: "Certification name", issuer: "Issuer", year: "2024", url: "" }, // TODO
-  { name: "Certification name", issuer: "Issuer", year: "2024", url: "" }, // TODO
+  { name: "AWS Solutions Architect", issuer: "Amazon Web Services", badge: "AWS", focus: "Cloud-native infrastructure, AI systems", year: "", url: "" },
+  { name: "Cisco CCNA", issuer: "Cisco", badge: "CCNA", focus: "Networking, routing, switching, secure connectivity", year: "", url: "" },
+  { name: "PwC Launchpad", issuer: "PwC", badge: "PwC", focus: "Salesforce CRM & automation workflows", year: "", url: "" },
+  { name: "PepsiCo Job Simulation", issuer: "PepsiCo", badge: "PEP", focus: "Continuous deployment, CI/CD", year: "", url: "" },
 ];
 
 // Navbar + section order. Each section is a "log entry" in the mission notebook.

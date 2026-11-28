@@ -31,19 +31,15 @@ for (const [name, opt] of Object.entries(photos)) {
 }
 
 // ---- Project photos (4:3), used by the About photo stack ----
-// vyu is a real screenshot of cinevyu.site (assets-src/projects/vyu.png).
-// clearsight and ecobin use real images from the projects' GitHub repos (assets-src/projects/<id>.png).
-// sigrun, nasa-rul and hyd-days use illustrated covers drawn in scripts/project-covers.mjs.
-// Any assets-src/projects/<id>.png replaces a cover, cropped to 4:3 and compressed the same way.
+// All six are illustrated covers drawn in scripts/project-covers.mjs.
+// Real screenshots/photos are kept in assets-src/projects/real/. Drop one back at
+// assets-src/projects/<id>.png to use it instead: it is cropped to 4:3 and compressed the same way.
 const PROJ = "assets-src/projects";
 const ink = "#1B2232", blue = "#2448B8", paper = "#F8F5EE", line = "#CFC3AA", hl = "#FFE066", red = "#B8322B";
 import { covers } from "./project-covers.mjs";
 
 await mkdir(OUT, { recursive: true });
 const projectSources = {
-  vyu: sharp(`${PROJ}/vyu.png`).extract({ left: 640, top: 110, width: 600, height: 450 }),
-  clearsight: sharp(`${PROJ}/clearsight.png`),
-  ecobin: sharp(`${PROJ}/ecobin.png`),
   ...Object.fromEntries(Object.entries(covers).map(([k, svg]) => [
     k,
     existsSync(`${PROJ}/${k}.png`) ? sharp(`${PROJ}/${k}.png`) : sharp(Buffer.from(svg), { density: 96 }),

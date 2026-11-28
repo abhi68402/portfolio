@@ -11,11 +11,12 @@ export default function Certifications() {
         {certifications.map((c, i) => {
           const body = (
             <>
-              <span aria-hidden="true" className="mx-auto grid h-16 w-16 place-items-center rounded-full border-2 border-dashed border-blue bg-hl/40 text-2xl transition-transform duration-500 group-hover:rotate-[360deg]">
-                {["🛰️", "🚀", "🪐", "⭐"][i % 4]}
+              <span aria-hidden="true" className="mx-auto grid h-16 w-16 place-items-center rounded-full border-2 border-dashed border-blue bg-hl/40 font-mono text-sm font-bold tracking-wide text-ink transition-transform duration-500 group-hover:rotate-[360deg]">
+                {c.badge || c.issuer.slice(0, 3).toUpperCase()}
               </span>
               <h3 className="mt-4 font-serif text-lg font-semibold leading-tight">{c.name}</h3>
-              <p className="mt-1 text-sm text-muted">{c.issuer} · {c.year}</p>
+              <p className="mt-1 text-sm font-medium text-blue">{[c.issuer, c.year].filter(Boolean).join(" · ")}</p>
+              {c.focus && <p className="mt-2 text-sm leading-snug text-muted">{c.focus}</p>}
             </>
           );
           const cls = "card lift group block h-full p-5 text-center";
