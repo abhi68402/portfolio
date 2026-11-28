@@ -14,37 +14,18 @@ import Starfield from "./components/notebook/Starfield";
 import Lamp from "./components/fun/Lamp";
 import Rocket from "./components/fun/Rocket";
 import { useVisitorReactions } from "./components/fun/useVisitorReactions";
-import { safeGet, safeSet } from "./hooks/storage";
 
 const loadFeatures = () => import("./motion-features.js").then((mod) => mod.default);
 
-// Bolt and the terminal load only after the page is ready (or when opened),
-// so they never slow down the content a recruiter came for.
-const Robot = lazy(() => import("./components/robot/Robot"));
+// The terminal loads only when opened, so it never slows down the content a
+// recruiter came for.
 const Terminal = lazy(() => import("./components/terminal/Terminal"));
 
 export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [botOn, setBotOn] = useState(() => safeGet("bolt", "on") !== "off");
-  const [tourRequest, setTourRequest] = useState(0);
-
-  useEffect(() => {
-    const ric = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
-    ric(() => setReady(true), { timeout: 2500 });
-  }, []);
-
   useVisitorReactions();
 
-  const toggleBot = useCallback((on) => { setBotOn(on); safeSet("bolt", on ? "on" : "off"); }, []);
   const openTerminal = useCallback(() => setTerminalOpen(true), []);
-
-  // "bolt-tour" (footer link, terminal) brings Bolt back if hidden and starts the tour
-  useEffect(() => {
-    const onTour = () => { toggleBot(true); setReady(true); setTourRequest((n) => n + 1); };
-    window.addEventListener("bolt-tour", onTour);
-    return () => window.removeEventListener("bolt-tour", onTour);
-  }, [toggleBot]);
   const closeTerminal = useCallback(() => setTerminalOpen(false), []);
 
   // Backtick (`) toggles the secret terminal, unless you're typing in a form field.
@@ -77,12 +58,11 @@ export default function App() {
           <Certifications />
           <Contact />
         </main>
-        <Footer onTerminal={openTerminal} botOn={botOn} onToggleBot={toggleBot} />
+        <Footer onTerminal={openTerminal} />
 
         <Toasts />
         <Rocket />
         <Suspense fallback={null}>
-          {ready && botOn && <Robot onHide={() => toggleBot(false)} tourRequest={tourRequest} />}
           <AnimatePresence>
             {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={() => {}} />}
           </AnimatePresence>

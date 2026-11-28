@@ -167,8 +167,6 @@ body {
 .caret { animation: caret 1s step-end infinite; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
-@keyframes blink-light { 0%, 92%, 100% { opacity: 1; } 95% { opacity: 0.2; } }
-.antenna { animation: blink-light 3s infinite; }
 
 /* Konami rocket */
 @keyframes launch { 0% { transform: translate(-10vw, 10vh) rotate(45deg); } 100% { transform: translate(110vw, -110vh) rotate(45deg); } }
@@ -188,9 +186,6 @@ body {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* Wave hello (Bolt) */
-@keyframes wave { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-18deg); } 40% { transform: rotate(14deg); } 60% { transform: rotate(-10deg); } 80% { transform: rotate(8deg); } }
-@keyframes robot-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 70% { transform: translateY(2px); } }
 
 /* ── Scroll effects (CSS scroll-driven animations; browsers without support
    simply show everything still) ────────────────────────────────────────── */

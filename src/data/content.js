@@ -85,43 +85,6 @@ export const strengths = [
 
 export const learning = ["LLMs & RAG", "Model deployment (MLOps)", "Transformers for vision"];
 
-// Bolt, the tiny robot co-pilot in the corner. Change what it says here.
-export const robot = {
-  name: "Bolt",
-  hello: "Hi! I'm Bolt, Harshit's co-pilot. Want a quick tour of the page?",
-  helloBack: "Welcome back! Want the tour again?",
-  // Guided tour: Bolt flies to each section and says this. Remove a line to skip that stop.
-  tour: {
-    hero: "This is Harshit: AI / ML engineer, class of 2026, looking for his first full-time role. His resume is one click away, right here.",
-    about: "Crew profile: who he is, his degree and CGPA, and what he's up to right now.",
-    skills: "His toolkit. Click any skill marked with an arrow to see the project that proves it.",
-    projects: "Missions flown: the things he has built. Filter them by AI, web, IoT or systems, and open any card for the full story.",
-    experience: "Flight record: his internships and what he did there.",
-    certifications: "Badges he has earned along the way.",
-    contact: "And the radio. Send him a message right from this page, no email app needed.",
-  },
-  tourDone: "That's the tour! Click me any time for tips.",
-  // said once per visit when each section comes into view
-  lines: {
-    about: "That's my engineer. He shares his umbrella with street dogs.",
-    skills: "Every skill here comes with receipts. Click one!",
-    projects: "Sigrun is a whole operating system. I run on it. (Not really.)",
-    experience: "Flight record: where he's been on missions so far.",
-    certifications: "Badges earned. Shiny.",
-    contact: "Send a message and watch it fly. ✈️",
-  },
-  tips: [
-    "His resume is one click away, top of the page.",
-    "Psst: press ` (backtick) for a secret terminal.",
-    "Want the guided tour? Type 'tour' in the terminal, or use the link in the footer.",
-    "Click a skill to see the project that proves it.",
-    "Try the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
-    "Vyu is live. Go pick a cinema seat in 3D!",
-    "Pet the dog in the About section. Trust me.",
-    "Type 'sudo hire harshit' in the terminal.",
-  ],
-};
-
 // The "now building" tile in the hero. Update it whenever you like.
 // "Right now" card in the About section: what I'm doing and what I'm looking for.
 export const rightNow = {

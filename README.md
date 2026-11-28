@@ -1,6 +1,6 @@
 # Harshit Abhinav · Space Notebook Portfolio
 
-A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (real numbers, a live local-time sky, pet the dog, skills with receipts), an optional night-sky dark mode and hidden easter eggs.
+A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a few toys (real numbers, a live local-time sky, pet the dog, skills with receipts), an optional night-sky dark mode and hidden easter eggs.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -41,7 +41,6 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | Name, roles that rotate in the hero, tagline, location, email, links | `profile` |
 | About text and hobbies | `about` |
 | Skill groups and levels (0–100); listed in the Toolkit section | `skillGroups` |
-| What Bolt the robot says (hello, per-section lines, tips, and the guided `tour` text per section) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | "Right now" card in About: what you're doing, what you're looking for, where you're based | `rightNow` |
 | Hero "By the numbers" figures | `stats` |
@@ -70,7 +69,7 @@ public/                    files served as-is: photos, resume, og-image, favicon
 scripts/optimize-images.mjs  crops + compresses photos, builds og-image.jpg
 src/
   main.jsx                 starts the app, loads fonts and CSS
-  App.jsx                  page order; loads Bolt + terminal; backtick shortcut
+  App.jsx                  page order; loads the terminal; backtick shortcut
   index.css                paper/ink colour tokens (light + night), cards, buttons, highlighter, doodle animation
   data/content.js          ALL your text and data
   hooks/                   active section, safe localStorage, scrolling
@@ -80,7 +79,6 @@ src/
     sections/              Hero (+ HeroTiles), About, Skills, Projects, Experience, Certifications, Contact
     skills/                (skills now live in sections/Skills.jsx + data/proof.js)
     projects/              index-card ProjectCard, filters, details modal
-    robot/Robot.jsx        Bolt, the tiny robot co-pilot
     fun/                   Toasts, Konami Rocket, useVisitorReactions
     terminal/              commands.js (what each command prints) + Terminal.jsx
     ui/                    Button, Badge, Modal, Photo
@@ -92,7 +90,6 @@ src/
 - **Theme:** light notebook by default; the moon button switches to a night-sky mode with a starfield (`notebook/Starfield.jsx`). The choice is remembered. Every colour is a token at the top of `index.css`.
 - **Doodles** (`notebook/Sketch.jsx`) are small SVG drawings. Each path has `pathLength="1"`, so CSS can animate the stroke from hidden to drawn when it scrolls into view.
 - **The highlighter** (`Highlight.jsx`) is a yellow background that grows from 0% to 100% width the first time the words are seen.
-- **Bolt** (`robot/Robot.jsx`) is one SVG. Its pupils move toward your cursor, it blinks on a timer, waves on arrival, says one line per section, gives a tip on click and dozes after a minute idle. It stays in its corner, except during the **guided tour**: Bolt offers it in the hello bubble (also the footer link and the terminal command `tour`), then flies to each section heading with a Back / Next / End card, and flies home at the end. Keyboard: ← / → to move, Esc to end. The × or the footer hides it.
 
 ### Fun bits
 
@@ -106,7 +103,7 @@ src/
 
 ### Easter eggs
 
-- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `hello`, `bolt`, `launch`.
+- Press `` ` `` anywhere (or click `>_` in the footer) for the terminal. Try `help`, then the hidden ones: `sudo hire harshit`, `goto projects`, `hello`, `launch`.
 - The Konami code (↑↑↓↓←→←→BA) launches a doodle rocket.
 - Switch tabs and the title waves at you; returning visitors get a welcome back.
 

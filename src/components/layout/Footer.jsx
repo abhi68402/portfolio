@@ -1,11 +1,11 @@
 import { profile } from "../../data/content";
 
 // Bottom of the notebook: a handwritten sign-off, a version label that links
-// to the site's earlier versions on GitHub, the Bolt switch, and the tiny
+// to the site's earlier versions on GitHub, and the tiny
 // ">_" button that is the hidden way into the terminal.
 const VERSION = "v5 · notebook edition";
 
-export default function Footer({ onTerminal, botOn, onToggleBot }) {
+export default function Footer({ onTerminal }) {
   return (
     <footer className="border-t border-dashed border-line-strong">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -28,12 +28,6 @@ export default function Footer({ onTerminal, botOn, onToggleBot }) {
             </a>
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-            <button type="button" onClick={() => window.dispatchEvent(new Event("bolt-tour"))} className="squiggle text-sm font-medium text-blue">
-              Take the tour with Bolt
-            </button>
-            <button type="button" onClick={() => onToggleBot(!botOn)} className="squiggle text-sm text-muted hover:text-ink">
-              {botOn ? "Hide Bolt" : "Bring back Bolt"}
-            </button>
             <p className="hud-label flex items-center gap-2">
               <span>
                 psst… press <kbd className="rounded border border-line-strong px-1.5 py-0.5 text-accent">`</kbd> for the secret terminal
