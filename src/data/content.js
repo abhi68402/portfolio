@@ -45,6 +45,7 @@ export const about = {
     { icon: "🌌", label: "Star Wars & sci-fi", note: "can quote the original trilogy on demand" },
     { icon: "🎮", label: "Gaming", note: "hence the easter eggs on this site" },
     { icon: "📷", label: "Photography & travel", note: "mostly cities and skies" },
+    { icon: "🔌", label: "Tinkering with hardware", note: "there's usually an ESP32 on my desk" },
   ],
 };
 
