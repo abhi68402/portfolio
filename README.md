@@ -1,6 +1,6 @@
 # Harshit Abhinav · Space Notebook Portfolio
 
-A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (real numbers, scratch-off fun fact, pet the dog, skills with receipts), an optional night-sky dark mode and hidden easter eggs.
+A personal portfolio styled as an engineer's mission notebook: dot-grid paper, ink text, a highlighter, taped index cards, red-pen margin notes, and hand-drawn space doodles that sketch themselves in as you scroll. It's built to be read first: everything a recruiter needs is plain, high-contrast text. The fun is light: a tiny robot co-pilot called **Bolt**, a few toys (real numbers, a live local-time sky, pet the dog, skills with receipts), an optional night-sky dark mode and hidden easter eggs.
 
 **Stack:** React 19 · Vite · Tailwind CSS v4 · Motion (Framer Motion) · HTML5 Canvas · fully static.
 
@@ -44,7 +44,6 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 | What Bolt the robot says (hello, per-section lines, tips) | `robot` |
 | The "now building" tile in the hero | `nowBuilding` |
 | "Right now" card in About: what you're doing, what you're looking for, where you're based | `rightNow` |
-| Fun facts on the hero scratch card | `src/data/funFacts.js` |
 | Hero "By the numbers" figures | `stats` |
 | "Strengths" (personal skills) in the Skills section | `strengths` |
 | Which project proves each skill (receipts) | `src/data/proof.js` |
@@ -97,7 +96,7 @@ src/
 
 ### Fun bits
 
-- Hero tiles: **Now building** progress, **By the numbers** (real figures that count up), and a **scratch card** that reveals a fun fact (facts live in `src/data/funFacts.js`; a Reveal button works without scratching).
+- Hero tiles: **Now building** progress, **By the numbers** (real figures that count up), and **My local time** (a sun or moon crosses a little sky as the day passes in India, with what I'm probably doing and how far ahead or behind the visitor is; time zone is `profile.timezone`).
 - **Pet the dog** in About (hearts + a pet counter).
 - **Toolkit:** click a skill marked ↗ to see the project that proves it.
 - **Polish:** cards you hover come forward while the rest fade back, a soft desk-lamp glow follows the cursor, buttons have a springy feel, the email copy button morphs to "Copied", and the footer links to every earlier version of the site.

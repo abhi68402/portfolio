@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "motion/react";
-import { nowBuilding, stats } from "../../data/content";
-import { funFacts } from "../../data/funFacts";
+import { nowBuilding, profile, stats } from "../../data/content";
 
 // Three small toys under the hero: what I'm building now, real numbers from my projects,
-// and a scratch-off fun fact card. Light fun; none of them hide any information.
+// and my local time (with a sun or moon riding across the sky).
 export default function HeroTiles() {
   return (
     <div className="mx-auto grid max-w-6xl items-stretch gap-6 px-4 pb-8 sm:px-6 md:grid-cols-3">
       <h2 className="sr-only">At a glance</h2>
       <NowBuilding />
       <ByTheNumbers />
-      <ScratchCard />
+      <LocalTime />
     </div>
   );
 }
@@ -73,162 +72,86 @@ function Counter({ to, run }) {
   return n.toLocaleString("en-IN");
 }
 
-// Scratch-off card: a canvas foil sits over a hidden fun fact. Dragging erases
-// the foil (destination-out); past ~45% cleared the rest fades and the fact pops.
-// "Reveal" gives keyboard and screen-reader users the same result without scratching.
-const CLEAR_AT = 0.45;
+// "My local time": a little sky where the sun (or moon) rides an arc across
+// the day in my time zone, plus what I'm probably doing and how far ahead or
+// behind the visitor is. Updates every 30 seconds. Time zone: profile.timezone.
+const TZ = profile.timezone || "Asia/Kolkata";
 
-function paintFoil(canvas, w, h, dpr) {
-  const ctx = canvas.getContext("2d");
-  const dark = document.documentElement.dataset.theme === "dark";
-  ctx.globalCompositeOperation = "source-over";
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const g = ctx.createLinearGradient(0, 0, w, h);
-  const stops = dark ? ["#3b4663", "#6d7898", "#47526f", "#7f8aab", "#3b4663"] : ["#b9bcc4", "#e6e8ec", "#c3c6ce", "#f1f2f5", "#b9bcc4"];
-  stops.forEach((c, i) => g.addColorStop(i / (stops.length - 1), c));
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, w, h);
-  // fine brushed texture + sparkle
-  ctx.lineWidth = 1;
-  for (let y = 0; y < h; y += 3) {
-    ctx.strokeStyle = dark ? `rgba(255,255,255,${0.03 + ((y * 7) % 5) * 0.012})` : `rgba(60,70,90,${0.03 + ((y * 7) % 5) * 0.012})`;
-    ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(w, y + 0.5); ctx.stroke();
-  }
-  ctx.fillStyle = dark ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.9)";
-  for (let i = 0; i < 40; i++) ctx.fillRect(((i * 97) % 211) / 211 * w, ((i * 61) % 173) / 173 * h, 1.5, 1.5);
-  // hint
-  ctx.fillStyle = dark ? "#e8ecf8" : "#4a4f5c";
-  ctx.font = "600 26px 'Caveat', 'Segoe Print', 'Bradley Hand', cursive";
-  ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  ctx.fillText("scratch me", w / 2, h / 2);
-  ctx.strokeStyle = dark ? "rgba(232,236,248,0.55)" : "rgba(74,79,92,0.55)";
-  ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
-  ctx.strokeRect(6, 6, w - 12, h - 12); ctx.setLineDash([]);
+function nowIn(tz) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZoneName: "shortOffset" })
+      .formatToParts(new Date())
+      .map((p) => [p.type, p.value])
+  );
+  const h = Number(parts.hour), m = Number(parts.minute);
+  // offset like "GMT+5:30" -> minutes
+  const om = /GMT([+-]\d+)(?::(\d+))?/.exec(parts.timeZoneName || "");
+  const offset = om ? Number(om[1]) * 60 + Math.sign(Number(om[1]) || 1) * Number(om[2] || 0) : 330;
+  return { h, m, offset };
 }
 
-function ScratchCard() {
-  const reduce = useReducedMotion();
-  const order = useRef(null);
-  const [idx, setIdx] = useState(0);
-  const [revealed, setRevealed] = useState(false);
-  const [round, setRound] = useState(0);
-  const wrap = useRef(null);
-  const canvas = useRef(null);
-  const state = useRef({ down: false, last: null, tick: 0 });
-  const revealedRef = useRef(false);
-  revealedRef.current = revealed;
+function mood(h) {
+  if (h >= 23 || h < 7) return "Probably asleep. I'll reply in the morning.";
+  if (h < 10) return "Morning coffee, inbox open.";
+  if (h < 18) return "At my desk, building things.";
+  return "Evening. Still tinkering on side projects.";
+}
 
-  // shuffled queue: every fact once before any repeats
-  const nextFact = (prevIdx) => {
-    if (!order.current || !order.current.length) {
-      const all = funFacts.map((_, i) => i).sort(() => Math.random() - 0.5);
-      if (all[0] === prevIdx && all.length > 1) all.push(all.shift());
-      order.current = all;
-    }
-    return order.current.shift();
-  };
-  const [factIdx, setFactIdx] = useState(() => nextFact(-1));
+function gap(myOffset) {
+  const visitor = -new Date().getTimezoneOffset();
+  const d = myOffset - visitor;
+  if (d === 0) return "Same time zone as you.";
+  const a = Math.abs(d), hh = Math.floor(a / 60), mm = a % 60;
+  const span = `${hh ? `${hh}h` : ""}${hh && mm ? " " : ""}${mm ? `${mm}m` : ""}`;
+  return `I'm ${span} ${d > 0 ? "ahead of" : "behind"} you.`;
+}
 
-  // size + paint foil (and repaint on resize / theme change while still covered)
+function LocalTime() {
+  const [t, setT] = useState(() => nowIn(TZ));
   useEffect(() => {
-    const el = wrap.current, cv = canvas.current;
-    if (!el || !cv) return;
-    const fit = () => {
-      if (revealedRef.current) return;
-      const dpr = window.devicePixelRatio || 1;
-      const { width, height } = el.getBoundingClientRect();
-      if (!width || !height) return;
-      cv.width = Math.round(width * dpr); cv.height = Math.round(height * dpr);
-      paintFoil(cv, width, height, dpr);
-      state.current.tick = 0;
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    const mo = new MutationObserver(fit);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => { ro.disconnect(); mo.disconnect(); };
-  }, [round, factIdx]);
+    const id = setInterval(() => setT(nowIn(TZ)), 30000);
+    return () => clearInterval(id);
+  }, []);
 
-  const clearedRatio = () => {
-    const cv = canvas.current;
-    const ctx = cv.getContext("2d", { willReadFrequently: true });
-    const { data } = ctx.getImageData(0, 0, cv.width, cv.height);
-    const step = 4 * 6; let clear = 0, total = 0;
-    for (let i = 3; i < data.length; i += step) { total++; if (data[i] < 128) clear++; }
-    return total ? clear / total : 0;
-  };
-
-  const scratch = (e) => {
-    const st = state.current;
-    if (!st.down || revealedRef.current) return;
-    const cv = canvas.current, ctx = cv.getContext("2d");
-    const r = cv.getBoundingClientRect();
-    const dpr = cv.width / r.width;
-    const x = (e.clientX - r.left) * dpr, y = (e.clientY - r.top) * dpr;
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.lineCap = ctx.lineJoin = "round";
-    ctx.lineWidth = 30 * dpr;
-    ctx.beginPath();
-    ctx.moveTo(st.last ? st.last.x : x, st.last ? st.last.y : y);
-    ctx.lineTo(x + 0.01, y);
-    ctx.stroke();
-    st.last = { x, y };
-    if (++st.tick % 6 === 0 && clearedRatio() >= CLEAR_AT) setRevealed(true);
-  };
-
-  const onDown = (e) => {
-    e.currentTarget.setPointerCapture?.(e.pointerId);
-    state.current.down = true; state.current.last = null;
-    scratch(e);
-  };
-  const onUp = () => {
-    state.current.down = false; state.current.last = null;
-    if (!revealedRef.current && canvas.current && clearedRatio() >= CLEAR_AT) setRevealed(true);
-  };
-
-  const again = () => {
-    setFactIdx((cur) => nextFact(cur));
-    setRevealed(false);
-    setRound((r) => r + 1);
-  };
+  const mins = t.h * 60 + t.m;
+  const day = mins >= 360 && mins < 1080; // 6:00 to 18:00
+  // progress along the arc: day 6am->6pm, night 6pm->6am
+  const p = day ? (mins - 360) / 720 : ((mins - 1080 + 1440) % 1440) / 720;
+  const cx = 100 - 72 * Math.cos(p * Math.PI);
+  const cy = 62 - 48 * Math.sin(p * Math.PI);
+  const h12 = ((t.h + 11) % 12) + 1;
+  const time = `${h12}:${String(t.m).padStart(2, "0")}`;
+  const ampm = t.h < 12 ? "am" : "pm";
 
   return (
     <article className="card tilt-r lift tape relative flex h-full flex-col p-5">
-      <p className="hud-label">Scratch for a fun fact</p>
-      <div ref={wrap} className="relative mt-3 min-h-[7.5rem] flex-1 overflow-hidden rounded-md border border-line bg-card-2">
-        <p
-          key={`${round}-${revealed}`}
-          aria-live="polite"
-          aria-hidden={!revealed}
-          className={`absolute inset-0 grid place-items-center px-4 text-center font-serif text-lg leading-snug text-ink ${revealed && !reduce ? "animate-[scratch-pop_0.45s_ease-out]" : ""}`}
-        >
-          <span>{funFacts[factIdx]}</span>
-        </p>
-        <canvas
-          key={round}
-          ref={canvas}
-          aria-hidden="true"
-          onPointerDown={onDown}
-          onPointerMove={scratch}
-          onPointerUp={onUp}
-          onPointerCancel={onUp}
-          style={{ touchAction: "none", opacity: revealed ? 0 : 1, pointerEvents: revealed ? "none" : "auto", transition: reduce ? "none" : "opacity 0.5s ease" }}
-          className="absolute inset-0 h-full w-full cursor-crosshair"
-        />
+      <p className="hud-label">My local time</p>
+      <div className="relative mt-2">
+        <svg viewBox="0 0 200 68" className="h-auto w-full" aria-hidden="true">
+          {!day && [[30, 20], [58, 9], [92, 22], [128, 8], [160, 20], [180, 38], [16, 40], [112, 36]].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r={i % 3 ? 1.1 : 1.6} fill="var(--muted)" className="twinkle" style={{ animationDelay: `${i * 0.45}s` }} />
+          ))}
+          <path d="M28 62 A72 48 0 0 1 172 62" fill="none" stroke="var(--line-strong)" strokeWidth="1.5" strokeDasharray="4 5" />
+          <line x1="8" y1="62" x2="192" y2="62" stroke="var(--ink)" strokeWidth="1.5" strokeLinecap="round" />
+          {day ? (
+            <g>
+              <circle cx={cx} cy={cy} r="13" fill="var(--hl)" opacity="0.45" />
+              <circle cx={cx} cy={cy} r="8" fill="var(--hl)" stroke="var(--ink)" strokeWidth="1.5" />
+            </g>
+          ) : (
+            <g>
+              <circle cx={cx} cy={cy} r="8" fill="var(--card-2)" stroke="var(--ink)" strokeWidth="1.5" />
+              <circle cx={cx + 3.5} cy={cy - 2.5} r="6.5" fill="var(--card)" />
+            </g>
+          )}
+        </svg>
       </div>
-      <div className="mt-3 flex min-h-11 items-center justify-between gap-3">
-        {revealed ? (
-          <button type="button" onClick={again} className="min-h-11 rounded-md border-2 border-ink bg-hl/60 px-4 font-hand text-xl shadow-[2px_2px_0_var(--ink)] transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
-            New card
-          </button>
-        ) : (
-          <button type="button" onClick={() => setRevealed(true)} className="min-h-11 rounded-md border border-line bg-card px-4 text-sm font-medium text-ink transition hover:bg-hl/40">
-            Reveal
-          </button>
-        )}
-        <span className="font-hand text-lg text-red" aria-hidden="true">{revealed ? "ta-da" : "use your finger or mouse"}</span>
-      </div>
+      <p className="mt-1 flex items-baseline gap-2">
+        <span className="font-serif text-[1.75rem] font-semibold leading-none tabular">{time}</span>
+        <span className="font-mono text-sm text-muted">{ampm} · India (IST)</span>
+      </p>
+      <p className="mt-2 text-sm text-ink">{mood(t.h)}</p>
+      <p className="mt-auto pt-2 font-hand text-lg text-red">{gap(t.offset)}</p>
     </article>
   );
 }
