@@ -57,7 +57,7 @@ Almost everything lives in **`src/data/content.js`**. Search it for `TODO` to fi
 - **Contact form:** by default it opens the visitor's email app. To receive messages directly, make a free form at [formspree.io](https://formspree.io), copy the ID (the part after `/f/`), and paste it into `profile.formspreeId`.
 - **Photos:** originals live in `assets-src/photos/` (`hero`, `fun`). Replace one with the same name, then run `npm run images` to rebuild the compressed versions and the link-preview image.
 - **Project screenshots (currently unused):** `assets-src/projects/vyu.png` is a real screenshot of cinevyu.site; the other projects use generated covers (drawn in `scripts/optimize-images.mjs`, labelled "Project cover"). To use your own screenshot, save it as `assets-src/projects/<project id>.png` (it replaces the cover automatically), then run `npm run images`. Each project's `photo` field in `content.js` names the output (`proj-<id>`).
-- **Your URL:** the site is live at `https://abhi68402.github.io/portfolio/` (GitHub Pages, deployed by `.github/workflows/deploy-pages.yml`). If you move to a custom domain, replace that URL in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
+- **Your URL:** the site lives at `https://www.abhinavdev.site/` (Vercel; `abhinavdev.site` redirects to `www`). A copy is also published to GitHub Pages at `https://abhi68402.github.io/portfolio/` by `.github/workflows/deploy-pages.yml`; its canonical link points to the main domain. To change domains, replace the URL in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ---
 

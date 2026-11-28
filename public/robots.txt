@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abhi68402.github.io/portfolio/sitemap.xml
+Sitemap: https://www.abhinavdev.site/sitemap.xml
