@@ -1,12 +1,14 @@
 // Responsive photo: the browser picks the smallest WebP that looks sharp,
 // with a JPG fallback. Lazy-loaded unless `priority` is set (only the hero).
+const BASE = import.meta.env.BASE_URL; // "/" or "/portfolio/" on GitHub Pages
+
 export default function Photo({ name, alt, sizes = "(min-width: 1024px) 400px, 90vw", priority = false, className = "", width = 800, height = 1000 }) {
-  const set = [480, 800, 1200].map((w) => `/photos/${name}-${w}.webp ${w}w`).join(", ");
+  const set = [480, 800, 1200].map((w) => `${BASE}photos/${name}-${w}.webp ${w}w`).join(", ");
   return (
     <picture>
       <source type="image/webp" srcSet={set} sizes={sizes} />
       <img
-        src={`/photos/${name}.jpg`}
+        src={`${BASE}photos/${name}.jpg`}
         alt={alt}
         width={width}
         height={height}

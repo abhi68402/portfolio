@@ -25,7 +25,7 @@ export const profile = {
     github: "https://github.com/abhi68402",
     linkedin: "https://www.linkedin.com/in/harshit-abhinav-29ba54232/",
   },
-  resume: "/resume/Harshit_Abhinav_Resume.pdf", // drop your PDF at public/resume/
+  resume: `${import.meta.env.BASE_URL}resume/Harshit_Abhinav_Resume.pdf`, // drop your PDF at public/resume/
   status: "Graduated 2026 · open to full-time roles",
   // The contact form sends from the page. With formspreeId "" it uses FormSubmit
   // (free, no signup): the FIRST message sends an "Activate form" email to the
