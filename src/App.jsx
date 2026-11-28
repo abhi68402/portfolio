@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { AnimatePresence, LazyMotion, MotionConfig } from "motion/react";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Hero from "./components/sections/Hero";
@@ -67,6 +68,7 @@ export default function App() {
             {terminalOpen && <Terminal key="term" onClose={closeTerminal} onGame={() => {}} />}
           </AnimatePresence>
         </Suspense>
+        <Analytics />
       </LazyMotion>
     </MotionConfig>
   );
