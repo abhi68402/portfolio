@@ -26,11 +26,11 @@ export default function Hero() {
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">{profile.tagline}</p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button href={profile.resume} download icon="↓">Download resume</Button>
-            <Button variant="ghost" href="#projects" icon="→" onClick={(e) => { e.preventDefault(); scrollToSection("projects"); }}>
+            <Button href={profile.resume} download icon="download">Download resume</Button>
+            <Button variant="ghost" href="#projects" icon="arrow" onClick={(e) => { e.preventDefault(); scrollToSection("projects"); }}>
               See projects
             </Button>
-            <Button variant="ghost" href="#contact" icon="✉" onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}>
+            <Button variant="ghost" href="#contact" icon="mail" onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}>
               Say hi
             </Button>
           </div>
